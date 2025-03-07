@@ -1,4 +1,4 @@
-# 📌 EcoCircular
+# 📌 Strade
 
 ## 📖 Índice
 1. 📌 [Problemática](#problematica)
@@ -88,4 +88,4 @@ Agradecemos tu ayuda para mejorar EcoCircular. 😊
 ---
 
 ## ⚖️ Derechos Reservados
-© 2025 EcoCircular. Todos los derechos reservados.
+© 2025 Strade. Todos los derechos reservados.
