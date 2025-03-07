@@ -37,7 +37,7 @@ Adicionalmente, la aplicación fomenta la conexión de comunidades de intercambi
 | Antonio Emmanuel Kantun Cahum  | Desarrollador Backend / Tester | [antoniokantun](https://github.com/antoniokantun)  | 22393267@utcancun.edu.mx  |
 | Fernando Gomez Toledo          | Analista / Documentador | [FernandoGT1](https://github.com/FernandoGT1)      | 22393139@utcancun.edu.mx  |
 | Jesus Alexander Carrillo Gonzalez | Project Manager / Líder del proyecto | [AlexUT22393235](https://github.com/AlexUT22393235) | 22393235@utcancun.edu.mx  |
-| Kenia Sinai Escamilla Cohuo    | Diseñador UX/UI | [Tommoko3ds](https://github.com/Tommoko3ds)              | 22393140@utcancun.edu.mx  |
+| Kenia Sinai Escamilla Cohuo    | Diseñador UX/UI | [ Tommoko3ds ](https://github.com/Tommoko3ds)              | 22393140@utcancun.edu.mx  |
 | Octavio Jesus Cruz Cruz        | Desarrollador Frontend | [MrDorer](https://github.com/MrDorer)        | 22393264@utcancun.edu.mx  |
 
 ---
