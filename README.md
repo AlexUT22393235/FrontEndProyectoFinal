@@ -78,7 +78,7 @@ Si encuentras algún error o problema en la aplicación, te invitamos a reportar
 3. Si es posible, adjunta capturas de pantalla o pasos para reproducir el error.
 4. Nuestro equipo revisará tu reporte y trabajará en la solución.
 
-Agradecemos tu ayuda para mejorar EcoCircular. 😊
+Agradecemos tu ayuda para mejorar Strade. 😊
 
 ---
 
