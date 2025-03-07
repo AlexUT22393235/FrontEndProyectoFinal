@@ -3,12 +3,13 @@
 ## 📖 Índice
 1. 📌 [Problemática](#problematica)
 2. 🎯 [Objetivo General](#objetivo-general)
-3. 👥 [Integrantes](#integrantes)
-4. 📦 [Librerías Utilizadas](#librerias-utilizadas)
-5. ⚙️ [Cómo Correr el Proyecto](#como-correr-el-proyecto)
-6. 🤝 [Contribución](#contribucion)
-7. 📩 [Contacto](#contacto)
-8. ⚖️ [Derechos Reservados](#derechos-reservados)
+3. 📢 [Justificación](#justificacion)
+4. 👥 [Integrantes](#integrantes)
+5. 📦 [Librerías Utilizadas](#librerias-utilizadas)
+6. ⚙️ [Cómo Correr el Proyecto](#como-correr-el-proyecto)
+7. 🤝 [Contribución](#contribucion)
+8. 📩 [Contacto](#contacto)
+9. ⚖️ [Derechos Reservados](#derechos-reservados)
 
 ---
 
@@ -19,6 +20,13 @@ En la actualidad, muchas personas tienen objetos que ya no utilizan pero que pue
 
 ## 🎯 Objetivo General
 Desarrollar una aplicación que permita a los usuarios el intercambio de productos de manera segura y eficiente, fomentando la reutilización de bienes y la economía circular a través de un entorno digital intuitivo y accesible haciendo uso de tecnologías modernas como Vue.js, Tailwind CSS, .NET, JWT y MySQL.
+
+---
+
+## 📢 Justificación
+La creación de esta aplicación responde a la necesidad de contar con una plataforma especializada en el intercambio de productos, promoviendo el consumo responsable y la economía colaborativa. Al facilitar la reutilización de bienes, se reduce el impacto ambiental generado por la producción masiva de nuevos productos y se promueve una cultura de aprovechamiento de recursos disponibles.  
+Las personas buscan alternativas al consumo tradicional para ahorrar dinero y optimizar sus recursos, y esta aplicación puede ser una excelente opción para ese sector de la población. En contextos de inflación o crisis económica, el trueque se convierte en una alternativa viable para acceder a bienes y servicios sin depender del intercambio monetario.  
+Adicionalmente, la aplicación fomenta la conexión de comunidades de intercambio de productos o bienes, fortaleciendo la colaboración y la interacción entre las personas basadas en la confianza y el beneficio mutuo. Esto puede resultar valioso en entornos urbanos donde las relaciones vecinales tienden a debilitarse.
 
 ---
 
@@ -49,10 +57,10 @@ Asegúrate de tener instalado **Node.js** y **npm** en tu máquina. Luego, sigue
 
 ```bash
 # Clona el repositorio
-git clone https://github.com/tu_usuario/Trueque-V2.git
+git clone https://github.com/AlexUT22393235/FrontEndProyectoFinal.git
 
 # Ingresa a la carpeta del proyecto
-cd Trueque-V2
+cd FrontEndProyectoFinal
 
 # Instala las dependencias
 npm install
@@ -64,12 +72,13 @@ npm run dev
 ---
 
 ## 🤝 Contribución
-Si deseas contribuir al proyecto, sigue estos pasos:
-1. Haz un fork del repositorio.
-2. Crea una rama con una nueva funcionalidad (`git checkout -b nueva-funcionalidad`).
-3. Realiza los cambios y haz un commit (`git commit -m 'Agregada nueva funcionalidad'`).
-4. Haz push a tu rama (`git push origin nueva-funcionalidad`).
-5. Crea un Pull Request.
+Si encuentras algún error o problema en la aplicación, te invitamos a reportarlo siguiendo estos pasos:
+1. Ve a la sección de "Issues" en el repositorio.
+2. Crea un nuevo issue con una descripción clara del problema encontrado.
+3. Si es posible, adjunta capturas de pantalla o pasos para reproducir el error.
+4. Nuestro equipo revisará tu reporte y trabajará en la solución.
+
+Agradecemos tu ayuda para mejorar EcoCircular. 😊
 
 ---
 
@@ -79,4 +88,4 @@ Si deseas contribuir al proyecto, sigue estos pasos:
 ---
 
 ## ⚖️ Derechos Reservados
-© 2025 Trueque V2. Todos los derechos reservados.
+© 2025 EcoCircular. Todos los derechos reservados.
