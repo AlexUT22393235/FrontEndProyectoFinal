@@ -2,12 +2,14 @@
 
 </script>
 <template >
-    <container class="w-full h-full flex flex-row">
+    <container class="bg-[#50683E] w-full h-full flex flex-row">
 
         <div class="flex justify-center items-center w-1/2 h-[50rem] bg-[#3d491a]">
-            1/2
+            <div class="w-full h-[50rem] flex flex-col justify-center items-center">
+        <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[55rem] h-[50rem]" />
+       </div>
             </div>
-            <div class="flex flex-col justify-center items-center w-1/2 h-[50rem]  bg-[#50683E]">
+            <div class="main-container flex flex-col justify-center items-center w-1/2 h-[50rem]  bg-[#50683E]">
                 <div class=" m-4 p-4">
                     <h1 class="text-3xl font-bold text-[#FAF7EC] text-center ">Registrate</h1>
                 </div>
@@ -28,5 +30,12 @@
     </container>
       
 </template>
-<style>
+<style scoped>
+.main-container {
+
+ background: url('@/assets/Images/loginBackground.png')  center center;
+background-repeat: repeat;
+}
+
+
 </style>
