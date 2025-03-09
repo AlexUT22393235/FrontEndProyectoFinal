@@ -1,12 +1,11 @@
 @import "tailwindcss";
 
-/* #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  #app {
+    background: #FAF7EC;
+
   font-weight: normal;
 }
-
+/*
 a,
 .green {
   text-decoration: none;
@@ -32,4 +31,4 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-} */
+}  */
