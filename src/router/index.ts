@@ -34,11 +34,22 @@ const router = createRouter({
       component: () => import('../views/Auth/RegisterView.vue'),
      
     },
+
+    {
+      path: '/product',// Nueva ruta para la vista de producto Fernando Gomez Toledo 22393139
+      name:'product',
+      component: () => import ('../views/ProductView.vue')
+    },
     {
       path: '/:pathMatch(.*)*',
       name: '404',
       component: () => import('../views/Sistem/404View.vue'),
     },
+
+
+
+
+
    
   ],
 })
