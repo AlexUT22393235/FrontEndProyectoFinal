@@ -32,13 +32,19 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('../views/Auth/RegisterView.vue'),
-     
+
     },
 
     {
       path: '/product',// Nueva ruta para la vista de producto Fernando Gomez Toledo 22393139
       name:'product',
       component: () => import ('../views/ProductView.vue')
+    },
+
+    {
+      path: '/negotiating',//  22393264
+      name:'negotiating',
+      component: () => import ('../views/InNegotiation.vue')
     },
     {
       path: '/:pathMatch(.*)*',
@@ -50,7 +56,7 @@ const router = createRouter({
 
 
 
-   
+
   ],
 })
 
