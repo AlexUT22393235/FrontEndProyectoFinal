@@ -46,6 +46,12 @@ const router = createRouter({
       name:'negotiating',
       component: () => import ('../views/InNegotiation.vue')
     },
+
+    {
+      path: '/search',//  22393264
+      name:'search',
+      component: () => import ('../views/SearchPage.vue')
+    },
     {
       path: '/:pathMatch(.*)*',
       name: '404',
