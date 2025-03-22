@@ -13,7 +13,7 @@
       <!-- Las paginas que actualmente envian a search pueden ser ajustadas al momento de consumir para solo agregar ternarios -->
 
       <RouterLink to="/about">Nosotros</RouterLink> <!-- Pendiente -->
-
+      <RouterLink to="/login">Cerrar sesion </RouterLink> <!-- obvio no es funcional tios->
       <RouterLink to="/profile">
         <div class=" relative bg-amber-500 w-[4vh] h-[4vh] rounded-full">
           <img src="htps://ninguno.com.mx" />
