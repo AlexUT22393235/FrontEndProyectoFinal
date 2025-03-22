@@ -7,8 +7,8 @@
 <div class="w-full h-[50vh] bg-[#6d805c] flex flex-col justify-center items-center">
   <p class="text-[4rem] font-semibold">500 Resultados de Busqueda</p>
   <p class="text-[1.5rem] text-white">para <span class="text-[#d5d0b6]">"bolsas de marca verde"</span></p>
-  <div class="w-full flex items-center justify-center gap-[1vw] p-[2vh] placeholder:italic">
-    <input placeholder="Pantuflas amarillas" class="bg-[#D9D9D9] rounded-lg w-[20vw] h-[5vh] px-[1vw]">
+  <div class="w-full flex items-center justify-center gap-[1vw] p-[2vh] ">
+    <input placeholder="Pantuflas amarillas" class="placeholder:italic bg-[#D9D9D9] rounded-lg w-[20vw] h-[5vh] px-[1vw]">
     <button class="cursor-pointer">
       <img :src="lupa" alt="Lupa" class="w-[2vw] h-[2vw]" />
     </button>
