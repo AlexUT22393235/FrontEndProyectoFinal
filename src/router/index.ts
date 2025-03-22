@@ -58,7 +58,8 @@ const router = createRouter({
       component: () => import('../views/Sistem/404View.vue'),
     },
 
-
+    //Hacen falta rutas de nosotros, productos y categoria, perfil, productos y categorias puede ser una misma vista?
+    //Negotiating tiene que ser integrada en el perfil
 
 
 

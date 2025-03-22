@@ -5,12 +5,19 @@
 <template>
   <div class="navbar">
     <nav class="nav-links">
-      <RouterLink to="/product">Productos</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/landing">Landing</RouterLink>
-      <RouterLink to="/login">Prueba Login</RouterLink>
-      <RouterLink to="/register">Prueba register</RouterLink>
-      <RouterLink to="/estarutanoexisteeeeloooll">Prueba error 404</RouterLink>
+      <RouterLink to="/negotiating">Negociando</RouterLink>
+      <RouterLink to="/search">Productos</RouterLink> <!-- Pendiente?  Actualmente envia a search-->
+      <RouterLink to="/search">Categorias</RouterLink> <!-- Pendiente? Actualmente envia a search-->
+
+      <!-- Las paginas que actualmente envian a search pueden ser ajustadas al momento de consumir para solo agregar ternarios -->
+
+      <RouterLink to="/about">Nosotros</RouterLink> <!-- Pendiente -->
+
+      <RouterLink to="/estarutanoexisteeeeloooll">
+        <div class=" relative bg-amber-500 w-[4vh] h-[4vh] rounded-full">
+          <img src="htps://ninguno.com.mx" />
+        </div>
+    </RouterLink> <!-- Pendiente -->
     </nav>
   </div>
 </template>
