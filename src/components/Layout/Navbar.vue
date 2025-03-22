@@ -24,7 +24,7 @@
 </template>
 
 <style scoped>
-/* Estilos básicos (sin media queries) */
+
 .navbar {
   display: flex;
   justify-content: flex-end;
