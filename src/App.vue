@@ -7,11 +7,14 @@ import Footer from './components/Layout/Footer.vue'
 
 <template>
   <header>
-   
+
     <Navbar />
   </header>
 
   <RouterView />
+  <footer>
+  <Footer />
+</footer>
 </template>
 
 <!-- <style scoped>
@@ -76,4 +79,4 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
-</style> -->
+</styl> -->

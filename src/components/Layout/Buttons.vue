@@ -5,7 +5,7 @@
       Solicitar
     </button> -->
 
-    <!-- Botón Iniciar sesión -->
+
     <RouterLink to="/login">
       <!-- <button class="text-sm font-semibold py-2 px-4 bg-[#5d7e4e] text-white rounded-lg w-[8vw] text-center">
 
@@ -15,5 +15,5 @@
 </template>
 
 <style scoped>
-/* Puedes agregar estilos personalizados aquí si es necesario */
+
 </style>
