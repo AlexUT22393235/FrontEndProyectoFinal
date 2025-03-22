@@ -13,22 +13,26 @@
                 <div class=" m-4 p-4">
                     <h1 class="text-3xl font-bold text-[#FAF7EC] text-center ">Registrate</h1>
                 </div>
-              
+
                 <div class="bg-[#FAF7EC] w-[30rem] h-[30rem] flex flex-col justify-center items-center">
+
+                    <input type="text" class="w-[20rem] h-[2rem] border-2 border-[#50683E] rounded-md mb-2" placeholder="Nombre">
+                    <input type="text" class="w-[20rem] h-[2rem] border-2 border-[#50683E] rounded-md mb-2" placeholder="Apellido">
+                  <input type="text" class="w-[20rem] h-[2rem] border-2 border-[#50683E] rounded-md mb-2" placeholder="Telefono">
                     <input type="text" class="w-[20rem] h-[2rem] border-2 border-[#50683E] rounded-md mb-2" placeholder="Email">
                     <input type="password" class="w-[20rem] h-[2rem] border-2 border-[#50683E] rounded-md mb-2" placeholder="Password">
                     <button class="w-[20rem] h-[2rem] bg-[#3d491a] text-[#FAF7EC] rounded-md">Registrate</button>
                     <div class="flex flex-row gap-2 mt-2">
                         <p>Ya tienes una cuenta?</p>
                         <router-link to="/login" class="text-[#3d491a]">Ingresa</router-link>
-                    </div>  
+                    </div>
 
                 </div>
             </div>
-        
-     
+
+
     </container>
-      
+
 </template>
 <style scoped>
 .main-container {

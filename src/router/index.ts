@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
 
 // import { HomePage } from '../views/HomePage.vue'
 // import { LoginView } from '../views/Auth/LoginView.vue'
@@ -52,6 +52,11 @@ const router = createRouter({
       path: '/search',//  22393264
       name:'search',
       component: () => import ('../views/SearchPage.vue')
+    },
+    {
+      path: '/profile',//  22393264
+      name:'profile',
+      component: () => import ('../views/UserProfileView.vue')
     },
     {
       path: '/:pathMatch(.*)*',

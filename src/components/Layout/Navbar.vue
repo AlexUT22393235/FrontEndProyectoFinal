@@ -13,7 +13,7 @@
 
       <RouterLink to="/about">Nosotros</RouterLink> <!-- Pendiente -->
 
-      <RouterLink to="/estarutanoexisteeeeloooll">
+      <RouterLink to="/profile">
         <div class=" relative bg-amber-500 w-[4vh] h-[4vh] rounded-full">
           <img src="htps://ninguno.com.mx" />
         </div>
