@@ -1,7 +1,9 @@
 <template>
   <div class="w-full min-h-screen bg-[#FAF7EC] flex flex-col items-center justify-center p-8">
-
-    <div class="max-w-3xl text-center pt-39">
+<div class="w-full h-[80vh] search-container flex flex-col justify-center items-center ">
+  <img src="https://www.arka.com/cdn/shop/articles/arka-trash-packaging_bwrgfq.jpg?v=1671534726" class="w-full h-full object-cover"/>
+</div>
+    <div class="max-w-3xl text-center p-15 bg-[#FAF7EC] absolute top-60 left-150 ">
       <h1 class="text-4xl font-bold text-[#50683E] mb-4">Sobre Nosotros</h1>
 
       <p class="text-lg text-[#555] leading-relaxed">
@@ -17,7 +19,7 @@
     </div>
 
 
-    <div class="max-w-5xl mt-12">
+    <div class="max-w-5xl mt-30">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div>
           <h2 class="text-2xl font-bold text-[#2C3E50] mb-2">Nuestra Misión</h2>
@@ -68,7 +70,7 @@
       <p class="text-lg text-[#555] leading-relaxed">
         Sé parte de nuestra comunidad y ayuda a construir un futuro más sostenible. ¡Empieza a intercambiar hoy mismo!
       </p>
-      <router-link to="/register" class="mt-6 inline-block bg-[#27AE60] text-white py-2 px-6 rounded-lg hover:bg-[#2ecc71]">
+      <router-link to="/register" class="mt-6 inline-block bg-[#3d491a] text-white py-2 px-6 rounded-lg hover:bg-[#2ecc71]">
         Regístrate Ahora
       </router-link>
     </div>
