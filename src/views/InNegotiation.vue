@@ -13,6 +13,7 @@
     <button class="bg-black text-white w-[8vw] py-1 rounded-lg">Mas reciente</button>
     <button class="bg-[#91B580] text-[#13341B] w-[8vw] py-1 rounded-lg">Categoria</button>
   </div>
+  <!-- Error, Se desvordan las imagenes de las cards. 22393139 FGT-->
   <div class="w-[100vw] min-h-[93vh] grid grid-cols-5 gap-2 px-[4vh]">
     <ProductCard v-for="index in 10" :key="index" />
   </div>

@@ -1,34 +1,32 @@
 <template>
-    <div class="product-details">
-      <!-- Contenedor de las dos columnas (imagen y descripción), Fernando Gomez Toledo 22393139 -->
-      <div class="columns-container">
+  <div class="product-details flex flex-col gap-5 p-5">
+    <!-- Contenedor de las dos columnas (imagen y descripción). Con estilo Tailwind, Fernando Gomez Toledo 22393139 -->
+    <div class="columns-container flex flex-col gap-5">
 
-        <!-- Columna Izquierda: Imagen y Título, Fernando Gomez Toledo 22393139 -->
-        <div class="left-column">
-          <div class="product-image">
-            <img :src="product.image" :alt="product.name" class="main-image" />
-          </div>
-
-        </div>
-
-        <!-- Columna Derecha: Descripción y Botón, Fernando Gomez Toledo 22393139 -->
-        <div class="right-column">
-
-            <h1 class="product-title">{{ product.name }}</h1>
-            <p class="user">Publicado por: {{ product.user }}</p>
-
-          <p class="description">{{ product.description }}</p>
-
-          <button class="whatsapp-button">Contactar por WhatsApp</button>
+      <!-- Columna Izquierda: Imagen y Título. Con estilo Tailwind, Fernando Gomez Toledo 22393139 -->
+      <div class="left-column w-full">
+        <div class="product-image">
+          <img :src="product.image" :alt="product.name" class="main-image w-full h-auto rounded-lg shadow-md" />
         </div>
       </div>
 
-      <!-- Carrusel de Imágenes (debajo de las dos columnas y ocupa todo el ancho de la paguina), Fernando Gomez Toledo -->
-      <div class="carousel-container">
-        <Carousel :images="product.images" />
+      <!-- Columna Derecha: Descripción y Botón. Con estilo Tailwind, Fernando Gomez Toledo 22393139 -->
+      <div class="right-column w-full">
+        <h1 class="product-title text-2xl text-center mt-2">{{ product.name }}</h1>
+        <p class="user text-sm text-gray-500 mt-4">Publicado por: {{ product.user }}</p>
+        <p class="description text-sm text-gray-600 mt-6 text-justify">{{ product.description }}</p>
+        <button class="whatsapp-button w-full bg-[#5B735D] text-white py-3 px-5 rounded-md mt-20 hover:bg-[#128c7e] transition-colors duration-300">
+          Contactar por WhatsApp
+        </button>
       </div>
     </div>
-  </template>
+
+    <!-- Carrusel de Imágenes -->
+    <div class="carousel-container w-full mt-5">
+      <Carousel :images="product.images" />
+    </div>
+  </div>
+</template>
 
   <script lang="ts">
   import { defineComponent } from 'vue';
@@ -49,75 +47,7 @@
   </script>
 
   <style scoped>
-
-  /* Estilos para Detalles de producto Fernando Gomez Toledo 22393139*/
-  .product-details {
-    display: flex;
-    flex-direction: column; /* Todo en columna (imagen, descripción y carrusel) */
-    gap: 20px;
-    padding: 20px;
-  }
-
-  .columns-container {
-    display: flex;
-    flex-direction: column; /* Columnas apiladas en móviles */
-    gap: 20px;
-  }
-
-  .left-column,
-  .right-column {
-    width: 100%; /* Ocupa todo el ancho en móviles */
-  }
-
-  .product-image img.main-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .product-title {
-    font-size: 24px;
-    margin-top: 10px;
-    text-align: center;
-  }
-
-  .user {
-    font-size: 16px;
-    color: #777;
-    margin-top: 15px;
-  }
-
-  .description {
-    text-align: justify  !important; /* Texto justificado para la Descripcion del producto, Fernando Gomez Toledo 22393139*/
-    font-size: 16px;
-    color: #555;
-    margin-top: 25px;
-  }
-
-  .whatsapp-button {
-    width: 100%; /* Mismo ancho que los demás elementos Boton de Whatsapp*/
-    background-color: #5B735D; /* colo oficial para botones */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 80px;
-    transition: background-color 0.3s ease;
-  }
-
-  .whatsapp-button:hover {
-    background-color: #128c7e;
-  }
-
-  /* Contenedor del carrusel */
-  .carousel-container {
-    width: 100%; /* Ocupa todo el ancho */
-    margin-top: 20px; /* Espacio entre las columnas y el carrusel */
-  }
-
-
+  
   /* Estilos para desktop, Fernando Gomez Toledo 22393139 */
   @media (min-width: 768px) {
     .columns-container {
@@ -140,6 +70,7 @@
 
     .description {
       text-align: left; /* Descripción alineada a la izquierda en desktop */
+      text-align: justify; /* Justificacion de la descipcion */
     }
   }
 

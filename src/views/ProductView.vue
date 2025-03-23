@@ -31,14 +31,14 @@
     data() {
       return {
         product: {
-          image: bancanoronha, // Se usa  la imagen importada
+          image: bancanoronha, // Se usa  la imagen importada, 22393139
           name: 'Banca de Noronha',
           user: 'Fernando Gomez Toledo',
           description: '"Este muebe de alta calidad es perfecta para interiores, diseñada con materiales resistentes de madera  que garantizan durabilidad y comodidad. Tiene una  estructura robusta, fabricada con madera tratada y acero inoxidable, la hace ideal para poner la tele, guardar objetos y poner objetos decorativos. Su diseño  proporciona una experiencia elegante. Con un estilo elegante y atemporal, este mueble complementará cualquier espacio de tu hogar, brindando un lugar acogedor para el descanso y la convivencia."',
           images: [
-            frontal, // Se usa la imagen importada
-            frontalderecha, // Se usa la imagen importada
-            mueble, // Se usa la imagen importada
+            frontal, // Se usa la imagen importada, 22393139
+            frontalderecha, // Se usa la imagen importada, 22393139
+            mueble, // Se usa la imagen importada, 22393139
             mueble2,
             medidas,
             muebles3,
