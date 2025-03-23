@@ -7,6 +7,11 @@
   <div class="flex flex-col justify-center items-center h-full w-full p-12">
     <div class="w-full h-[50rem] flex flex-col justify-center items-center ">
         <img src="@/assets/Images/strade.png" alt="Logo" class="w-[95rem] h-[48rem]" />
+        <img
+          src="@/assets/Images/apple.png"
+          alt="Logo"
+          class="w-[50rem] h-[30rem] absolute right-0 apple-rotate-animation"
+        />
                <button class="flex absolute bottom-60 right-245 border border-[#3d491a] rounded-md">
           <router-link
             to="/login"
@@ -109,4 +114,20 @@ xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="pres
 .rotate-animation {
   animation: rotate 2s linear infinite;
 }
+@keyframes rotateAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.apple-rotate-animation {
+  animation: rotateAnimation 3s ease-in-out infinite;
+}
+
 </style>
