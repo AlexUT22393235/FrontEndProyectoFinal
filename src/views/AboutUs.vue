@@ -21,45 +21,56 @@
 
     <div class="max-w-5xl mt-30">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div>
-          <h2 class="text-2xl font-bold text-[#2C3E50] mb-2">Nuestra Misión</h2>
+        <div class="flex flex-col items-center">
+          <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Nuestra Misión</h2>
+          <svg
+            class="w-24 h-24 mb-4"
+            fill="#5B735D"
+            version="1.1"
+            id="Icons"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 32 32"
+            xml:space="preserve"
+          >
+            <path d="M30.9,5.6C30.8,5.2,30.4,5,30,5h-3V2c0-0.4-0.2-0.8-0.6-0.9C26,0.9,25.6,1,25.3,1.3l-4,4C21.1,5.5,21,5.7,21,6v3.6l-5.7,5.7 c-0.4,0.4-0.4,1,0,1.4c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l5.7-5.7H26c0.3,0,0.5-0.1,0.7-0.3l4-4C31,6.4,31.1,6,30.9,5.6z"></path>
+            <path d="M18.1,18.1C17.6,18.7,16.8,19,16,19s-1.6-0.3-2.1-0.9c-1.2-1.2-1.2-3.1,0-4.2l2.8-2.8C16.5,11,16.2,11,16,11 c-2.8,0-5,2.2-5,5s2.2,5,5,5s5-2.2,5-5c0-0.2,0-0.5-0.1-0.7L18.1,18.1z"></path>
+          </svg>
           <p class="text-lg text-[#555] leading-relaxed">
             Promover el consumo sostenible y reducir el desperdicio a través de una plataforma que conecta a las personas para intercambiar productos de manera justa y sin dinero.
           </p>
         </div>
-        <div>
-          <h2 class="text-2xl font-bold text-[#2C3E50] mb-2">Nuestra Visión</h2>
+        <div class="flex flex-col items-center">
+          <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Nuestra Visión</h2>
+          <svg
+            class="w-24 h-24 mb-4"
+            fill="#5B735D"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path d="M2 17h1v5h5v1H2zm21 0h-1v5h-5v1h6zM3 3h5V2H2v6h1zm20-1h-6v1h5v5h1zm-9.75 12h-1.5a.75.75 0 0 1-.75-.75v-1.5a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-.75.75zM13 12h-1v1h1zm7 0h-5v1h5zm-10 0H5v1h5zm3 8v-5h-1v5zm-1-10h1V5h-1z"></path>
+          </svg>
           <p class="text-lg text-[#555] leading-relaxed">
             Ser la plataforma líder en intercambio de productos, fomentando una economía colaborativa y sostenible en todo el mundo.
           </p>
         </div>
-        <div>
-          <h2 class="text-2xl font-bold text-[#2C3E50] mb-2">Nuestros Valores</h2>
+        <div class="flex flex-col items-center">
+          <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Nuestros Valores</h2>
+          <svg
+            class="w-24 h-24 mb-4"
+            fill="#5B735D"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M8 16L4.35009 13.3929C2.24773 11.8912 1 9.46667 1 6.88306V3L8 0L15 3V6.88306C15 9.46667 13.7523 11.8912 11.6499 13.3929L8 16ZM12.2071 5.70711L10.7929 4.29289L7 8.08579L5.20711 6.29289L3.79289 7.70711L7 10.9142L12.2071 5.70711Z"
+            ></path>
+          </svg>
           <p class="text-lg text-[#555] leading-relaxed">
             Sostenibilidad, confianza, colaboración y equidad son los pilares que guían cada paso que damos en Strade.
           </p>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="max-w-5xl mt-12">
-      <h2 class="text-3xl font-bold text-[#2C3E50] mb-6 text-center">Nuestro Equipo</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="flex flex-col items-center">
-          <!-- <img src="@/assets/images/team1.jpg" alt="Miembro del equipo" class="w-32 h-32 rounded-full mb-4"> -->
-          <h3 class="text-xl font-bold text-[#2C3E50]">Kenia Escamilla</h3>
-          <p class="text-[#555]">CEO y Fundador</p>
-        </div>
-        <div class="flex flex-col items-center">
-          <!-- <img src="@/assets/images/team2.jpg" alt="Miembro del equipo" class="w-32 h-32 rounded-full mb-4"> -->
-          <h3 class="text-xl font-bold text-[#2C3E50]">Fernando Gomez</h3>
-          <p class="text-[#555]">Directora de Marketing</p>
-        </div>
-        <div class="flex flex-col items-center">
-          <!-- <img src="@/assets/images/team3.jpg" alt="Miembro del equipo" class="w-32 h-32 rounded-full mb-4"> -->
-          <h3 class="text-xl font-bold text-[#2C3E50]">Octavio Cruz</h3>
-          <p class="text-[#555]">CTO</p>
         </div>
       </div>
     </div>
@@ -78,5 +89,9 @@
 </template>
 
 <style scoped>
-
+/* Estilo para centrar y dar el mismo tamaño a los SVG */
+svg {
+  width: 6rem; /* Tamaño uniforme */
+  height: 6rem;
+}
 </style>
