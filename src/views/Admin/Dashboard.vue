@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen bg-[#FAF7EC]">
     <!-- Sidebar -->
-    <!-- <aside class="w-64 bg-[#50683E] text-white flex flex-col">
+    <aside class="w-64 bg-[#50683E] text-white flex flex-col">
       <div class="p-6 text-2xl font-bold">Admin Panel</div>
       <nav class="flex-1">
         <ul class="space-y-2">
@@ -15,32 +15,32 @@
         </ul>
       </nav>
 
-    </aside> -->
+    </aside> 
 
-   
+
     <div class="flex-1 flex flex-col">
-      <header class="bg-[#FAF7EC] shadow-md p-6 flex justify-between items-center">
+      <header class=" shadow-md p-6 flex justify-between items-center">
         <h1 class="text-2xl font-semibold text-gray-800">{{ activeMenu.name }}</h1>
       </header>
 
 
       <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-[#FAF7EC] p-6 rounded-lg shadow-md">
+        <div class="bg-[#D4E0CD] p-6 rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Nuevos Usuarios</h2>
           <div ref="newUsersChart" class="w-full h-64"></div>
         </div>
 
-        <div class="bg-[#FAF7EC]p-6 rounded-lg shadow-md">
+        <div class="bg-[#D4E0CD] p-6 rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Productos Reportados</h2>
           <div ref="reportedProductsChart" class="w-full h-64"></div>
         </div>
 
-        <div class="bg-[#FAF7EC] p-6 rounded-lg shadow-md">
+        <div class="bg-[#D4E0CD] p-6 rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Usuarios Reportados</h2>
           <div ref="reportedUsersChart" class="w-full h-64"></div>
         </div>
 
-        <div class="bg-[#FAF7EC] p-6 rounded-lg shadow-md">
+        <div class="bg-[#D4E0CD] p-6 rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Errores del Sistema</h2>
           <div ref="systemErrorsChart" class="w-full h-64"></div>
         </div>
