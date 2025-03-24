@@ -81,7 +81,7 @@ const submitProduct = () => {
 </script>
 
 <template>
-    <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div v-if="isOpen" class="fixed inset-0 bg-opacity-50 flex items-center justify-center backdrop-blur-3xl">
       <div class="bg-white p-8 rounded-lg w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6">Agregar Producto</h2>
         <form @submit.prevent="submitProduct">
@@ -91,14 +91,14 @@ const submitProduct = () => {
             <input v-model="newProduct.name" type="text" class="w-full px-4 py-2 border rounded-lg" />
             <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
           </div>
-  
+
           <!-- Descripción del producto -->
           <div class="mb-4">
             <label class="block text-gray-700">Descripción</label>
             <textarea v-model="newProduct.description" class="w-full px-4 py-2 border rounded-lg"></textarea>
             <p v-if="errors.description" class="text-red-500 text-sm">{{ errors.description }}</p>
           </div>
-  
+
           <!-- Tipo de producto (Intercambio o Donación) -->
           <div class="mb-4">
             <label class="block text-gray-700">Tipo</label>
@@ -107,14 +107,14 @@ const submitProduct = () => {
               <option value="donacion">Donación</option>
             </select>
           </div>
-  
+
           <!-- Subida de imágenes -->
           <div class="mb-4">
             <label class="block text-gray-700">Imágenes</label>
             <input type="file" multiple @change="handleImageUpload" class="w-full px-4 py-2 border rounded-lg" />
             <p v-if="errors.images" class="text-red-500 text-sm">{{ errors.images }}</p>
           </div>
-  
+
           <!-- Botones -->
           <div class="flex justify-end">
             <button type="button" @click="$emit('close')" class="mr-4 px-4 py-2 text-gray-600 hover:text-gray-800">
