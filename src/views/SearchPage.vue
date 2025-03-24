@@ -6,10 +6,8 @@ import axios from 'axios'
 import { onMounted, ref, computed, watch } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
 
-  interface ICategory {
-    idCategoria: number,
-    nombre: string
-  }
+import type { ICategory } from '@/interfaces/ICategory';
+import type { IProduct } from '@/interfaces/IProduct';
 
   const date = ref("recent");
   const data = ref();
@@ -35,8 +33,6 @@ import { getCategoriesService } from '@/services/categorieService';
       }
     }
   }
-
-
 
   const fetchCategories = async () => {
     try {
@@ -91,14 +87,14 @@ fetchData()
     console.log(route.name)
   switch(route.name) {
     case 'category':
-      return data.value ? data.value.filter((item) =>
-          item.categorias.some((cat) => cat.nombre.toLowerCase() == searchName.toLowerCase())
+      return data.value ? data.value.filter((item:IProduct) =>
+          item.categorias.some((cat:ICategory) => cat.nombre.toLowerCase() == searchName.toLowerCase())
         ) : [];
     case 'products':
       console.log(data.value)
       return data.value;
     case 'search':
-      return data.value ? data.value.filter((item) => item.nombre.toLowerCase().includes(searchName.toLowerCase())) : [];
+      return data.value ? data.value.filter((item:IProduct) => item.nombre.toLowerCase().includes(searchName.toLowerCase())) : [];
     default:
       return data.value;
   }
@@ -109,34 +105,32 @@ const filtered = computed(() => {
   let filteredData = searchData.value;
 
   if (selectedCategories.value.length > 0) {
-    filteredData = searchData.value.filter((data) =>
-      data.categorias.some((cat) =>
+    console.log(selectedCategories.value)
+    filteredData = searchData.value.filter((data:IProduct) =>
+      data.categorias.some((cat:ICategory) =>
         selectedCategories.value.some(
           (selectedCat) => selectedCat.idCategoria === cat.idCategoria
         )
       )
     );
   }
-
-  if (tradeType.value === 'trade') {
-    filteredData = searchData.value.filter((data) =>
+    if (tradeType.value === 'trade') {
+    filteredData = filteredData.filter((data:IProduct) =>
       data.intercambio === true   )
-  } else {
-    filteredData = searchData.value.filter((data) =>
-    data.intercambio !== true   )
-  }
-
-
+    } else{
+      filteredData = filteredData.filter((data:IProduct) =>
+      data.intercambio !== true   )
+    }
 
   if (date.value === 'recent') {
     filteredData = filteredData.sort(
-      (a, b) =>
+      (a:IProduct, b:IProduct) =>
         new Date(b.fechaCreacion).getTime() -
         new Date(a.fechaCreacion).getTime()
     );
   } else {
     filteredData = filteredData.sort(
-      (a, b) =>
+      (a:IProduct, b:IProduct) =>
         new Date(a.fechaCreacion).getTime() -
         new Date(b.fechaCreacion).getTime()
     );
@@ -183,6 +177,19 @@ const filtered = computed(() => {
       <option value="trade">Intercambio</option>
       <option value="donation">Donación</option>
     </select>
+  </div>
+
+  <div class="w-[100vw] h-fit px-[4vh] my-[4vh] flex justify-end gap-x-[1vw]"
+    v-else>
+    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="date">
+      <option value="recent">Reciente</option>
+      <option value="old">Antiguo</option>
+    </select>
+
+    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="tradeType">
+      <option value="trade">Intercambio</option>
+      <option value="donation">Donación</option>
+    </select>
 
     <button
       class="bg-[#91B580] text-[#13341B] w-[8vw] py-1 rounded-lg px-2 cursor-pointer"
@@ -197,19 +204,6 @@ const filtered = computed(() => {
     >
       {{ item.nombre }}
     </button>
-  </div>
-
-  <div class="w-[100vw] h-fit px-[4vh] my-[4vh] flex justify-end gap-x-[1vw]"
-    v-else>
-    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="date">
-      <option value="recent">Reciente</option>
-      <option value="old">Antiguo</option>
-    </select>
-
-    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="tradeType">
-      <option value="trade">Intercambio</option>
-      <option value="donation">Donación</option>
-    </select>
   </div>
 
   <div class="w-[100vw] min-h-[93vh] grid grid-cols-5 gap-2 px-[4vh]">
@@ -236,6 +230,4 @@ const filtered = computed(() => {
  background: url('@/assets/Images/loginBackground.png')  center center;
 background-repeat: repeat;
 }
-
-
 </style>
