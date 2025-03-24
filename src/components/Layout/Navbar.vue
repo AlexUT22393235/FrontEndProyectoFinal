@@ -18,7 +18,7 @@
         <div class=" relative bg-amber-500 w-[4vh] h-[4vh] rounded-full">
           <img src="htps://ninguno.com.mx" />
         </div>
-    </RouterLink> <!-- Pendiente -->
+      </RouterLink> <!-- Pendiente -->
     </nav>
   </div>
 </template>

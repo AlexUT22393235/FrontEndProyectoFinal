@@ -42,29 +42,38 @@ const router = createRouter({
       component: () => import ('../views/ProductView.vue')
     },
     {
-      path: '/categories',
-      name:'categories',
-      component: () => import ('../views/Categories.vue')
-    },
-    {
       path: '/about',
       name:'about',
       component: () => import ('../views/AboutUs.vue')
     },
 
     {
-      path: '/negotiating',//  22393264
+      path: '/negotiating',          //  22393264
       name:'negotiating',
       component: () => import ('../views/InNegotiation.vue')
     },
-
     {
-      path: '/search/:busqueda',//  22393264
+      path: '/products',             //  22393264
+      name:'products',
+      component: () => import ('../views/SearchPage.vue')
+    },
+    {
+      path: '/search/:busqueda',     //  22393264
       name:'search',
       component: () => import ('../views/SearchPage.vue')
     },
     {
-      path: '/profile',//  22393264
+      path: '/categories',
+      name:'categories',
+      component: () => import ('../views/Categories.vue')
+    },
+    {
+      path: '/categories/:busqueda',//  22393264
+      name:'category',
+      component: () => import ('../views/SearchPage.vue')
+    },
+    {
+      path: '/profile',
       name:'profile',
       component: () => import ('../views/UserProfileView.vue')
     },
