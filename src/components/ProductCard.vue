@@ -3,7 +3,7 @@
     <div class="w-full pt-4 h-[70%] flex items-center justify-center">
       <div class="w-[18rem] h-auto bg-white rounded-xl flex items-center justify-center shadow-lg">
         <img
-          src="https://i5.walmartimages.com/seo/Michael-Kors-Voyager-Travel-Shoulder-Tote-Moss-Green-Small-Crossgrain-Leather_e25dc1b9-ccc6-48d0-a502-d56433c077c2.68903ed96f32417bada42b83a47fb364.jpeg"
+          :src="imgSrc"
           class="object-cover w-[18rem] h-auto rounded-xl" />
       </div>
     </div>
@@ -27,4 +27,8 @@
 </template>
 
 <script lang="ts" setup>
+  const props = defineProps<{
+      imgSrc: string;
+    }>();
+    console.log(props.imgSrc)
 </script>
