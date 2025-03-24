@@ -1,6 +1,6 @@
 import { genericRequest } from '../utils/genericRequest'
 
-const base_url = 'http://localhost:8080'
+const base_url = 'https://localhost:7140/api'
 
 
 export const exampleService = async (newItem: string) => {

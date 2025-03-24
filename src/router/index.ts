@@ -59,7 +59,7 @@ const router = createRouter({
     },
 
     {
-      path: '/search',//  22393264
+      path: '/search/:busqueda',//  22393264
       name:'search',
       component: () => import ('../views/SearchPage.vue')
     },

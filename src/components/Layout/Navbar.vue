@@ -5,7 +5,6 @@
 <template>
   <div class="navbar">
     <nav class="nav-links">
-      <RouterLink to="/admin">admin</RouterLink>
       <RouterLink to="/landing">Inicio</RouterLink>
       <RouterLink to="/negotiating">Negociando</RouterLink>
       <RouterLink to="/search">Productos</RouterLink> <!-- Pendiente?  Actualmente envia a search-->

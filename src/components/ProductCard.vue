@@ -8,9 +8,11 @@
       </div>
     </div>
     <div class="w-full h-[12.5%] px-[2rem] pt-1">
-      <p class="text-[#5B735D] font-bold">Titulo del objeto</p>
+      <p class="text-[#5B735D] font-bold">
+        <slot name="title"></slot>
+      </p>
       <p class="text-[#749176] text-sm line-clamp-2">
-        Aqui ira una pequeña descripcion del objeto a intercambiar, sera escrita por el usuario.
+        <slot name="description"></slot>
       </p>
     </div>
     <div class="w-full h-[12.5%] flex flex-wrap px-[2rem] py-2 gap-1">
