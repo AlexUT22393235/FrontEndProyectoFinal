@@ -18,7 +18,7 @@
       </div>
 
       <!-- Sección de Redes Sociales -->
-      <div class="flex flex-col gap-4 items-center md:items-start pt-9">
+      <div class="flex flex-col gap-4 items-center md:items-start pt-7">
         <h2 class="text-lg font-semibold">Síguenos</h2>
         <a href="https://facebook.com" target="_blank" class="flex items-center gap-2 hover:text-[#2F4F2F] transition-colors">
           <i class="fab fa-facebook text-xl"></i> Facebook
