@@ -1,10 +1,10 @@
 <template>
   <div class="bg-[#C4D8BA] w-full h-[55vh] rounded-xl transition-all duration-300 hover:scale-105">
     <div class="w-full pt-4 h-[70%] flex items-center justify-center">
-      <div class="w-[18rem] h-auto bg-white rounded-xl flex items-center justify-center shadow-lg">
+      <div class="w-[18rem] h-[18rem] bg-white rounded-xl flex items-center justify-center shadow-lg">
         <img
           :src="imgSrc"
-          class="object-cover w-[18rem] h-auto rounded-xl" />
+          class="object-cover w-full h-full rounded-xl" />
       </div>
     </div>
     <div class="w-full h-[12.5%] px-[2rem] pt-1">
