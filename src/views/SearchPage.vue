@@ -212,20 +212,18 @@ const filtered = computed(() => {
     </p>
 
     <ProductCard
-    v-for="(item, index) in filtered"
-    :key="index"
-    :imgSrc="item.imagenes[0].urlImagen"
-    >
-    <template v-slot:title>
-      {{ item?.nombre }}
-    </template>
+      v-for="(item, index) in filtered"
+      :key="index"
+      :imgSrc="item.imagenes[0].urlImagen"
+      >
+      <template v-slot:title>
+        {{ item?.nombre }}
+      </template>
 
-    <template v-slot:description>
-      {{ item?.descripcion }}
-    </template>
-  </ProductCard>
-
-
+      <template v-slot:description>
+        {{ item?.descripcion }}
+      </template>
+    </ProductCard>
 
   </div>
 </template>
