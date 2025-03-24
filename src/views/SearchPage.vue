@@ -6,9 +6,15 @@ import axios from 'axios'
 import { onMounted, ref, computed, watch } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
 
+  interface ICategory {
+    idCategoria: number,
+    nombre: string
+  }
+
+  const date = ref("recent");
   const data = ref();
-  const selectedCategories = ref([])
-  const categories = ref();
+  const selectedCategories = ref<ICategory[]>([]);
+  const categories = ref<ICategory[]>([]);
   const formValue = ref();
 
   const route = useRoute();
@@ -50,8 +56,24 @@ import { getCategoriesService } from '@/services/categorieService';
     }
   }
 
+  const changeCategories = (id: number) => {
+  if (categories.value && categories.value.length > 0) {
+    for (let i = 0; i < categories.value.length; i++) {
+      if (categories.value[i].idCategoria === id) {
+        const index = selectedCategories.value.findIndex(
+          (cat) => cat.idCategoria === id
+        );
+        if (index === -1) {
+          selectedCategories.value.push(categories.value[i]);
+        } else {
+          selectedCategories.value.splice(index, 1);
+        }
+      }
+    }
+  }
 
-
+  console.log(selectedCategories.value);
+};
 
   onMounted(() => {
     fetchData();
@@ -66,6 +88,38 @@ import { getCategoriesService } from '@/services/categorieService';
   const searchData = computed(() => {
     return data.value ? data.value.filter((item) => item.nombre.toLowerCase().includes(searchName.toLowerCase())) : [];
 });
+
+const filtered = computed(() => {
+  let filteredData = searchData.value;
+
+  if (selectedCategories.value.length > 0) {
+    filteredData = searchData.value.filter((data) =>
+      data.categorias.some((cat) =>
+        selectedCategories.value.some(
+          (selectedCat) => selectedCat.idCategoria === cat.idCategoria
+        )
+      )
+    );
+  }
+
+  if (date.value === 'recent') {
+    filteredData = filteredData.sort(
+      (a, b) =>
+        new Date(b.fechaCreacion).getTime() -
+        new Date(a.fechaCreacion).getTime()
+    );
+  } else {
+    filteredData = filteredData.sort(
+      (a, b) =>
+        new Date(a.fechaCreacion).getTime() -
+        new Date(b.fechaCreacion).getTime()
+    );
+  }
+
+  return filteredData;
+});
+
+
 
 </script>
 <template>
@@ -87,23 +141,34 @@ import { getCategoriesService } from '@/services/categorieService';
 </div>
 
   <div class="w-[100vw] h-fit px-[4vh] my-[4vh] flex justify-end gap-x-[1vw]">
-    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2">
+    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="date">
       <option value="recent">Reciente</option>
       <option value="old">Antiguo</option>
     </select>
 
-      <button
-        class="bg-[#91B580] text-[#13341B] w-[8vw] py-1 rounded-lg px-2 cursor-pointer"
-        :class="{'bg-black text-white': selectedIndex == item.idCategoria}"
-        v-for="(item, index) in categories"
-        :key="index"
-        @click="changeCategories(item.idCategoria)" >
-          {{ item.nombre }}
-      </button>
+    <button
+      class="bg-[#91B580] text-[#13341B] w-[8vw] py-1 rounded-lg px-2 cursor-pointer"
+      :class="{
+        'bg-black text-white': selectedCategories.some(
+          (cat) => cat.idCategoria === item.idCategoria
+        ),
+      }"
+      v-for="(item, index) in categories"
+      :key="index"
+      @click="changeCategories(item.idCategoria)"
+    >
+      {{ item.nombre }}
+    </button>
+
 
   </div>
   <div class="w-[100vw] min-h-[93vh] grid grid-cols-5 gap-2 px-[4vh]">
-    <ProductCard v-for="(item, index) in searchData" :key="index" >
+
+    <p v-if="filtered.length == 0">
+      No hay nada
+    </p>
+
+    <ProductCard v-for="(item, index) in filtered" :key="index" >
       <template v-slot:title>
         {{ item.nombre }}
       </template>
