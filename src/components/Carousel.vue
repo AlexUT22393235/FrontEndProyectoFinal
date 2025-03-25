@@ -41,4 +41,5 @@ export default defineComponent({
     font-size: 12px; /* Texto más pequeño en móviles */
   }
 }
+
   </style>

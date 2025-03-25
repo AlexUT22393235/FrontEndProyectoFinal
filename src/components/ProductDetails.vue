@@ -14,6 +14,7 @@
         </div>
       </div>
 
+      
       <!-- Columna Derecha: Descripción y Botón. Con estilo Tailwind, Fernando Gomez Toledo 22393139 -->
       <div class="right-column w-full">
         <h1 class="product-title text-2xl text-center mt-2">{{ product.nombre }}</h1>

@@ -84,6 +84,7 @@ export default defineComponent({
       showModal.value = false;
     };
 
+    
     onMounted(async () => {
       // Cambiar por this.$route.params.id si usas rutas dinámicas
       const productId = 2; 
