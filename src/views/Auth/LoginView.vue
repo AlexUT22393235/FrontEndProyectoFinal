@@ -25,11 +25,11 @@ const handleLogin = async () => {
   } catch (error: any) {
     loginError.value = error.message || 'Error al iniciar sesión.';
   }
-}; 
+};
 </script>
 <template>
-  <container class="bg-[#50683E] w-full h-full flex flex-row">
-    <div class="flex justify-center items-center w-1/2 h-[50rem] bg-[#264026]">
+  <container class="bg-[#50683E] w-full h-screen flex flex-row">
+    <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
       <div class="w-full h-[50rem] flex flex-col justify-center items-center">
         <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[55rem] h-[50rem]" />
       </div>
