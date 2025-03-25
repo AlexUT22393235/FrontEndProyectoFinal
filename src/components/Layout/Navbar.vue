@@ -9,32 +9,36 @@ const handleLogout = () => {
 
 <template>
   <div class="navbar">
+    <!-- Logo alineado a la izquierda -->
     <div class="logo-container">
-      <!-- Logo alineado a la izquierda -->
       <img src="@/assets/Images/logostrade.png" alt="Logo Strade" class="logo">
     </div>
+
+    <!-- Enlaces de navegación centrados -->
     <nav class="nav-links">
       <RouterLink to="/landing">Inicio</RouterLink>
       <RouterLink to="/negotiating">Negociando</RouterLink>
       <RouterLink to="/products">Productos</RouterLink>
       <RouterLink to="/categories">Categorias</RouterLink>
       <RouterLink to="/about">Nosotros</RouterLink>
-      <div>
-        <button @click="handleLogout" class="logout-button">Cerrar Sesión</button>
-      </div>
+    </nav>
+
+    <!-- Botón de cerrar sesión y foto de perfil alineados a la derecha -->
+    <div class="right-align">
+      <button @click="handleLogout" class="logout-button">Cerrar Sesión</button>
       <RouterLink to="/profile">
         <div class="relative bg-yellow-500 w-[4vh] h-[4vh] rounded-full">
-          <img src="https://ninguno.com.mx" alt="" />
+          <img src="https://ninguno.com.mx" alt="Foto de perfil" class="" />
         </div>
       </RouterLink>
-    </nav>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Espaciado entre logo, enlaces y elementos de la derecha */
   align-items: center;
   border-bottom: 1px solid #ccc;
   padding: 10px 20px;
@@ -53,9 +57,9 @@ const handleLogout = () => {
 .nav-links {
   display: flex;
   gap: 20px;
-  justify-content: center;
-  align-items: center; /* Alinea verticalmente los elementos */
-  flex-grow: 1;
+  justify-content: center; /* Centrar los enlaces */
+  align-items: center;
+  flex-grow: 1; /* Permitir que los enlaces ocupen el espacio central */
 }
 
 .nav-links a {
@@ -66,6 +70,12 @@ const handleLogout = () => {
 
 .nav-links a:hover {
   color: #128c7e;
+}
+
+.right-align {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 .logout-button {
@@ -80,5 +90,12 @@ const handleLogout = () => {
 
 .logout-button:hover {
   background-color: #2fd36e;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 </style>

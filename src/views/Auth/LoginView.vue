@@ -28,10 +28,10 @@ const handleLogin = async () => {
 };
 </script>
 <template>
-  <container class="bg-[#50683E] w-full h-screen flex flex-row">
+  <container class="bg-[#4b6934] w-full h-screen flex flex-row">
     <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
-      <div class="w-full h-[50rem] flex flex-col justify-center items-center">
-        <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[55rem] h-[50rem]" />
+      <div class="w-full h-[45rem] flex flex-col justify-center items-center">
+        <img src="@/assets/Images/donate.jpeg" alt="Logo" class="w-[45rem] h-[50rem]" />
       </div>
     </div>
     <div class="main-container flex flex-col justify-center items-center w-1/2 h-[50rem] bg-[#50683E]">
@@ -39,7 +39,7 @@ const handleLogin = async () => {
         <h1 class="text-3xl font-bold text-[#FAF7EC] text-center ">Login Page</h1>
       </div>
 
-      <div class="bg-[#FAF7EC] w-[30rem] h-[30rem] flex flex-col justify-center items-center">
+      <div class="bg-[#FAF7EC] w-[30rem] h-[30rem] flex flex-col justify-center items-center  rounded-lg">
         <input
           type="text"
           class="w-[20rem] h-[2rem] border-2 border-[#50683E] rounded-md mb-2"
@@ -55,7 +55,7 @@ const handleLogin = async () => {
           required
         >
         <button
-          class="w-[20rem] h-[2rem] bg-[#3d491a] text-[#FAF7EC] rounded-md"
+          class="w-[20rem] h-[2rem] bg-[#1a493d] text-[#FAF7EC] rounded-md"
           @click="handleLogin"
         >
           Login
@@ -71,7 +71,13 @@ const handleLogin = async () => {
 </template>
 <style scoped>
 .main-container {
-  background: url('@/assets/Images/loginBackground.png') center center;
-  background-repeat: repeat;
+  background: url('@/assets/Images/Background.gif') center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.9;
 }
 </style>

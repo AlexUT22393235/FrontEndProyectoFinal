@@ -5,7 +5,7 @@ import Navbar from './components/Layout/Navbar.vue';
 import Footer from './components/Layout/Footer.vue';
 
 const route = useRoute();
-const isAuthPage = computed(() => route.path === '/login' || route.path === '/register');
+const isAuthPage = computed(() => route.path === '/login' || route.path === '/register' || route.name === '404');
 </script>
 
 <template>
