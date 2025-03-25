@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
-    user: any | null; 
+    user: any | null;
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -48,9 +48,11 @@ export const useAuthStore = defineStore('auth', {
                     const decodedToken: any = jwtDecode(accessToken);
                     const userId = decodedToken.nameid;
 
-                    this.setUser({ id: userId });  
+                    this.setUser({ id: userId });
+
                     console.log("Info user:", this.user);
-                    console.log('Token Decodificado:', decodedToken); 
+                    console.log("Info user:", this.user);
+                    console.log('Token Decodificado:', decodedToken);
                     return true;
                 }
                 return false;
