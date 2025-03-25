@@ -2,11 +2,11 @@
 
 </script>
 <template >
-    <container class="bg-[#50683E] w-full h-full flex flex-row">
+    <container class="bg-[#50683E] w-full h-screen flex flex-row">
 
-        <div class="flex justify-center items-center w-1/2 h-[50rem] bg-[#3d491a]">
+        <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
             <div class="w-full h-[50rem] flex flex-col justify-center items-center">
-        <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[40rem] h-[50rem]" />
+        <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[50rem] h-[50rem]" />
        </div>
             </div>
             <div class="main-container flex flex-col justify-center items-center w-1/2 h-[50rem]  bg-[#50683E]">

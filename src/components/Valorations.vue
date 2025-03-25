@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-2xl mx-auto p-4  shadow-lg rounded-lg">
+  <div class="bg-[#D4E0CD] max-w-2xl mx-auto p-4  shadow-lg rounded-lg">
     <h2 class="text-2xl font-semibold mb-4">Valoraciones Recibidas</h2>
 
     <div v-if="reviews.length > 0">

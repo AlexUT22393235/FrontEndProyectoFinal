@@ -1,3 +1,44 @@
+<template>
+  <div class="bg-[#5B735D] flex flex-col md:flex-row w-full h-auto items-center justify-center px-10 py-12">
+    <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-40 h-40 md:w-60 md:h-60 rounded-full shadow-lg" />
+    <div class="text-center md:text-left md:ml-10">
+      <h1 class="text-white text-3xl md:text-4xl font-bold">Nombre de Usuario</h1>
+      <p class="text-white text-lg mt-4 max-w-xl leading-relaxed">
+        Descripción del usuario. Información relevante sobre su perfil, habilidades o intereses.
+      </p>
+    </div>
+  </div>
+
+
+
+
+  <div class="bg-[#f5f7ea] flex flex-col w-full items-center justify-center p-8">
+    <button @click="openModal" class="mt-8 px-6 py-3 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
+      Agregar Producto
+    </button>
+
+
+
+
+    <div class="w-full max-w-7xl p-8 flex flex-col md:flex-row gap-8">
+      <!-- Historial de Intercambios -->
+      <div class="w-full md:w-1/2">
+        <h2 class="text-3xl font-bold mb-6 text-center md:text-left">Historial de Intercambios</h2>
+        <ExchangeHistory :exchanges="exchanges" />
+      </div>
+
+      <!-- Historial de Valoraciones -->
+      <div class="w-full md:w-1/2">
+        <h2 class="text-3xl font-bold mb-6 text-center md:text-left">Historial de Revisiones</h2>
+        <Valorations />
+      </div>
+    </div>
+  </div>
+
+  <AddProductModal v-if="isModalOpen" :isOpen="isModalOpen" @close="closeModal" @submit="handleSubmit" />
+
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import AddProductModal from '@/components/AddProductModal.vue';
@@ -41,46 +82,3 @@ const handleSubmit = (product: any) => {
   // Aquí se puede  agregar la lógica para guardar el producto. Fernando Gomez Toledo 22393139
 };
 </script>
-
-<template>
-  <div class="bg-[#5B735D] flex flex-row w-full h-[40rem] items-center justify-center px-20">
-    <div>
-      <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[20rem] h-[20rem]" />
-    </div>
-    <div>
-      <h1 class="text-white text-4xl p-9">Nombre de Usuario</h1>
-      <div class="w-[50rem] h-auto text-center justify-center p-9 overflow-hidden">
-        <span class="text-white text-3xl">
-          Descripción del usuario etc etc etc etc etc etc alkdlsakdksdla;daksd;kasld;k;laskd;lakds;l
-        </span>
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-
-  <!-- Sección del historial de intercambios. Fernando Gomez Toledo 22393139 -->
-  <div class="bg-[#f5f7ea] flex flex-col w-full h-auto items-center justify-center p-8">
-
-
- <!-- Botón para abrir el modal. Fernando Gomez Toledo 22393139 -->
- <button @click="openModal" class="mt-8 px-6 py-3 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
-      Agregar Producto
-    </button>
-
-
-<div class="flex flex-col items-center w-full max-w-7xl p-8">
-    <h1 class="text-4xl font-bold mb-8">Historial de Intercambios</h1>
-    <ExchangeHistory :exchanges="exchanges" />
-    <h1 class="text-4xl font-bold mb-8">Historial de revisiones</h1>
-    <Valorations />
-
-  </div>
-  </div>
-  <!-- Modal para agregar producto -->
-  <AddProductModal :isOpen="isModalOpen" @close="closeModal" @submit="handleSubmit" />
-
-</template>

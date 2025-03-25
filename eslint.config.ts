@@ -18,7 +18,15 @@ export default defineConfigWithVueTs(
     ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
   },
 
+
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
   skipFormatting,
+
+  {
+    name: 'stop-being-annoying',
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    },
+  },
 )

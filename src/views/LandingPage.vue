@@ -1,5 +1,30 @@
 <script setup lang="ts">
 import ProductCard from '@/components/ProductCard.vue';
+import { getProductsService } from '@/services/productService';
+import { ref } from 'vue';
+import axios from 'axios'
+import type { IProduct } from '@/interfaces/IProduct';
+
+const data = ref();
+
+const fetchData = async () => {
+    try {
+      const response = await getProductsService()
+      data.value = response.sort(
+      (a:IProduct, b:IProduct) =>
+        new Date(b.fechaCreacion).getTime() -
+        new Date(a.fechaCreacion).getTime()
+    );
+    } catch (error) {
+      if(axios.isAxiosError(error)){
+        console.log(error.message)
+      } else{
+        console.error(error)
+      }
+    }
+  }
+
+  fetchData();
 
 </script>
 <template>
@@ -217,7 +242,19 @@ import ProductCard from '@/components/ProductCard.vue';
       </div>
       <div class="flex flex-row justify-center w-full gap-4 px-6">
 
-        <ProductCard v-for="index in 5" :key="index" />
+        <ProductCard
+          v-for="(item, index) in data"
+          :key="index"
+          :imgSrc="item.imagenes[0].urlImagen"
+          >
+          <template v-slot:title>
+            {{ item?.nombre }}
+          </template>
+
+          <template v-slot:description>
+            {{ item?.descripcion }}
+          </template>
+        </ProductCard>
 
 
       </div>
