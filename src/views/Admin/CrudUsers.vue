@@ -29,36 +29,34 @@
         <div class=" col-span-2">
           <div className='w-full h-[88vh] p-[2vw] overflow-scroll'>
                     <div class="flex w-full justify-between">
-                      <p className='font-semibold text-2xl'>Productos</p>
-
+                      <p className='font-semibold text-2xl'>Usuarios</p>
+                      <button class="bg-green-600 w-[7vw] text-white rounded-md py-1 cursor-pointer" @click="openModal">Agregar</button>
                     </div>
                     <table className='  w-full table-fixed rounded-3xl my-[3vh] bg-[#dfe6da]'>
                         <thead className=''>
                             <tr className='border-zinc-400  text-zinc-600'>
-                                <th className='font-semibold px-[1vw] py-[1vh] w-[20%]'>Imagen</th>
                                 <th className='font-semibold px-[1vw] py-[1vh] w-[5%]'>Id</th>
                                 <th className='font-semibold px-[1vw] py-[1vh]'>Nombre</th>
-                                <th className='font-semibold px-[1vw] py-[1vh]'>Descripción</th>
-                                <th className='font-semibold px-[1vw] py-[1vh]'>Estado de negociación</th>
-                                <th className='font-semibold px-[1vw] py-[1vh]'>Tipo de negociación</th>
-                                <th className='font-semibold px-[1vw] py-[1vh]'>Acciones</th>
+                                <th className='font-semibold px-[1vw] py-[1vh]'>Apellido</th>
+                                <th className='font-semibold px-[1vw] py-[1vh]'>Correo</th>
+                                <th className='font-semibold px-[1vw] py-[1vh]'>Telefono</th>
+                                <th className='font-semibold px-[1vw] py-[1vh]'>Rol</th>
+                                <th className='font-semibold px-[1vw] py-[1vh] w-[20%]'>Acciones</th>
                             </tr>
                         </thead>
                         <tbody className='text-zinc-600'>
                             <tr v-for="(item, index) in data" :key="index">
-                                <td className='px-[1vw] py-[1vh] border-t border-r border-zinc-400 '>
-                                  <div class="w-[10vh] h-[10vh] m-auto">
-                                    <img v-for="(img, index) in item.imagenes" :key="index"  :src="img.urlImagen" class="object-cover w-full h-full rounded-2xl  " />
-                                  </div>
-                                </td>
-                                <td className='px-[1vw] py-[1vh] border-t border-r border-zinc-400 text-center'>{{ item.idProducto }}</td>
+                                <td className='px-[1vw] py-[1vh] border-t border-r border-zinc-400 text-center'>{{ item.idUsuario }}</td>
                                 <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.nombre }}</td>
-                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.descripcion }}</td>
-                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.procesoNegociacion == true ? 'En negociación' : 'En espera'  }}</td>
-                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.intercambio == true ? 'Intercambio' : 'Donación'}}</td>
+                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.apellido}}</td>
+                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.correoElectronico }}</td>
+                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.telefono }}</td>
+                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.nombreRol }}</td>
+
                                 <td className='px-[1vw] py-[1vh] border-t border-l border-zinc-400 '>
                                   <div class="w-full flex justify-center">
-                                    <button class="bg-red-500 w-[7vw] text-white rounded-md py-1 m-auto cursor-pointer" @click="deleteItem(item.idProducto)">Eliminar</button>
+                                    <button class="bg-red-500 w-[7vw] text-white rounded-md py-1 m-auto cursor-pointer" @click="deleteItem(item.idUsuario)">Eliminar</button>
+                                    <button class="bg-yellow-500 w-[7vw] text-white rounded-md py-1 m-auto" @click="openEditModal(item.idUsuario)">Editar</button>
                                   </div>
                                 </td>
                             </tr>
@@ -70,6 +68,7 @@
       </main>
     </div>
 
+    <AddUserModal :isOpen="isModalOpen" :isEdit="isEdit" :editId="editId" @close="closeModal"  />
   </div>
 
 
@@ -77,15 +76,19 @@
 </template>
 
 <script setup lang="ts">
-import { getProductsService, deleteProductService } from '@/services/productService';
-
+import { getUsersService, deleteUserService } from '@/services/usersService';
+import AddUserModal from '@/components/AddUserModal.vue';
 import { ref } from 'vue';
 import axios from 'axios'
+
+const isModalOpen = ref(false);
+const isEdit = ref(false);
+const editId = ref(0);
 
 const data = ref();
 const fetchData = async () => {
     try {
-      const response = await getProductsService()
+      const response = await getUsersService()
       data.value = response;
     } catch (error) {
       if(axios.isAxiosError(error)){
@@ -98,7 +101,7 @@ const fetchData = async () => {
 
   const deleteItem = async (id:number) => {
     try {
-      await deleteProductService(id)
+      await deleteUserService(id)
       fetchData()
     } catch (error) {
       console.log(error)
@@ -106,5 +109,11 @@ const fetchData = async () => {
   }
 
   fetchData();
+
+  const openModal = () => { isModalOpen.value = true; };
+  const openEditModal = (id:number) => { isModalOpen.value = true; isEdit.value = true ; editId.value = id};
+
+  const closeModal = () => { isModalOpen.value = false; isEdit.value = false ; editId.value = 0; fetchData()};
+
 
 </script>

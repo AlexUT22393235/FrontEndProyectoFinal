@@ -4,6 +4,7 @@ import { createCategoryService, getCategoryService, updateCategoryService } from
 import type { CreateCategoryDto } from '@/dtos/createCategoryDto';
 import type { UpdateCategoryDto } from '@/dtos/updateCategoryDto';
 
+
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -47,6 +48,7 @@ const fetchObject = async() => {
   updateObject.value.nombre = response.nombre;
   updateObject.value.imagenCategoria = response.imagenCategoria
 }
+
 
 watch(
   () => props.isEdit,

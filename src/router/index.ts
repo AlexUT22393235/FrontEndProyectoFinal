@@ -93,6 +93,12 @@ const router = createRouter({
       name : 'crudprod',
       component : () => import ('../views/Admin/CrudProducts.vue')
     },
+
+    {
+      path : '/crudusers',
+      name : 'crudusers',
+      component : () => import ('../views/Admin/CrudUsers.vue')
+    },
     {
       path: '/:pathMatch(.*)*',
       name: '404',
