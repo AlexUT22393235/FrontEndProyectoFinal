@@ -3,7 +3,25 @@ import { ref, watch } from 'vue';
 import { createCategoryService, getCategoryService, updateCategoryService } from '@/services/categorieService';
 import type { CreateCategoryDto } from '@/dtos/createCategoryDto';
 import type { UpdateCategoryDto } from '@/dtos/updateCategoryDto';
+import { useForm } from 'vee-validate'
+import * as yup from 'yup'
 
+const { defineField, handleSubmit, errors, resetForm } = useForm({
+  validationSchema: yup.object({
+    nombre: yup.string().min(4, 'Se necesitan al menos 4 caracteres').required('Por favor rellene el campo'),
+    imgUrl: yup
+      .string()
+      .min(6, 'Se necesitan al menos 6 caracteres')
+      .required('Por favor, ingrese el url de la imagen'),
+  }),
+});
+
+const [nombreValue, nombreAttrs] = defineField('nombre', {
+  validateOnModelUpdate: true,
+});
+const [imgUrlValue, imgUrlAttrs] = defineField('imgUrl', {
+  validateOnModelUpdate: true,
+});
 
 const props = defineProps({
   isOpen: {
@@ -35,18 +53,18 @@ const updateObject = ref<UpdateCategoryDto>({
   imagenCategoria: '',
 });
 
-const errors = ref ({
-    name: '',
-    description:'',
-    images: '',
-});
-
 const fetchObject = async() => {
   const response = await getCategoryService(props.editId);
 
   updateObject.value.idCategoria = props.editId
-  updateObject.value.nombre = response.nombre;
-  updateObject.value.imagenCategoria = response.imagenCategoria
+
+  resetForm({
+      values: {
+        nombre: response.nombre,
+        imgUrl: response.imagenCategoria
+      },
+    });
+
 }
 
 
@@ -60,15 +78,23 @@ watch(
   { immediate: true }
 );
 
-const submitProduct = async() => {
+const submitProduct = handleSubmit(async() => {
   if(props.isEdit == true){
     try {
+
+      updateObject.value.nombre = nombreValue.value
+      updateObject.value.imagenCategoria = imgUrlValue.value
+
       await updateCategoryService(updateObject.value)
     } catch (error) {
       console.log(error)
     }
   } else{
     try {
+
+      createObject.value.nombre = nombreValue.value
+      createObject.value.imagenCategoria = imgUrlValue.value
+
       await createCategoryService(createObject.value)
     } catch (error) {
       console.log(error)
@@ -76,7 +102,7 @@ const submitProduct = async() => {
   }
 
   emit('close');
-};
+})
 
 </script>
 
@@ -84,24 +110,21 @@ const submitProduct = async() => {
     <div v-if="isOpen" class="fixed inset-0 bg-opacity-50 flex items-center justify-center backdrop-blur-3xl">
       <div class="bg-white p-8 rounded-lg w-full max-w-md">
 
-        <h2 class="text-2xl font-bold mb-6" v-if="props.isEdit == true">Editar Categoria</h2>
-        <h2 class="text-2xl font-bold mb-6" v-else>Agregar Categoria</h2>
+        <h2 class="text-2xl font-bold mb-6" >{{ props.isEdit === false ? 'Agregar categoria' : 'Editar Categoria' }}</h2>
 
         <form @submit.prevent="submitProduct">
           <!-- Nombre de la cat -->
           <div class="mb-4">
             <label class="block text-gray-700">Nombre de la categoria</label>
-            <input v-if="props.isEdit === false" v-model="createObject.nombre" type="text" placeholder="Ie: Hogar" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <input v-else v-model="updateObject.nombre" type="text" placeholder="Ie: Hogar" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+            <input v-bind="nombreAttrs" v-model="nombreValue" type="text" placeholder="Ie: Hogar" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
+            <p v-if="errors.nombre" class="text-red-500 text-sm">{{ errors.nombre }}</p>
           </div>
 
           <!-- Url img -->
           <div class="mb-4">
             <label class="block text-gray-700">Url de la imagen</label>
-            <input v-if="props.isEdit === false" v-model="createObject.imagenCategoria" placeholder="Ie: https:////images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1170&" class="w-full px-4 py-2 border rounded-lg placeholder:italic"/>
-            <input v-else v-model="updateObject.imagenCategoria" placeholder="Ie: https:////images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1170&" class="w-full px-4 py-2 border rounded-lg placeholder:italic"/>
-            <p v-if="errors.description" class="text-red-500 text-sm">{{ errors.description }}</p>
+            <input v-bind="imgUrlAttrs" v-model="imgUrlValue" placeholder="Ie: https:////images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1170&" class="w-full px-4 py-2 border rounded-lg placeholder:italic"/>
+            <p v-if="errors.imgUrl" class="text-red-500 text-sm">{{ errors.imgUrl }}</p>
           </div>
 
           <!-- Botones -->
