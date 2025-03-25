@@ -22,7 +22,7 @@
 
 
     <div class="w-full max-w-7xl p-8 flex flex-col md:flex-row gap-8">
-      <!-- Historial de Intercambios -->
+     <!-- Historial de Intercambios -->
       <div class="w-full md:w-1/2">
         <h2 class="text-3xl font-bold mb-6 text-center md:text-left">Historial de Intercambios</h2>
         <ExchangeHistory :exchanges="exchanges" />
