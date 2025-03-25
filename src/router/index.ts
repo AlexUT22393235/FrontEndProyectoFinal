@@ -83,6 +83,11 @@ const router = createRouter({
       component : () => import ('../views/Admin/Dashboard.vue')
     },
     {
+      path : '/crudcat',
+      name : 'crudcat',
+      component : () => import ('../views/Admin/CrudCategorias.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: '404',
       component: () => import('../views/Sistem/404View.vue'),
