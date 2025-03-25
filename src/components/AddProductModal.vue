@@ -117,6 +117,8 @@ const validateForm = () => {
   return isValid;
 };
 
+
+
 // Envío del formulario. 22393139
 const submitProduct = async () => {
   if (!validateForm()) return;
@@ -124,7 +126,7 @@ const submitProduct = async () => {
   isLoading.value = true;
 
   const formData = new FormData();
-  formData.append('Nombre', newProduct.value.name); // Cambiado a mayúscula para coincidir con el backend. 22393139
+  formData.append('Nombre', newProduct.value.name); // Cambiado a mayúscula para coincidir con el backend. 22393139 Fernando Gomez Toledo
   formData.append('Descripcion', newProduct.value.description);
   formData.append('ProcesoNegociacion', String(newProduct.value.procesoNegociacion));
   formData.append('Intercambio', String(newProduct.value.intercambio));
