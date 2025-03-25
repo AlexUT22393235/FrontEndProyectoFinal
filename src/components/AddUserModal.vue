@@ -4,6 +4,39 @@ import { createUserService, getUserService, updateUserService } from '@/services
 import type { CreateUserDto } from '@/dtos/CreateUserDto';
 import type { UpdateUserDto } from '@/dtos/UpdateUserDto';
 import { getRolesService } from '@/services/roleService';
+import { useForm, } from 'vee-validate'
+import * as yup from 'yup'
+
+const { defineField, handleSubmit, errors, resetForm } = useForm({
+  validationSchema: yup.object({
+    nombre: yup.string().min(4, 'Se necesitan al menos 4 caracteres').required('Por favor ingrese nombre'),
+    apellido: yup.string().min(4, 'Se necesitan al menos 4 caracteres').required('Por favor ingrese apellido'),
+    correo: yup.string().email('Correo no valido').required('Por favor ingrese un correo'),
+    telefono: yup.string().min(4, 'Se necesitan al menos 4 caracteres').required('Por favor ingrese un telefono'),
+    contrasenia: yup.string().min(4, 'Se necesitan al menos 4 caracteres').required('Por favor ingrese una contraseña'),
+    rol: yup.number().required('Por favor escoja un rol'),
+  }),
+})
+
+const [nombreValue, nombreAttrs] = defineField('nombre', {
+  validateOnModelUpdate: true,
+});
+const [apellidoValue, apellidoAttrs] = defineField('apellido', {
+  validateOnModelUpdate: true,
+});
+const [correoValue, correoAttrs] = defineField('correo', {
+  validateOnModelUpdate: true,
+});
+const [telefonoValue, telefonoAttrs] = defineField('telefono', {
+  validateOnModelUpdate: true,
+});
+const [contraseniaValue, contraseniaAttrs] = defineField('contrasenia', {
+  validateOnModelUpdate: true,
+});
+const [rolValue, rolAttrs] = defineField('rol', {
+  validateOnModelUpdate: true,
+});
+
 
 const props = defineProps({
   isOpen: {
@@ -43,23 +76,21 @@ const updateObject = ref<UpdateUserDto>({
   rolId: 0
 });
 
-const errors = ref ({
-    name: '',
-    description:'',
-    images: '',
-});
-
 const fetchObject = async() => {
   const response = await getUserService(props.editId);
-  console.log(response)
 
   updateObject.value.idUsuario = props.editId
-  updateObject.value.nombre = response.nombre;
-  updateObject.value.apellido = response.apellido
-  updateObject.value.correoElectronico = response.correoElectronico
-  updateObject.value.telefono = response.telefono;
-  updateObject.value.contrasenia = response.contrasenia
-  updateObject.value.rolId = response.rolId
+
+  resetForm({
+      values: {
+        nombre: response.nombre,
+        apellido: response.apellido,
+        correo: response.correoElectronico,
+        telefono: response.telefono,
+        contrasenia: response.contrasenia,
+        rol: response.rolId,
+      },
+    });
 }
 const roles = ref()
 const fetchRoles = async () => {
@@ -70,7 +101,6 @@ const fetchRoles = async () => {
     console.log(error)
   }
 }
-
 fetchRoles()
 
 watch(
@@ -83,15 +113,30 @@ watch(
   { immediate: true }
 );
 
-const submitProduct = async() => {
+const submitProduct = handleSubmit(async(values) => {
   if(props.isEdit == true){
     try {
+      updateObject.value.nombre = values.nombre
+      updateObject.value.apellido = values.apellido
+      updateObject.value.correoElectronico = values.correo
+      updateObject.value.telefono = values.telefono
+      updateObject.value.contrasenia = values.contrasenia
+      updateObject.value.rolId = values.rol
+
       await updateUserService(updateObject.value)
     } catch (error) {
       console.log(error)
     }
   } else{
     try {
+
+      createObject.value.nombre = values.nombre
+      createObject.value.apellido = values.apellido
+      createObject.value.correoElectronico = values.correo
+      createObject.value.telefono = values.telefono
+      createObject.value.contrasenia = values.contrasenia
+      createObject.value.rolId = values.rol
+
       await createUserService(createObject.value)
     } catch (error) {
       console.log(error)
@@ -99,7 +144,8 @@ const submitProduct = async() => {
   }
 
   emit('close');
-};
+}
+)
 
 </script>
 
@@ -107,60 +153,50 @@ const submitProduct = async() => {
     <div v-if="isOpen" class="fixed inset-0 bg-opacity-50 flex items-center justify-center backdrop-blur-3xl">
       <div class="bg-white p-8 rounded-lg w-full max-w-md">
 
-        <h2 class="text-2xl font-bold mb-6" v-if="props.isEdit == true">Editar Usuario</h2>
-        <h2 class="text-2xl font-bold mb-6" v-else>Agregar Usuario</h2>
+        <h2 class="text-2xl font-bold mb-6" >{{ props.isEdit === false ? 'Agregar usuario' : 'Editar usuario' }}</h2>
+
 
         <form @submit.prevent="submitProduct">
-          <!-- Nombre de la cat -->
+
           <div class="mb-4">
             <label class="block text-gray-700">Nombre de usuario</label>
-            <input v-if="props.isEdit === false" v-model="createObject.nombre" type="text" placeholder="Ie: Alberto" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <input v-else v-model="updateObject.nombre" type="text" placeholder="Ie: Alberto" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+            <input v-model="nombreValue" v-bind="nombreAttrs" type="text" placeholder="Ie: Alberto" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
+            <p v-if="errors.nombre" class="text-red-500 text-sm">{{ errors.nombre}}</p>
           </div>
 
           <div class="mb-4">
             <label class="block text-gray-700">Apellido</label>
-            <input v-if="props.isEdit === false" v-model="createObject.apellido" type="text" placeholder="Ie: Perez" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <input v-else v-model="updateObject.apellido" type="text" placeholder="Ie: Perez" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+            <input v-model="apellidoValue" v-bind="apellidoAttrs" type="text" placeholder="Ie: Perez" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
+            <p v-if="errors.apellido" class="text-red-500 text-sm">{{ errors.apellido }}</p>
           </div>
 
           <div class="mb-4">
             <label class="block text-gray-700">Correo electronico</label>
-            <input v-if="props.isEdit === false" v-model="createObject.correoElectronico" type="text" placeholder="Ie: example@mail.com" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <input v-else v-model="updateObject.correoElectronico" type="text" placeholder="Ie: example@mail.com" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+            <input v-model="correoValue" v-bind="correoAttrs" type="text" placeholder="Ie: example@mail.com" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
+            <p v-if="errors.correo" class="text-red-500 text-sm">{{ errors.correo }}</p>
           </div>
 
           <div class="mb-4">
             <label class="block text-gray-700">Numero telefonico</label>
-            <input v-if="props.isEdit === false" v-model="createObject.telefono" type="text" placeholder="Ie: 9982828417" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <input v-else v-model="updateObject.telefono" type="text" placeholder="Ie: 9982828417" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+            <input v-model="telefonoValue" v-bind="telefonoAttrs" type="text" placeholder="Ie: 9982828417" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
+            <p v-if="errors.telefono" class="text-red-500 text-sm">{{ errors.telefono }}</p>
           </div>
 
           <div class="mb-4">
             <label class="block text-gray-700">Contraseña</label>
-            <input v-if="props.isEdit === false" v-model="createObject.contrasenia" type="text" placeholder="Ie: Usuario010~!" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <input v-else v-model="updateObject.contrasenia" type="text" placeholder="Ie: Usuario010~!" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+            <input v-model="contraseniaValue" v-bind="contraseniaAttrs" type="text" placeholder="Ie: Usuario010~!" class="w-full px-4 py-2 border rounded-lg placeholder:italic" />
+            <p v-if="errors.contrasenia" class="text-red-500 text-sm">{{ errors.contrasenia }}</p>
           </div>
 
 
           <div class="mb-4">
             <label class="block text-gray-700">Rol</label>
-            <select v-if="props.isEdit === false" v-model="createObject.rolId" placeholder="Ie: Usuario010~!" class="w-full px-4 py-2 border rounded-lg placeholder:italic">
+            <select v-model="rolValue" v-bind="rolAttrs" placeholder="Ie: Usuario010~!" class="w-full px-4 py-2 border rounded-lg placeholder:italic">
               <option value="">Selecciona una respuesta</option>
               <option v-for="(item, index) in roles" :key="index" :value="item.idRol">{{ item.nombreRol }}</option>
             </select>
 
-            <select v-else v-model="updateObject.rolId" placeholder="Ie: Usuario010~!" class="w-full px-4 py-2 border rounded-lg placeholder:italic">
-              <option value="">Selecciona una respuesta</option>
-              <option v-for="(item, index) in roles" :key="index" :value="item.idRol">{{ item.nombreRol }}</option>
-            </select>
-
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+            <p v-if="errors.rol" class="text-red-500 text-sm">{{ errors.rol }}</p>
           </div>
 
           <!-- Botones -->

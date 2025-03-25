@@ -6,7 +6,7 @@ import type { UpdateCategoryDto } from '@/dtos/updateCategoryDto';
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
-const { defineField, handleSubmit, errors } = useForm({
+const { defineField, handleSubmit, errors, resetForm } = useForm({
   validationSchema: yup.object({
     nombre: yup.string().min(4, 'Se necesitan al menos 4 caracteres').required('Por favor rellene el campo'),
     imgUrl: yup
@@ -14,14 +14,14 @@ const { defineField, handleSubmit, errors } = useForm({
       .min(6, 'Se necesitan al menos 6 caracteres')
       .required('Por favor, ingrese el url de la imagen'),
   }),
-})
+});
 
 const [nombreValue, nombreAttrs] = defineField('nombre', {
   validateOnModelUpdate: true,
-})
+});
 const [imgUrlValue, imgUrlAttrs] = defineField('imgUrl', {
   validateOnModelUpdate: true,
-})
+});
 
 const props = defineProps({
   isOpen: {
@@ -57,8 +57,14 @@ const fetchObject = async() => {
   const response = await getCategoryService(props.editId);
 
   updateObject.value.idCategoria = props.editId
-  updateObject.value.nombre = response.nombre;
-  updateObject.value.imagenCategoria = response.imagenCategoria
+
+  resetForm({
+      values: {
+        nombre: response.nombre,
+        imgUrl: response.imagenCategoria
+      },
+    });
+
 }
 
 
