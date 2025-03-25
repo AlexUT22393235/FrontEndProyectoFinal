@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 
+import { ref, onMounted } from 'vue';
 
-// Prop para controlar la visibilidad del modal, Fernando Gomez Toledo 22393139
+import { getCategoriesService } from '@/services/categorieService';
+import { postProductService } from '@/services/productService';
+
+// Props y emits 22393139
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -11,120 +14,321 @@ const props = defineProps({
 });
 
 
-// Emit para cerrar el modal, Fernando Gomez Toledo 22393139
-const emit = defineEmits(['close']);
+
+const emit = defineEmits(['close', 'product-added']);
 
 
-// Datos del nuevo producto
+
+
+// Datos del producto 22393139
 const newProduct = ref({
   name: '',
   description: '',
+  procesoNegociacion: false, // Cambiado de procesoNegotiacion a procesoNegociacion. 22393139
+  intercambio: true,
+  usuarioId: 1,
+  categoriasIds: [] as number[], // Cambiado de categorias a categoriasIds. 22393139
   images: [] as File[],
-  type: 'intercambio', //'Intercambio' o 'Donacion'
 });
 
 
 
-// Error de validación, Fernando Gomez Toledo 22393139
-const errors = ref ({
-    name: '',
-    decription:'',
-    images: '',
+// Estados del componente
+const categories = ref<{ idCategoria: number; nombre: string }[]>([]);
+const selectedCategories = ref<{ idCategoria: number; nombre: string }[]>([]);
+const errors = ref({
+  nombre: '',
+  descripcion: '',
+  images: '',
+  categorias: '',
 });
+const previewImages = ref<string[]>([]);
+const isLoading = ref(false); // Nuevo estado para manejar carga. 22393139
 
 
-// Funcion para manejar la subida de imagenes Fernando Gomez Toledo 22393139
+
+// Función para manejar la subida de imágenes. 22393139
 const handleImageUpload = (event: Event) => {
-    const input = event. target as HTMLInputElement;
-    if(input.files){
-        newProduct.value.images = Array.from (input.files);
-        errors.value.images=''; // Limpiar el error si hay imágenes
+  const input = event.target as HTMLInputElement;
+  if (input.files) {
+    const files = Array.from(input.files);
+    
+    if (previewImages.value.length + files.length > 7) {
+      errors.value.images = 'No puedes subir más de 7 imágenes.';
+    } else {
+      files.forEach(file => {
+        if (file.type.startsWith('image/')) {
+          previewImages.value.push(URL.createObjectURL(file));
+          newProduct.value.images.push(file);
+        }
+      });
+      errors.value.images = '';
     }
+  }
 };
 
+// Función para eliminar una imagen. 22393139
+const removeImage = (index: number) => {
+  URL.revokeObjectURL(previewImages.value[index]);
+  previewImages.value.splice(index, 1);
+  newProduct.value.images.splice(index, 1);
+};
 
-//Funcion para validar el formulario
+// Manejo de categorías. 22393139
+const selectCategory = (category: any) => {
+  if (!selectedCategories.value.some((c) => c.idCategoria === category.idCategoria)) {
+    selectedCategories.value.push(category);
+    newProduct.value.categoriasIds.push(category.idCategoria); // Actualizado a categoriasIds. 22393139
+  }
+};
+
+const removeCategory = (categoryId: number) => {
+  selectedCategories.value = selectedCategories.value.filter(
+    (category) => category.idCategoria !== categoryId
+  );
+  newProduct.value.categoriasIds = newProduct.value.categoriasIds.filter((id) => id !== categoryId);
+};
+
+// Validación del formulario. 22393139
 const validateForm = () => {
   let isValid = true;
+  errors.value = { nombre: '', descripcion: '', images: '', categorias: '' };
 
   if (!newProduct.value.name.trim()) {
-    errors.value.name = 'El nombre del producto es requerido.';
+    errors.value.nombre = 'El nombre del producto es requerido.';
     isValid = false;
-  } else {
-    errors.value.name = '';
   }
 
   if (!newProduct.value.description.trim()) {
-    errors.value.description = 'La descripción es requerida.';
+    errors.value.descripcion = 'La descripción es requerida.';
     isValid = false;
-  } else {
-    errors.value.description = '';
   }
 
   if (newProduct.value.images.length === 0) {
     errors.value.images = 'Debes subir al menos una imagen.';
     isValid = false;
-  } else {
-    errors.value.images = '';
+  }
+
+  if (newProduct.value.categoriasIds.length === 0) {
+    errors.value.categorias = 'Debes seleccionar al menos una categoría.';
+    isValid = false;
   }
 
   return isValid;
 };
 
 
-// Función para enviar el formulario (simulación), Fernando Gomez Toledo 22393139
-const submitProduct = () => {
-  console.log('Producto agregado:', newProduct.value);
-  emit('close'); // Cierra el modal después de enviar
+
+// Envío del formulario. 22393139
+const submitProduct = async () => {
+  if (!validateForm()) return;
+
+  isLoading.value = true;
+
+  const formData = new FormData();
+  formData.append('Nombre', newProduct.value.name); // Cambiado a mayúscula para coincidir con el backend. 22393139 Fernando Gomez Toledo
+  formData.append('Descripcion', newProduct.value.description);
+  formData.append('ProcesoNegociacion', String(newProduct.value.procesoNegociacion));
+  formData.append('Intercambio', String(newProduct.value.intercambio));
+  formData.append('UsuarioId', String(newProduct.value.usuarioId));
+
+  newProduct.value.categoriasIds.forEach((id) => {
+    formData.append('CategoriasIds', String(id)); // Cambiado a mayúscula. 22393139
+  });
+
+  newProduct.value.images.forEach((file) => {
+    formData.append('Imagenes', file); 
+  });
+
+  try {
+    const response = await postProductService(formData);
+    resetForm();
+    emit('product-added', response);
+    emit('close');
+  } catch (error) {
+    console.error('Error al agregar el producto:', error);
+    // Manejo de errores específicos del backend aquí. 22393139
+  } finally {
+    isLoading.value = false;
+  }
 };
 
+// Limpiar formulario. 22393139
+const resetForm = () => {
+  newProduct.value = {
+    name: '',
+    description: '',
+    procesoNegociacion: false,
+    intercambio: true,
+    usuarioId: 1,
+    categoriasIds: [],
+    images: []
+  };
+  previewImages.value = [];
+  selectedCategories.value = [];
+  errors.value = { nombre: '', descripcion: '', images: '', categorias: '' };
+};
+
+onMounted(async () => {
+  try {
+    categories.value = await getCategoriesService();
+  } catch (error) {
+    console.error('Error al cargar categorías:', error);
+  }
+});
 </script>
 
 <template>
-    <div v-if="isOpen" class="fixed inset-0 bg-opacity-50 flex items-center justify-center backdrop-blur-3xl">
-      <div class="bg-white p-8 rounded-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6">Agregar Producto</h2>
-        <form @submit.prevent="submitProduct">
-          <!-- Nombre del producto -->
-          <div class="mb-4">
-            <label class="block text-gray-700">Nombre del Producto</label>
-            <input v-model="newProduct.name" type="text" class="w-full px-4 py-2 border rounded-lg" />
-            <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
-          </div>
+  <div
+    v-if="isOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    @click.self="emit('close')"
+  >
+    <div class="bg-white p-8 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <h2 class="text-2xl font-bold mb-6">Agregar Producto</h2>
+      <form @submit.prevent="submitProduct">
+        <!-- Nombre del producto -->
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Nombre del Producto*</label>
+          <input
+            v-model="newProduct.name"
+            type="text"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#5B735D] focus:border-transparent"
+            :class="{ 'border-red-500': errors.nombre }"
+          />
+          <p v-if="errors.nombre" class="text-red-500 text-sm mt-1">{{ errors.nombre }}</p>
+        </div>
 
-          <!-- Descripción del producto -->
-          <div class="mb-4">
-            <label class="block text-gray-700">Descripción</label>
-            <textarea v-model="newProduct.description" class="w-full px-4 py-2 border rounded-lg"></textarea>
-            <p v-if="errors.description" class="text-red-500 text-sm">{{ errors.description }}</p>
-          </div>
+        <!-- Descripción del producto. 22393139 -->
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Descripción*</label>
+          <textarea
+            v-model="newProduct.description"
+            rows="3"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#5B735D] focus:border-transparent"
+            :class="{ 'border-red-500': errors.descripcion }"
+          ></textarea>
+          <p v-if="errors.descripcion" class="text-red-500 text-sm mt-1">{{ errors.descripcion }}</p>
+        </div>
 
-          <!-- Tipo de producto (Intercambio o Donación) -->
-          <div class="mb-4">
-            <label class="block text-gray-700">Tipo</label>
-            <select v-model="newProduct.type" class="w-full px-4 py-2 border rounded-lg">
-              <option value="intercambio">Intercambio</option>
-              <option value="donacion">Donación</option>
-            </select>
-          </div>
+        <!-- Opciones de negociación. 22393139-->
+        <div class="mb-4 flex items-center">
+          <input
+            type="checkbox"
+            id="procesoNegociacion"
+            v-model="newProduct.procesoNegociacion"
+            class="mr-2 h-5 w-5 text-[#5B735D] rounded focus:ring-[#5B735D]"
+          />
+          <label for="procesoNegociacion" class="text-gray-700">Acepta proceso de negociación</label>
+        </div>
 
-          <!-- Subida de imágenes -->
-          <div class="mb-4">
-            <label class="block text-gray-700">Imágenes</label>
-            <input type="file" multiple @change="handleImageUpload" class="w-full px-4 py-2 border rounded-lg" />
-            <p v-if="errors.images" class="text-red-500 text-sm">{{ errors.images }}</p>
-          </div>
+        <!-- Tipo de producto . 22393139 -->
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Tipo de transacción*</label>
+          <select
+            v-model="newProduct.intercambio"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#5B735D] focus:border-transparent"
+          >
+            <option :value="true">Intercambio</option>
+            <option :value="false">Donación</option>
+          </select>
+        </div>
 
-          <!-- Botones -->
-          <div class="flex justify-end">
-            <button type="button" @click="$emit('close')" class="mr-4 px-4 py-2 text-gray-600 hover:text-gray-800">
-              Cancelar
+        <!-- Categorías seleccionadas. 22393139-->
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Categorías seleccionadas*</label>
+          <div class="flex flex-wrap gap-2 min-h-10 p-2 border rounded-lg" :class="{ 'border-red-500': errors.categorias }">
+            <div
+              v-for="category in selectedCategories"
+              :key="category.idCategoria"
+              class="flex items-center bg-green-100 px-3 py-1 rounded-lg text-sm"
+            >
+              {{ category.nombre }}
+              <button
+                @click.prevent="removeCategory(category.idCategoria)"
+                class="ml-2 text-red-500 hover:text-red-700"
+              >
+                ✕
+              </button>
+            </div>
+            <p v-if="selectedCategories.length === 0" class="text-gray-400 text-sm">No hay categorías seleccionadas</p>
+          </div>
+          <p v-if="errors.categorias" class="text-red-500 text-sm mt-1">{{ errors.categorias }}</p>
+        </div>
+
+        <!-- Lista de categorías. 22393139-->
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Seleccionar categorías*</label>
+          <div class="border rounded-lg p-2 max-h-40 overflow-y-auto">
+            <button
+              v-for="category in categories"
+              :key="category.idCategoria"
+              @click.prevent="selectCategory(category)"
+              :disabled="selectedCategories.some((c) => c.idCategoria === category.idCategoria)"
+              class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="{ 'bg-gray-100': selectedCategories.some((c) => c.idCategoria === category.idCategoria) }"
+            >
+              {{ category.nombre }}
             </button>
-            <button type="submit" class="px-6 py-2 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
-              Guardar
-            </button>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <!-- Subida de imágenes. 22393139-->
+        <div class="mb-6">
+          <label class="block text-gray-700 mb-1">Imágenes* (Máx. 7)</label>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            @change="handleImageUpload"
+            class="w-full px-4 py-2 border rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#5B735D] file:text-white hover:file:bg-[#4A5D4A]"
+            :class="{ 'border-red-500': errors.images }"
+          />
+          <p v-if="errors.images" class="text-red-500 text-sm mt-1">{{ errors.images }}</p>
+
+          <!-- Vista previa de imágenes. 22393139-->
+          <div v-if="previewImages.length > 0" class="mt-4">
+            <div class="flex flex-wrap gap-2">
+              <div
+                v-for="(image, index) in previewImages"
+                :key="index"
+                class="relative w-20 h-20 border rounded overflow-hidden group"
+              >
+                <img :src="image" alt="Vista previa" class="w-full h-full object-cover" />
+                <button
+                  @click.prevent="removeImage(index)"
+                  class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5  flex items-center justify-center"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones. 22393139-->
+        <div class="flex justify-end gap-4 pt-4 border-t">
+          <button
+            type="button"
+            @click="emit('close')"
+            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            :disabled="isLoading"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="px-6 py-2 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A] disabled:opacity-50 flex items-center justify-center min-w-24"
+            :disabled="isLoading"
+          >
+            <span v-if="!isLoading">Guardar</span>
+            <svg v-else class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
     </div>
-  </template>
+  </div>
+</template>
