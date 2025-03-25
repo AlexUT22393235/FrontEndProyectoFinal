@@ -3,7 +3,6 @@
     <div class="modal-content">
       <h2 class="text-2xl font-bold mb-4">Editar Perfil</h2>
       <form @submit.prevent="submitForm">
-        <!-- Campo para el nombre -->
         <div class="mb-4">
           <label class="block text-sm font-medium mb-2">Nombre</label>
           <input
@@ -14,7 +13,6 @@
           />
         </div>
 
-        <!-- Campo para la descripción -->
         <div class="mb-4">
           <label class="block text-sm font-medium mb-2">Descripción</label>
           <textarea
@@ -24,7 +22,6 @@
           ></textarea>
         </div>
 
-        <!-- Campo para la imagen -->
         <div class="mb-4">
           <label class="block text-sm font-medium mb-2">Imagen de Perfil</label>
           <input
@@ -34,8 +31,6 @@
             placeholder="URL de la imagen"
           />
         </div>
-
-        <!-- Botones de acción -->
         <div class="flex justify-end gap-4">
           <button type="button" @click="$emit('close')" class="btn-cancel">
             Cancelar
@@ -52,6 +47,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
 import { ref, watch } from 'vue';
+import { useToast } from 'vue-toastification'; // Importar el hook useToast
 import UserProfile from '@/views/UserProfileView.vue';
 
 const props = defineProps({
@@ -64,6 +60,9 @@ const props = defineProps({
 const emit = defineEmits(['close', 'submit']);
 const editedProfile = ref({ ...props.userProfile });
 
+
+const toast = useToast();
+
 watch(
   () => props.userProfile,
   (newProfile) => {
@@ -71,8 +70,19 @@ watch(
   }
 );
 
-const submitForm = () => {
-  emit('submit', editedProfile.value);
+const submitForm = async () => {
+  try {
+
+    emit('submit', editedProfile.value);
+
+
+    toast.success('¡Cambios guardados correctamente, recarga para ver los cambios!');
+  } catch (error) {
+
+    
+    toast.error('Hubo un error al guardar los cambios.');
+    console.error(error);
+  }
 };
 </script>
 
