@@ -5,7 +5,7 @@ import { ref, onMounted } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
 import { postProductService } from '@/services/productService';
 
-// Props y emits 22393139
+// Props y emits.  Fernando Gomez Toledo  22393139
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -20,14 +20,14 @@ const emit = defineEmits(['close', 'product-added']);
 
 
 
-// Datos del producto 22393139
+// Datos del producto, Fernando Gomez Toledo  22393139
 const newProduct = ref({
   name: '',
   description: '',
-  procesoNegociacion: false, // Cambiado de procesoNegotiacion a procesoNegociacion. 22393139
+  procesoNegociacion: false, // Cambiado de procesoNegotiacion a procesoNegociacion.Fernando Gomez Toledo 22393139
   intercambio: true,
   usuarioId: 1,
-  categoriasIds: [] as number[], // Cambiado de categorias a categoriasIds. 22393139
+  categoriasIds: [] as number[], // Cambiado de categorias a categoriasIds. Fernando Gomez Toledo 22393139
   images: [] as File[],
 });
 
@@ -43,11 +43,11 @@ const errors = ref({
   categorias: '',
 });
 const previewImages = ref<string[]>([]);
-const isLoading = ref(false); // Nuevo estado para manejar carga. 22393139
+const isLoading = ref(false); // Nuevo estado para manejar carga. Fernando Gomez Toledo 22393139
 
 
 
-// Función para manejar la subida de imágenes. 22393139
+// Función para manejar la subida de imágenes.Fernando Gomez Toledo 22393139
 const handleImageUpload = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input.files) {
@@ -67,18 +67,18 @@ const handleImageUpload = (event: Event) => {
   }
 };
 
-// Función para eliminar una imagen. 22393139
+// Función para eliminar una imagen. Fernando Gomez Toledo 22393139
 const removeImage = (index: number) => {
   URL.revokeObjectURL(previewImages.value[index]);
   previewImages.value.splice(index, 1);
   newProduct.value.images.splice(index, 1);
 };
 
-// Manejo de categorías. 22393139
+// Manejo de categorías. Fernando GOmez Toledo 22393139
 const selectCategory = (category: any) => {
   if (!selectedCategories.value.some((c) => c.idCategoria === category.idCategoria)) {
     selectedCategories.value.push(category);
-    newProduct.value.categoriasIds.push(category.idCategoria); // Actualizado a categoriasIds. 22393139
+    newProduct.value.categoriasIds.push(category.idCategoria); // Actualizado a categoriasIds. Fernando Gomez Toledo 22393139
   }
 };
 
@@ -89,7 +89,7 @@ const removeCategory = (categoryId: number) => {
   newProduct.value.categoriasIds = newProduct.value.categoriasIds.filter((id) => id !== categoryId);
 };
 
-// Validación del formulario. 22393139
+// Validación del formulario. Fernando Gomez Toledo 22393139
 const validateForm = () => {
   let isValid = true;
   errors.value = { nombre: '', descripcion: '', images: '', categorias: '' };
@@ -119,6 +119,7 @@ const validateForm = () => {
 
 
 
+
 // Envío del formulario. 22393139
 const submitProduct = async () => {
   if (!validateForm()) return;
@@ -126,18 +127,18 @@ const submitProduct = async () => {
   isLoading.value = true;
 
   const formData = new FormData();
-  formData.append('Nombre', newProduct.value.name); // Cambiado a mayúscula para coincidir con el backend. 22393139 Fernando Gomez Toledo
+  formData.append('Nombre', newProduct.value.name);
   formData.append('Descripcion', newProduct.value.description);
   formData.append('ProcesoNegociacion', String(newProduct.value.procesoNegociacion));
   formData.append('Intercambio', String(newProduct.value.intercambio));
   formData.append('UsuarioId', String(newProduct.value.usuarioId));
 
   newProduct.value.categoriasIds.forEach((id) => {
-    formData.append('CategoriasIds', String(id)); // Cambiado a mayúscula. 22393139
+    formData.append('CategoriasIds', String(id)); // Importante para múltiples categorías. Fernando Gomez Toledo 22393139
   });
 
   newProduct.value.images.forEach((file) => {
-    formData.append('Imagenes', file); 
+    formData.append('Imagenes', file); // Correctamente añadido como array de imágenes. Fernando Gomez Toledo 22393139
   });
 
   try {
@@ -147,13 +148,13 @@ const submitProduct = async () => {
     emit('close');
   } catch (error) {
     console.error('Error al agregar el producto:', error);
-    // Manejo de errores específicos del backend aquí. 22393139
   } finally {
     isLoading.value = false;
   }
 };
 
-// Limpiar formulario. 22393139
+
+// Limpiar formulario. Fernando Gomez Toledo  22393139
 const resetForm = () => {
   newProduct.value = {
     name: '',
@@ -187,7 +188,7 @@ onMounted(async () => {
     <div class="bg-white p-8 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h2 class="text-2xl font-bold mb-6">Agregar Producto</h2>
       <form @submit.prevent="submitProduct">
-        <!-- Nombre del producto -->
+        <!-- Nombre del producto 22393139 FGT-->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Nombre del Producto*</label>
           <input
@@ -199,7 +200,7 @@ onMounted(async () => {
           <p v-if="errors.nombre" class="text-red-500 text-sm mt-1">{{ errors.nombre }}</p>
         </div>
 
-        <!-- Descripción del producto. 22393139 -->
+        <!-- Descripción del producto. 22393139 FGT -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Descripción*</label>
           <textarea
@@ -211,7 +212,7 @@ onMounted(async () => {
           <p v-if="errors.descripcion" class="text-red-500 text-sm mt-1">{{ errors.descripcion }}</p>
         </div>
 
-        <!-- Opciones de negociación. 22393139-->
+        <!-- Opciones de negociación. 22393139 FGT-->
         <div class="mb-4 flex items-center">
           <input
             type="checkbox"
@@ -222,7 +223,7 @@ onMounted(async () => {
           <label for="procesoNegociacion" class="text-gray-700">Acepta proceso de negociación</label>
         </div>
 
-        <!-- Tipo de producto . 22393139 -->
+        <!-- Tipo de producto . 22393139 FGT -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Tipo de transacción*</label>
           <select
@@ -234,7 +235,7 @@ onMounted(async () => {
           </select>
         </div>
 
-        <!-- Categorías seleccionadas. 22393139-->
+        <!-- Categorías seleccionadas. 22393139 FGT -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Categorías seleccionadas*</label>
           <div class="flex flex-wrap gap-2 min-h-10 p-2 border rounded-lg" :class="{ 'border-red-500': errors.categorias }">
@@ -256,7 +257,7 @@ onMounted(async () => {
           <p v-if="errors.categorias" class="text-red-500 text-sm mt-1">{{ errors.categorias }}</p>
         </div>
 
-        <!-- Lista de categorías. 22393139-->
+        <!-- Lista de categorías. 22393139 FGT -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Seleccionar categorías*</label>
           <div class="border rounded-lg p-2 max-h-40 overflow-y-auto">
@@ -273,7 +274,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Subida de imágenes. 22393139-->
+        <!-- Subida de imágenes. 22393139 FGT -->
         <div class="mb-6">
           <label class="block text-gray-700 mb-1">Imágenes* (Máx. 7)</label>
           <input
@@ -286,7 +287,7 @@ onMounted(async () => {
           />
           <p v-if="errors.images" class="text-red-500 text-sm mt-1">{{ errors.images }}</p>
 
-          <!-- Vista previa de imágenes. 22393139-->
+          <!-- Vista previa de imágenes. 22393139 FGT -->
           <div v-if="previewImages.length > 0" class="mt-4">
             <div class="flex flex-wrap gap-2">
               <div
@@ -306,7 +307,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Botones. 22393139-->
+        <!-- Botones. 22393139 FGT -->
         <div class="flex justify-end gap-4 pt-4 border-t">
           <button
             type="button"
