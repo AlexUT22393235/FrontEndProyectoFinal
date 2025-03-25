@@ -19,11 +19,7 @@
 
 
     <div class="flex-1 flex flex-col">
-      <header class="bg-[#FAF7EC] shadow-md p-6 flex justify-between items-center">
-        <h1 class="text-2xl font-semibold text-gray-800">Dashboard</h1>
-      </header>
-
-
+      <Navbar/>
       <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 gap-6 ">
 
         <div class=" col-span-2">
@@ -77,6 +73,7 @@
 
 <script setup lang="ts">
 import { getUsersService, deleteUserService } from '@/services/usersService';
+import Navbar from '@/components/Layout/DashboardNavbar.vue'
 import AddUserModal from '@/components/AddUserModal.vue';
 import { ref } from 'vue';
 import axios from 'axios'
@@ -112,8 +109,6 @@ const fetchData = async () => {
 
   const openModal = () => { isModalOpen.value = true; };
   const openEditModal = (id:number) => { isModalOpen.value = true; isEdit.value = true ; editId.value = id};
-
   const closeModal = () => { isModalOpen.value = false; isEdit.value = false ; editId.value = 0; fetchData()};
-
 
 </script>

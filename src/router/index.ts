@@ -83,20 +83,20 @@ const router = createRouter({
       component : () => import ('../views/Admin/Dashboard.vue')
     },
     {
-      path : '/crudcat',
-      name : 'crudcat',
+      path : '/admin/categories',
+      name : 'admincategories',
       component : () => import ('../views/Admin/CrudCategorias.vue')
     },
 
     {
-      path : '/crudprod',
-      name : 'crudprod',
+      path : '/admin/products',
+      name : 'adminproducts',
       component : () => import ('../views/Admin/CrudProducts.vue')
     },
 
     {
-      path : '/crudusers',
-      name : 'crudusers',
+      path : '/admin/users',
+      name : 'adminusers',
       component : () => import ('../views/Admin/CrudUsers.vue')
     },
     {
