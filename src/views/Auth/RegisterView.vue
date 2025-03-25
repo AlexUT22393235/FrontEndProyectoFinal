@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { createUserService } from "@/services/usersService";
 
-
 const router = useRouter();
 
 // Variables reactivas
@@ -63,11 +62,11 @@ const registrarUsuario = async () => {
 </script>
 
 <template>
-  <div class="bg-[#50683E] w-full h-screen flex flex-row">
+  <div class="bg-[#4b6934] w-full h-screen flex flex-row">
     <!-- Lado izquierdo con imagen -->
     <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
-      <div class="w-full h-[50rem] flex flex-col justify-center items-center">
-        <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[50rem] h-[50rem]" />
+      <div class="w-full h-[45rem] flex flex-col justify-center items-center">
+        <img src="@/assets/Images/donate.jpeg" alt="Logo" class="w-[45rem] h-[50rem]" />
       </div>
     </div>
 
@@ -77,7 +76,7 @@ const registrarUsuario = async () => {
         <h1 class="text-3xl font-bold text-[#FAF7EC] text-center">Regístrate</h1>
       </div>
 
-      <div class="bg-[#FAF7EC] w-[30rem] h-[30rem] flex flex-col justify-center items-center p-4">
+      <div class="bg-[#FAF7EC] w-[30rem] h-[30rem] flex flex-col justify-center items-center p-4 rounded-lg">
         <input v-model="nombre" type="text" class="input-field" placeholder="Nombre" />
         <input v-model="apellido" type="text" class="input-field" placeholder="Apellido" />
         <input v-model="telefono" type="text" class="input-field" placeholder="Teléfono" />
@@ -106,8 +105,14 @@ const registrarUsuario = async () => {
 
 <style scoped>
 .main-container {
-  background: url("@/assets/Images/loginBackground.png") center center;
-  background-repeat: repeat;
+  background: url("@/assets/Images/Background.gif") center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.9;
 }
 
 .input-field {
