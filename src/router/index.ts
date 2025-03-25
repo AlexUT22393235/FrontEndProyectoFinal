@@ -7,14 +7,14 @@ import { useAuthStore } from '@/stores/authStore';
 // import { RegisterView } from '../views/Auth/RegisterView.vue'
 // import { ProfileView } from '../views/ProfileView.vue'
 // import { NotFoundView } from '../views/NotFoundView.vue'
-import LandingPage from '../views/LandingPage.vue'
+// import LandingPage from '../views/LandingPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'home-login',
       component: ()=>import('../views/Auth/LoginView.vue'),
     },
     {
@@ -23,9 +23,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/LandingPage.vue'),
-      meta: { requiresAuth: true },
-
+      component: () => import('../views/LandingPage.vue')
     },
     {
       path: '/login',

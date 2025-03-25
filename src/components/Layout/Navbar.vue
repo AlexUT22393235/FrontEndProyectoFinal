@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 const authStore = useAuthStore();
 
+
 const handleLogout = () => {
-  authStore.logout();
+ authStore.logout();
 };
 
 </script>
@@ -14,7 +14,7 @@ const handleLogout = () => {
     <nav class="nav-links">
       <RouterLink to="/landing">Inicio</RouterLink>
       <RouterLink to="/negotiating">Negociando</RouterLink>
-      <RouterLink to="/search">Productos</RouterLink> <!-- Pendiente?  Actualmente envia a search-->
+      <RouterLink to="/products">Productos</RouterLink> <!-- Pendiente?  Actualmente envia a search-->
       <RouterLink to="/categories">Categorias</RouterLink> <!-- Pendiente? Actualmente envia a search-->
 
       <!-- Las paginas que actualmente envian a search pueden ser ajustadas al momento de consumir para solo agregar ternarios -->

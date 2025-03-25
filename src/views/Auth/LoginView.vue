@@ -2,27 +2,30 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
+import { storeToRefs } from 'pinia';
+
 
 const email = ref('');
 const password = ref('');
 const loginError = ref('');
 const router = useRouter();
 const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 const handleLogin = async () => {
   loginError.value = '';
   try {
     const success = await authStore.login(email.value, password.value);
     if (success) {
-      // Redirigir al usuario a la página principal o a la que corresponda
-      router.push('/');
+      console.log('ID del usuario:', user.value?.id);
+      router.push('/landing');
     } else {
       loginError.value = 'Error al iniciar sesión. Credenciales incorrectas.';
     }
   } catch (error: any) {
     loginError.value = error.message || 'Error al iniciar sesión.';
   }
-};
+}; 
 </script>
 <template>
   <container class="bg-[#50683E] w-full h-full flex flex-row">

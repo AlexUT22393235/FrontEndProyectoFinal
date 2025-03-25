@@ -1,4 +1,5 @@
 export interface ICategory {
   idCategoria: number,
-  nombre: string
+  nombre: string,
+  imagenCategoria: string
 }

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-  import ProductCard from '@/components/ProductCard.vue';
+
+import ProductCard from '@/components/ProductCard.vue';
 import { getProductsService } from '@/services/productService';
 import { useRoute } from 'vue-router';
 import axios from 'axios'
@@ -139,8 +140,6 @@ const filtered = computed(() => {
   return filteredData;
 });
 
-
-
 </script>
 <template>
 <div class=" bg-[#6d805c]">
@@ -212,15 +211,20 @@ const filtered = computed(() => {
       No hay nada
     </p>
 
-    <ProductCard v-for="(item, index) in filtered" :key="index" >
+    <ProductCard
+      v-for="(item, index) in filtered"
+      :key="index"
+      :imgSrc="item.imagenes[0].urlImagen"
+      >
       <template v-slot:title>
-        {{ item.nombre }}
+        {{ item?.nombre }}
       </template>
 
       <template v-slot:description>
-        {{ item.descripcion }}
+        {{ item?.descripcion }}
       </template>
     </ProductCard>
+
   </div>
 </template>
 
