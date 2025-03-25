@@ -11,7 +11,9 @@ const handleLogout = () => {
   <div class="navbar">
     <!-- Logo alineado a la izquierda -->
     <div class="logo-container">
-      <img src="@/assets/Images/logostrade.png" alt="Logo Strade" class="logo">
+      <img src="@/assets/Images/logostrade.png" alt="Logo Strade" class="logo"> <h1 class="text-2xl font-bold text-green-900 pl-4">
+        STRADE
+      </h1>
     </div>
 
     <!-- Enlaces de navegación centrados -->
