@@ -24,8 +24,14 @@
     <div class="w-full max-w-7xl p-8 flex flex-col md:flex-row gap-8">
      <!-- Historial de Intercambios -->
       <div class="w-full md:w-1/2">
-        <h2 class="text-3xl font-bold mb-6 text-center md:text-left">Historial de Intercambios</h2>
-        <ExchangeHistory :exchanges="exchanges" />
+        <div class="w-full flex justify-between items-center mb-3">
+          <h2 class="text-3xl font-bold md:text-left">{{ showNegotiate === false ? 'Historial de Intercambios' : 'Articulos en Negociación' }}</h2>
+          <button @click="showNegotiate = !showNegotiate" class=" px-6 py-1 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
+            {{ showNegotiate === false ? 'En negociación' : 'Historial' }}
+          </button>
+        </div>
+        <ExchangeHistory v-if="showNegotiate===false" :exchanges="exchanges" />
+        <NegotiationSector :data="data" v-else/>
       </div>
 
       <!-- Historial de Valoraciones -->
@@ -44,15 +50,18 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
-
+import { getProductsService } from '@/services/productService';
+import type { IProduct } from '@/interfaces/IProduct';
 
 import AddProductModal from '@/components/AddProductModal.vue';
 import ExchangeHistory from '@/components/ExchangeHistory.vue';
+import NegotiationSector from '@/components/NegotiationSector.vue';
 import Valorations from '@/components/Valorations.vue';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
+const showNegotiate = ref(false);
 
 const userData = ref(null);
 
@@ -84,6 +93,26 @@ const fetchUserData = async () => {
   }
 };
 
+const data = ref<IProduct[]>([]);
+const fetchData = async () => {
+    try {
+      const response = await getProductsService()
+      const asorted = response.sort(
+      (a:IProduct, b:IProduct) =>
+        new Date(b.fechaCreacion).getTime() -
+        new Date(a.fechaCreacion).getTime()
+    );
+      data.value = asorted.filter((item:IProduct) => item.procesoNegociacion == true)
+    } catch (error) {
+      if(axios.isAxiosError(error)){
+        console.log(error.message)
+      } else{
+        console.error(error)
+      }
+    }
+  }
+
+  fetchData();
 
 onMounted(fetchUserData);
 

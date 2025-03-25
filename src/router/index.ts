@@ -34,7 +34,7 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('../views/Auth/RegisterView.vue'),
-      
+
 
     },
 
@@ -48,7 +48,7 @@ const router = createRouter({
       path: '/about',
       name:'about',
       component: () => import ('../views/AboutUs.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: false }
     },
 
     {
@@ -61,31 +61,31 @@ const router = createRouter({
       path: '/products',             //  22393264
       name:'products',
       component: () => import ('../views/SearchPage.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: false }
     },
     {
       path: '/search/:busqueda',     //  22393264
       name:'search',
       component: () => import ('../views/SearchPage.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: false }
     },
     {
       path: '/categories',
       name:'categories',
       component: () => import ('../views/Categories.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: false }
     },
     {
       path: '/categories/:busqueda',//  22393264
       name:'category',
       component: () => import ('../views/SearchPage.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: false }
     },
     {
       path: '/profile',
       name:'profile',
       component: () => import ('../views/UserProfileView.vue'),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false },
     },
     {
       path : '/admin',
