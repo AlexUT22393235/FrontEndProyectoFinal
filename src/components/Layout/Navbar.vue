@@ -28,7 +28,7 @@ const handleLogout = () => {
       <button @click="handleLogout" class="logout-button">Cerrar Sesión</button>
       <RouterLink to="/profile">
         <div class="relative bg-yellow-500 w-[4vh] h-[4vh] rounded-full">
-          <img src="https://ninguno.com.mx" alt="Foto de perfil" class="" />
+          <img src="" alt="Foto de perfil" class="profile-pic" />
         </div>
       </RouterLink>
     </div>

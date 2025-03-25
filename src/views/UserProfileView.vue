@@ -1,13 +1,23 @@
 <template>
   <div class="bg-[#5B735D] flex flex-col md:flex-row w-full h-auto items-center justify-center px-10 py-12">
     <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-40 h-40 md:w-60 md:h-60 rounded-full shadow-lg" />
-    <div class="text-center md:text-left md:ml-10 text-4xl text-[#FAF7EC]">
-      {{ userData?.nombre || 'Nombre de Usuario' }} {{ userData?.apellido || '' }}
+     <!-- Datos del perfil del usuario -->
+     <div v-if="userProfile" class="mt-8 md:mt-0 md:ml-10 text-center md:text-left">
+      <!-- Nombre del perfil -->
+      <h2 class="text-3xl font-bold text-white mb-2">{{ userProfile.nombrePerfil }}</h2>
 
-      <p class="text-white text-lg mt-4 max-w-xl leading-relaxed">
-        Descripción del usuario. Información relevante sobre su perfil, habilidades o intereses.
-      </p>
+      <!-- Imagen de perfil -->
+      <img :src="userProfile.imagenPerfil" alt="Imagen de perfil" class="rounded-full w-32 h-32 object-cover border-4 border-white shadow-lg mx-auto md:mx-0" />
+
+      <!-- Descripción del perfil -->
+      <p class="text-lg text-white mt-4">{{ userProfile.descripcion }}</p>
     </div>
+
+    <!-- Mensaje si no se encuentra el perfil -->
+    <div v-else>
+      <p class="text-white">No se encontró un perfil para este usuario.</p>
+    </div>
+ 
   </div>
 
 
@@ -63,66 +73,72 @@ const { user } = storeToRefs(authStore);
 
 const showNegotiate = ref(false);
 
-const userData = ref(null);
-
-console.log('🔹 ID del usuario desde el token:', user.value?.id);
-
+console.log('ID del usuario desde el token:', user.value?.id);
 
 const fetchUserData = async () => {
   if (!user.value?.id) {
-    console.error('⚠ No se encontró el ID del usuario en el token.');
+    console.error('No se encontró el ID del usuario en el token.');
     return;
   }
 
   try {
-    const response = await axios.get('https://localhost:7140/api/Usuario');
-
-    console.log(' Datos obtenidos de la API:', response.data);
+    const response = await axios.get('https://localhost:7140/api/Perfil');
+    console.log('Datos obtenidos de la API de perfil:', response.data);
 
     if (response.status === 200) {
       const userId = Number(user.value?.id);
-      const foundUser = response.data.find((u: any) => Number(u.idUsuario) === userId);
+      const profile = response.data.find((profile: any) => Number(profile.usuarioId) === userId);
 
-      console.log(' ID del usuario filtrado:', userId);
-      console.log(' Usuario encontrado:', foundUser);
+      console.log('ID del usuario filtrado:', userId);
+      console.log('Perfil del usuario encontrado:', profile);
 
-      userData.value = foundUser ?? null;
+      if (profile) {
+        // Asignar los datos al ref userProfile
+        userProfile.value = {
+          idPerfil: profile.idPerfil,
+          usuarioId: profile.usuarioId,
+          imagenPerfil: profile.imagenPerfil,
+          nombrePerfil: profile.nombrePerfil,
+          descripcion: profile.descripcion,
+        };
+      } else {
+        console.log('No se encontró un perfil para este usuario.');
+        console.log('Datos asignados a userProfile:', userProfile.value);
+        userProfile.value = null;
+      }
     }
   } catch (error) {
-    console.error(' Error obteniendo datos del usuario:', error);
+    console.error('Error obteniendo datos del perfil:', error);
+    userProfile.value = null;
   }
 };
 
 const data = ref<IProduct[]>([]);
+
 const fetchData = async () => {
     try {
-      const response = await getProductsService()
+      const response = await getProductsService();
       const asorted = response.sort(
-      (a:IProduct, b:IProduct) =>
-        new Date(b.fechaCreacion).getTime() -
-        new Date(a.fechaCreacion).getTime()
-    );
-      data.value = asorted.filter((item:IProduct) => item.procesoNegociacion == true)
+        (a:IProduct, b:IProduct) =>
+          new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime()
+      );
+      data.value = asorted.filter((item:IProduct) => item.procesoNegociacion == true);
     } catch (error) {
       if(axios.isAxiosError(error)){
-        console.log(error.message)
+        console.log(error.message);
       } else{
-        console.error(error)
+        console.error(error);
       }
     }
-  }
+}
 
-  fetchData();
-
+fetchData();
 onMounted(fetchUserData);
-
 
 const isModalOpen = ref(false);
 
-
 const openModal = () => (isModalOpen.value = true);
 const closeModal = () => (isModalOpen.value = false);
-
 
 const handleSubmit = (product: any) => {
   console.log('🛍 Producto agregado:', product);
@@ -144,4 +160,16 @@ const exchanges = ref([
     image: 'https://gorilagames.com/img/Public/1019-producto-joystick-control-xbox-series-carbon-black-1-145.jpg',
   },
 ]);
+
+// Definir el tipo UserProfile
+interface UserProfile {
+  idPerfil: number;
+  usuarioId: number;
+  imagenPerfil: string;
+  nombrePerfil: string;
+  descripcion: string;
+}
+
+// Cambiar el nombre de userData a userProfile
+const userProfile = ref<UserProfile | null>(null);
 </script>
