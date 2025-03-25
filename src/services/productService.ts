@@ -7,11 +7,15 @@ export const getProductsService = async () => {
   return await genericRequest(base_url + '/producto', 'GET')
 };
 
+export const getProductByIdService = async (id: number) => {
+  return await genericRequest(`${base_url}/producto/detail/${id}`, 'GET');
+};
+
+export const deleteProductService = async (id:number) => {
+  return await genericRequest(base_url + `/producto/${id}`, 'DELETE')
+}
 
 export const postProductService = async (data: any) => {
   return await genericRequest(base_url + '/producto', 'POST', data);
 };
 
-export const getProductByIdService = async (id: number) => {
-  return await genericRequest(`${base_url}/producto/detail/${id}`, 'GET');
-};
