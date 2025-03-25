@@ -314,7 +314,7 @@ onMounted(async () => {
             @click="emit('close')"
             class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             :disabled="isLoading"
-          >
+          > 
             Cancelar
           </button>
           <button

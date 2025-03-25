@@ -1,5 +1,5 @@
 // src/interfaces/IProductCreate.ts
-export interface IProductCreate {
+export interface IProductCreate {  
     nombre: string;
     descripcion: string;
     procesoNegociacion: boolean;
