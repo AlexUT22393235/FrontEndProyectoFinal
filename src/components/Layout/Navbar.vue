@@ -58,6 +58,7 @@ const handleLogout = () => {
 
 .nav-links {
   display: flex;
+  color: #638354;
   gap: 20px;
   justify-content: center; /* Centrar los enlaces */
   align-items: center;
