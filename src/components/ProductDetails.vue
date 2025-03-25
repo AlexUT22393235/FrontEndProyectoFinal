@@ -6,24 +6,36 @@
       <!-- Columna Izquierda: Imagen y Título. Con estilo Tailwind, Fernando Gomez Toledo 22393139 -->
       <div class="left-column w-full">
         <div class="product-image">
-          <img :src="product.image" :alt="product.name" class="main-image w-full h-auto rounded-lg shadow-md" />
+          <img 
+            :src="product.imagenes[0]?.urlImagen" 
+            :alt="product.nombre" 
+            class="main-image w-full h-auto rounded-lg shadow-md" 
+          />
         </div>
       </div>
 
       <!-- Columna Derecha: Descripción y Botón. Con estilo Tailwind, Fernando Gomez Toledo 22393139 -->
       <div class="right-column w-full">
-        <h1 class="product-title text-2xl text-center mt-2">{{ product.name }}</h1>
-        <p class="user text-sm text-gray-500 mt-4">Publicado por: {{ product.user }}</p>
-        <p class="description text-sm text-gray-600 mt-6 text-justify">{{ product.description }}</p>
-        <button class="whatsapp-button w-full bg-[#5B735D] text-white py-3 px-5 rounded-md mt-20 hover:bg-[#128c7e] transition-colors duration-300">
+        <h1 class="product-title text-2xl text-center mt-2">{{ product.nombre }}</h1>
+        <p class="user text-sm text-gray-500 mt-4">
+          Publicado por: {{ user.nombre }} {{ user.apellido }}
+        </p>
+        <p class="description text-sm text-gray-600 mt-6 text-justify">
+          {{ product.descripcion }}
+        </p>
+        <button 
+          @click="$emit('contact-whatsapp')"
+          class="whatsapp-button w-full bg-[#5B735D] text-white py-3 px-5 rounded-md mt-20 hover:bg-[#128c7e] transition-colors duration-300"
+        >
           Contactar por WhatsApp
         </button>
       </div>
     </div>
 
     <!-- Carrusel de Imágenes -->
-    <div class="carousel-container w-full mt-5">
-      <Carousel :images="product.images" />
+    <div v-if="product.imagenes && product.imagenes.length > 1" class="carousel-container w-full mt-5">
+      
+      <Carousel :imagenes="product.imagenes.map(img => img.urlImagen)" />
     </div>
   </div>
 </template>
@@ -31,20 +43,27 @@
   <script lang="ts">
   import { defineComponent } from 'vue';
   import Carousel from './Carousel.vue';
+  import type { IProduct } from '../interfaces/IProduct';
+  import type { IUsuario } from '../interfaces/IUsuario';
 
   export default defineComponent({
-    name: 'ProductDetails',
-    components: {
-      Carousel,
+  name: 'ProductDetails',
+  components: {
+    Carousel,
+  },
+  props: {
+    product: {
+      type: Object as () => IProduct,
+      required: true,
     },
-    props: {
-      product: {
-        type: Object,
-        required: true,
-      },
+    user: {
+      type: Object as () => IUsuario,
+      required: true,
     },
-  });
-  </script>
+  },
+  emits: ['contact-whatsapp'],
+});
+</script>
 
   <style scoped>
   

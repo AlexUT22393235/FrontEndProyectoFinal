@@ -1,7 +1,7 @@
 <template>
   <!-- Utilización de Tailwind en cards de fotos de angulos de producto, Fernando Gomez Toledo 22393139 -->
   <div class="carousel flex overflow-x-auto gap-5 p-2 mt-5">
-    <div v-for="(image, index) in images" :key="index" class="carousel-item flex-none">
+    <div v-for="(image, index) in imagenes" :key="index" class="carousel-item flex-none">
       <div class="card border border-gray-300 rounded-lg overflow-hidden shadow-md transform transition-transform duration-300 hover:translate-y-[-5px]">
         <img :src="image" :alt="'Imagen ' + (index + 1)" class="carousel-image w-48 h-36 object-cover" />
       </div>
@@ -19,7 +19,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Carousel',
   props: {
-    images: {
+    imagenes: {
       type: Array as () => string[],
       required: true,
     },
