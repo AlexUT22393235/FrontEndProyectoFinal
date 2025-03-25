@@ -23,6 +23,9 @@
         <h1 class="text-2xl font-semibold text-gray-800">{{ activeMenu.name }}</h1>
       </header>
 
+    <div class="flex-1 flex flex-col">
+      <Navbar/>
+
 
       <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-[#D4E0CD] p-6 rounded-lg shadow-md">
@@ -51,6 +54,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import Navbar from '@/components/Layout/DashboardNavbar.vue'
 import * as echarts from "echarts";
 
 // Menú lateral
