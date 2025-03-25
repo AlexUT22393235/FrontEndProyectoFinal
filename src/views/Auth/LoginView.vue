@@ -74,8 +74,8 @@ const handleLogin = async () => {
   background: url('@/assets/Images/Background.gif') center center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%; /* Asegura que el contenedor tenga la altura completa */
-  display: flex; /* Asegura que los elementos internos se alineen correctamente */
+  height: 100%;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   opacity: 0.9;
