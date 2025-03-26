@@ -64,7 +64,7 @@ const handleLogin = async () => {
 
 
 <template>
-  <div class="bg-[#4b6934] w-full h-screen flex flex-row">
+  <div class="bg-[#4b6934] w-full h-screen flex flex-row justify-center items-center">
     <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
       <div class="w-[40rem] h-[40rem]">
         <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[40rem] h-[40rem]" />
@@ -113,6 +113,7 @@ const handleLogin = async () => {
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   opacity: 0.9;
 }
