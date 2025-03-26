@@ -22,6 +22,9 @@
       <button class="text-sm font-semibold py-1 px-2 bg-black text-white rounded-xl w-fit h-fit text-center">
         Etiqueta
       </button>
+      <slot name="boton">
+
+      </slot>
     </div>
   </RouterLink>
 </template>
