@@ -1,22 +1,65 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+
 const authStore = useAuthStore();
+const user = ref<{
+  id: number;
+  nombre: string;
+  fotoPerfil?: string;
+  userProfile?: {
+    idPerfil: number;
+    imagenPerfil: string;
+  };
+} | null>(null); // Cambiado a `null` inicialmente para evitar acceso a propiedades de `undefined`
 
 const handleLogout = () => {
   authStore.logout();
 };
+
+const fetchUserDetails = async (usuarioId: number) => {
+  try {
+    console.log('Fetching user details for usuarioId:', usuarioId);
+
+    const userResponse = await axios.get(`https://localhost:7140/api/Usuario/${usuarioId}`);
+    if (userResponse.data) {
+      user.value = userResponse.data;
+    }
+
+    const profileResponse = await axios.get(`https://localhost:7140/api/Perfil/${usuarioId}`);
+    if (user.value) {
+      user.value.userProfile = profileResponse.data;
+    }
+
+    console.log('User data received:', user.value);
+  } catch (error) {
+    console.error('Error al obtener los datos del usuario o perfil:', error);
+  }
+};
+
+onMounted(() => {
+  const userId = authStore.user?.id; // Obtener directamente el ID del usuario autenticado
+  console.log('Usuario logeado ID:', userId); // Verificar si se está obteniendo el ID del usuario correctamente
+  if (userId) {
+    fetchUserDetails(userId);
+  } else {
+    console.log('No se encontró un usuarioId válido.');
+  }
+});
+
 </script>
+
 
 <template>
   <div class="navbar">
-    <!-- Logo alineado a la izquierda -->
     <div class="logo-container">
       <img src="@/assets/Images/logostrade.png" alt="Logo Strade" class="logo"> <h1 class="text-2xl font-bold text-green-900 pl-4">
         STRADE
       </h1>
     </div>
 
-    <!-- Enlaces de navegación centrados -->
     <nav class="nav-links">
       <RouterLink to="/landing">Inicio</RouterLink>
       <RouterLink to="/negotiating">Negociando</RouterLink>
@@ -25,14 +68,21 @@ const handleLogout = () => {
       <RouterLink to="/about">Nosotros</RouterLink>
     </nav>
 
-    <!-- Botón de cerrar sesión y foto de perfil alineados a la derecha -->
+
     <div class="right-align">
       <button @click="handleLogout" class="logout-button">Cerrar Sesión</button>
-      <RouterLink to="/profile">
-        <div class="relative bg-yellow-500 w-[4vh] h-[4vh] rounded-full">
-          <img src="" alt="Foto de perfil" class="profile-pic" />
-        </div>
-      </RouterLink>
+
+
+                  <RouterLink :to="authStore.user?.id ? `/perfil/${authStore.user?.id}` : '/login'">
+                    <div class="relative bg-yellow-500 w-[4vh] h-[4vh] rounded-full">
+                      <img
+                        :src="user?.userProfile?.imagenPerfil"
+                        alt="Foto de perfil"
+                        class="w-full h-full object-cover rounded-full" 
+                      />
+                    </div>
+                  </RouterLink>
+
     </div>
   </div>
 </template>
