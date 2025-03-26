@@ -69,8 +69,8 @@ const registrarUsuario = async () => {
   <div class="bg-[#4b6934] w-full h-screen flex flex-row">
     <!-- Lado izquierdo con imagen -->
     <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
-      <div class="w-full h-[45rem] flex flex-col justify-center items-center">
-        <img src="@/assets/Images/donate.jpeg" alt="Logo" class="w-[45rem] h-[50rem]" />
+      <div class="w-[40rem] h-[40rem]">
+        <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[40rem] h-[40rem]" />
       </div>
     </div>
 
@@ -109,7 +109,7 @@ const registrarUsuario = async () => {
 
 <style scoped>
 .main-container {
-  background: url("@/assets/Images/Background.gif") center center;
+  background: url("@/assets/Images/nuevo.png") center center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 100%;
