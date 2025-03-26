@@ -48,7 +48,7 @@
         </div>
         <ExchangeHistory v-if="showNegotiate===false" :exchanges="exchanges" />
 
-        <NegotiationSector :data="data" v-else/>
+        <NegotiationSector :data="data" @remove-product="removeProduct" v-else/>
       </div>
 
       <!-- Historial de Valoraciones -->
@@ -134,10 +134,9 @@ const data = ref<IProduct[]>([]);
 const fetchData = async () => {
   try {
     const response = await getProductsService();
-    const asorted = response.sort(
-      (a: IProduct, b: IProduct) =>
-        new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime()
-    );
+    const asorted = response.filter((product: IProduct) => product.fechaCreacion)
+      .sort( (a: IProduct, b: IProduct) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime()
+  );
     data.value = asorted.filter((item: IProduct) => item.procesoNegociacion == true);
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -150,6 +149,10 @@ const fetchData = async () => {
 
 fetchData();
 onMounted(fetchUserData);
+
+const removeProduct = (id: number) => {
+  data.value = data.value.filter((item) => item.idProducto !== id);
+};
 
 
 const openEditModal = () => (isEditModalOpen.value = true);

@@ -25,7 +25,7 @@ import type { IProduct } from '@/interfaces/IProduct';
   const fetchData = async () => {
     try {
       const response = await getProductsService()
-      data.value = response
+      data.value = response.filter((product: IProduct) => product.fechaCreacion)
     } catch (error) {
       if(axios.isAxiosError(error)){
         console.log(error.message)
@@ -219,7 +219,7 @@ const filtered = computed(() => {
       :key="index"
       :id="item.idProducto"
       :imgSrc="item.imagenes[0].urlImagen"
-
+      :categories="item.categorias"
       >
       <template v-slot:title>
         {{ item?.nombre }}

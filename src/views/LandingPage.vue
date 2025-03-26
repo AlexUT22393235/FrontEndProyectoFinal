@@ -9,7 +9,7 @@ const data = ref();
 const fetchData = async () => {
     try {
       const response = await getProductsService()
-      data.value = response.sort(
+      data.value = response.filter((product: IProduct) => product.fechaCreacion).sort(
       (a:IProduct, b:IProduct) =>
         new Date(b.fechaCreacion).getTime() -
         new Date(a.fechaCreacion).getTime()
@@ -246,6 +246,7 @@ const fetchData = async () => {
           :key="index"
           :id="item.idProducto"
           :imgSrc="item.imagenes[0].urlImagen"
+          :categories="item.categorias"
           >
           <template v-slot:title>
             {{ item?.nombre }}

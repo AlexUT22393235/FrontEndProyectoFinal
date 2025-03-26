@@ -16,25 +16,21 @@
       </p>
     </div>
     <div class="w-full h-[12.5%] flex flex-wrap px-[2rem] py-2 gap-1">
-      <button class="text-sm font-semibold py-1 px-2 bg-black text-white rounded-xl w-fit h-fit text-center">
-        Etiqueta
+      <button v-for="(item, index) in categories.slice(0,4)" :key="index" class="text-sm font-semibold py-1 px-2 bg-black text-white rounded-xl w-fit h-fit text-center">
+        {{ item.nombre }}
       </button>
-      <button class="text-sm font-semibold py-1 px-2 bg-black text-white rounded-xl w-fit h-fit text-center">
-        Etiqueta
-      </button>
-      <slot name="boton">
-
-      </slot>
     </div>
   </RouterLink>
 </template>
 
 <script lang="ts" setup>
+import type { ICategory } from '@/interfaces/ICategory';
 import { RouterLink } from 'vue-router';
 
   const props = defineProps<{
       imgSrc: string;
       id: number;
+      categories: ICategory[];
     }>();
     console.log(props.imgSrc)
 </script>
