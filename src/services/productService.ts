@@ -13,9 +13,12 @@ export const getProductByIdService = async (id: number) => {
   return await genericRequest(`${base_url}/producto/detail/${id}`, 'GET');
 };
 
+
 // Obtener usuario por ID. 22393139 FGT
 export const getUserByIdService = async (id: number) => {
-  return await genericRequest(`${base_url}/Usuario/${id}`, 'GET');
+  const response = await genericRequest(`${base_url}/Usuario/${id}`, 'GET');
+  if (!response.data) throw new Error('Usuario no encontrado');
+  return response;
 };
 
 
