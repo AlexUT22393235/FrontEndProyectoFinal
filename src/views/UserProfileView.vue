@@ -9,7 +9,7 @@
       <!-- Descripción del perfil -->
       <p class="text-lg text-white mt-4">{{ userProfile.descripcion }}</p>
     </div>
-    <div class="pl-10">
+    <div class="pl-10 flex flex-row gap-3">
       <button
   v-if="isCurrentUser"
   @click="openEditModal"
@@ -17,7 +17,20 @@
 >
   Editar Perfil
 </button>
-
+<button
+  v-if="isCurrentUser"
+  @click="openDeleteModal"
+  class="mt-4 px-6 py-2 bg-[#cca4bb] text-white rounded-lg hover:bg-[#3A4D3A] "
+>
+  Eliminar mi cuenta
+</button>
+<button
+  v-else
+  @click="openReportModal"
+  class="mt-4 px-6 py-2 bg-[#cca4bb] text-white rounded-lg hover:bg-[#3A4D3A] "
+>
+  Reportar cuenta
+</button>
     </div>
       </div>
 
@@ -32,6 +45,19 @@
   @close="closeEditModal"
   @submit="handleEditSubmit"
 />
+<DeleteProfileModal
+  v-if="isDeleteModalOpen && userProfile"
+  :userProfile="userProfile"
+  @close="closeDeleteModal"
+  @confirm="handleDeleteProfile"
+/>
+<ReportModal
+  v-if="isReportModalOpen && userProfile"
+  :userProfile="userProfile"
+  @close="closeReportModal"
+  @submit="handleReportSubmit"
+/>
+
   <div class="bg-[#f5f7ea] flex flex-col w-full items-center justify-center p-8">
     <button @click="openModal" class="mt-8 px-6 py-3 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
       Agregar Producto
@@ -74,10 +100,14 @@ import AddProductModal from '@/components/AddProductModal.vue';
 import ExchangeHistory from '@/components/ExchangeHistory.vue';
 import NegotiationSector from '@/components/NegotiationSector.vue';
 import Valorations from '@/components/Valorations.vue';
+import DeleteProfileModal from '@/components/DeleteProfileModal.vue';
+import ReportModal from '@/components/ReportModal.vue';
 import EditProfileModal from '@/components/EditProfileModal.vue';
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 const showNegotiate = ref(false);
+const isDeleteModalOpen = ref(false);
+const isReportModalOpen = ref(false);
 const isEditModalOpen = ref(false); // Controla la visibilidad del modal de edición
 const route = useRoute();
 const profileIdFromUrl = ref(Number(route.params.id)); // Esto obtiene el ID de la URL
@@ -151,7 +181,13 @@ const removeProduct = (id: number) => {
 
 
 const openEditModal = () => (isEditModalOpen.value = true);
+const openReportModal = () => (isReportModalOpen.value = true);
+const openDeleteModal = () => (isDeleteModalOpen.value = true);
 const closeEditModal = () => (isEditModalOpen.value = false);
+const closeDeleteModal = () => (isDeleteModalOpen.value = false);
+const closeReportModal = () => (isReportModalOpen.value = false);
+
+
 import { watch } from 'vue';
 
 watch([userProfile, user], ([newProfile, newUser]) => {
@@ -166,6 +202,28 @@ watch([userProfile, user], ([newProfile, newUser]) => {
 
 
 const handleEditSubmit = async (updatedProfile: UserProfile) => {
+  try {
+    const response = await axios.put(`https://localhost:7140/api/Perfil/${updatedProfile.idPerfil}`, updatedProfile);
+    if (response.status === 200) {
+      userProfile.value = updatedProfile;
+      closeEditModal();
+    }
+  } catch (error) {
+    console.error('Error actualizando el perfil:', error);
+  }
+};
+const handleDeleteProfile = async (updatedProfile: UserProfile) => {
+  try {
+    const response = await axios.put(`https://localhost:7140/api/Perfil/${updatedProfile.idPerfil}`, updatedProfile);
+    if (response.status === 200) {
+      userProfile.value = updatedProfile;
+      closeEditModal();
+    }
+  } catch (error) {
+    console.error('Error actualizando el perfil:', error);
+  }
+};
+const handleReportSubmit = async (updatedProfile: UserProfile) => {
   try {
     const response = await axios.put(`https://localhost:7140/api/Perfil/${updatedProfile.idPerfil}`, updatedProfile);
     if (response.status === 200) {
