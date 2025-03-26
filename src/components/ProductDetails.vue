@@ -1,5 +1,5 @@
 <template>
-  <div class="product-details flex flex-col gap-5 p-5 h-screen">
+  <div class="product-details flex flex-col gap-5 p-5 ">
     <div class="w-[12rem] flex items-center gap-4 pl-20">
 
   <svg
