@@ -215,7 +215,9 @@ const filtered = computed(() => {
     <ProductCard
       v-for="(item, index) in filtered"
       :key="index"
+      :id="item.idProducto"
       :imgSrc="item.imagenes[0].urlImagen"
+
       >
       <template v-slot:title>
         {{ item?.nombre }}

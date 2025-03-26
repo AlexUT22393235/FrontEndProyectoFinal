@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#C4D8BA] w-full h-[55vh] rounded-xl transition-all duration-300 hover:scale-105">
+  <RouterLink :to="`/products/${props.id}`" class="bg-[#C4D8BA] w-full h-[55vh] rounded-xl transition-all duration-300 hover:scale-105">
     <div class="w-full pt-4 h-[70%] flex items-center justify-center">
       <div class="w-[18rem] h-[18rem] bg-white rounded-xl flex items-center justify-center shadow-lg">
         <img
@@ -23,12 +23,15 @@
         Etiqueta
       </button>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <script lang="ts" setup>
+import { RouterLink } from 'vue-router';
+
   const props = defineProps<{
       imgSrc: string;
+      id: number;
     }>();
     console.log(props.imgSrc)
 </script>

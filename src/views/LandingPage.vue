@@ -6,7 +6,6 @@ import axios from 'axios'
 import type { IProduct } from '@/interfaces/IProduct';
 
 const data = ref();
-
 const fetchData = async () => {
     try {
       const response = await getProductsService()
@@ -245,6 +244,7 @@ const fetchData = async () => {
         <ProductCard
           v-for="(item, index) in data"
           :key="index"
+          :id="item.idProducto"
           :imgSrc="item.imagenes[0].urlImagen"
           >
           <template v-slot:title>
