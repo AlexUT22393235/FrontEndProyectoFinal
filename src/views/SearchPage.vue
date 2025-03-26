@@ -219,7 +219,7 @@ const filtered = computed(() => {
       :key="index"
       :id="item.idProducto"
       :imgSrc="item.imagenes[0].urlImagen"
-
+      :categories="item.categorias"
       >
       <template v-slot:title>
         {{ item?.nombre }}
