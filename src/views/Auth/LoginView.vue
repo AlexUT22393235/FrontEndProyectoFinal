@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import { useToast } from 'vue-toastification';
+import axios from 'axios';
 
 const email = ref('');
 const password = ref('');
@@ -14,24 +15,52 @@ const toast = useToast();
 
 const handleLogin = async () => {
     try {
+        console.log('Iniciando proceso de login...');
         const response = await authStore.login(email.value, password.value);
-
         if (!response.success) {
             toast.error(response.message || 'Error al iniciar sesión. Inténtalo nuevamente.');
             return;
         }
+        console.log('Login exitoso, ID del usuario:', user.value?.id);
+        toast.success('Inicio de sesión exitoso!');
+        console.log('Consultando usuarios...');
+        const usuariosResponse = await axios.get('https://localhost:7140/api/Usuario');
+        console.log('Usuarios obtenidos:', usuariosResponse.data);
 
-        console.log('ID del usuario:', user.value?.id);
-        router.push('/landing');
+        const usuario = usuariosResponse.data.find((u: any) => Number(u.idUsuario) === Number(user.value?.id));
+        if (!usuario) {
+            console.log('Usuario no encontrado en la lista de usuarios.');
+            toast.error('Usuario no encontrado');
+            return;
+        }
+        console.log('Consultando perfil...');
+        try {
+            const perfilResponse = await axios.get(`https://localhost:7140/api/Perfil/${user.value?.id}`);
+            console.log('Respuesta del perfil:', perfilResponse);
+
+            if (perfilResponse.status === 200 && perfilResponse.data) {
+
+                console.log('Usuario tiene perfil, redirigiendo a /landing...');
+                router.push('/landing');
+            }
+        } catch (perfilError) {
+            if (perfilError.response?.status === 404) {
+
+                console.log('Usuario no tiene perfil, redirigiendo a strade...');
+                router.push('/createProfile');
+            } else {
+                console.error('Error al consultar el perfil:', perfilError);
+                toast.error('Error al consultar el perfil.');
+            }
+        }
     } catch (error) {
         console.error('Error de autenticación:', error);
         toast.error('Ocurrió un problema al iniciar sesión.');
     }
 };
-
-
-
 </script>
+
+
 
 
 <template>
