@@ -67,14 +67,14 @@ const registrarUsuario = async () => {
 
 <template>
   <div class="bg-[#4b6934] w-full h-screen flex flex-row">
-    <!-- Lado izquierdo con imagen -->
+
     <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
       <div class="w-[40rem] h-[40rem]">
         <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[40rem] h-[40rem]" />
       </div>
     </div>
 
-    <!-- Lado derecho con formulario -->
+   
     <div class="main-container flex flex-col justify-center items-center w-1/2 h-[50rem] bg-[#50683E]">
       <div class="m-4 p-4">
         <h1 class="text-3xl font-bold text-[#FAF7EC] text-center">Regístrate</h1>

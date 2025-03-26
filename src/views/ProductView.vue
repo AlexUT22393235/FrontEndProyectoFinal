@@ -3,9 +3,12 @@
     <ProductDetails
       v-if="product"
       :product="product"
+      @contact-whatsapp="showWhatsAppModal"
     />
+    <div v-else-if="loading" class="loading">Cargando producto...</div>
+    <div v-else-if="error" class="error">{{ error }}</div>
     <!-- @contact-whatsapp="showWhatsAppModal" Este debe estar arriba justo abajo de :product="product" -->
-     
+
 
     <!-- <div v-else-if="loading" class="loading">Cargando producto...</div>
     <div v-else-if="error" class="error">{{ error }}</div> -->
@@ -25,23 +28,40 @@
 </template>
 
 <script setup lang="ts">
+import type { IProductDetail } from '../interfaces/IProductDetail';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import ProductDetails from '../components/ProductDetails.vue';
 import { useProductStore } from '../stores/productStore';
-
+const product = ref<IProductDetail | null>(null);
 const productStore = useProductStore();
 const route = useRoute();
-const showModal = ref(false);
-const product = ref(productStore.product);
 
-// Obtener el ID desde la ruta
+const loading = ref(true);
+const error = ref<string | null>(null);
+
+const showModal = ref(false);
+
+// Obtener el ID del producto desde la ruta
 const productId = Number(route.params.id);
 
 onMounted(async () => {
-  await productStore.fetchProductDetails(productId);
-  product.value = productStore.product;
+  try {
+    loading.value = true;
+    await productStore.fetchProductDetails(productId);
+    product.value = productStore.product; // Asignar el producto al estado local
+  } catch (err) {
+    console.error('Error al cargar el producto:', err);
+    error.value = 'No se pudo cargar el producto. Intenta nuevamente.';
+  } finally {
+    loading.value = false;
+  }
 });
+
+const showWhatsAppModal = () => {
+  showModal.value = true;
+};
+
 
     // const showWhatsAppModal = () => {
     //   showModal.value = true;
@@ -60,7 +80,7 @@ onMounted(async () => {
     // };
 
     // // Cargar datos cuando cambie el ID en la ruta
-      
+
     // return {
     //   product,
     //   userData,
