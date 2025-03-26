@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper-bundle.css';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import ProductCard from '@/components/ProductCard.vue';
 import { getProductsService } from '@/services/productService';
 import { ref } from 'vue';
@@ -241,22 +244,33 @@ const fetchData = async () => {
       </div>
       <div class="flex flex-row justify-center w-full gap-4 px-6">
 
+        <Swiper
+      :modules="[Navigation, Pagination, Autoplay]"
+      :slides-per-view="3"
+      :space-between="20"
+      navigation
+      pagination
+      :autoplay="{ delay: 990, disableOnInteraction: false }"
+      class="mySwiper"
+    >
+      <SwiperSlide
+        v-for="(item, index) in data"
+        :key="index"
+      >
         <ProductCard
-          v-for="(item, index) in data"
-          :key="index"
           :id="item.idProducto"
           :imgSrc="item.imagenes[0].urlImagen"
           :categories="item.categorias"
-          >
+        >
           <template v-slot:title>
             {{ item?.nombre }}
           </template>
-
           <template v-slot:description>
             {{ item?.descripcion }}
           </template>
         </ProductCard>
-
+      </SwiperSlide>
+    </Swiper>
 
       </div>
     </div>
@@ -295,5 +309,36 @@ const fetchData = async () => {
 
 .apple-rotate-animation {
   animation: rotateAnimation 3s ease-in-out infinite;
+}
+.mySwiper {
+  width: 100%;
+  height: auto;
+}
+.swiper-pagination-bullet {
+  background-color: #3d491a; /* Color personalizado */
+  opacity: 0.7;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #8b9e51; /* Color para el punto activo */
+  opacity: 1;
+}
+
+/* Cambiar el color de los botones de navegación */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #3d491a; /* Color personalizado */
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: #8b9e51; /* Color al pasar el mouse */
+}
+
+/* Ajustar el tamaño de los botones de navegación */
+.swiper-button-next,
+.swiper-button-prev {
+  font-size: 1.5rem;
+  color: #3d491a;
 }
 </style>
