@@ -11,9 +11,9 @@
     </div>
     <div class="pl-10">
       <button
-  v-if="!isCurrentUser"
+  v-if="isCurrentUser"
   @click="openEditModal"
-  class="mt-4 px-6 py-2 bg-[#4A5D4A] text-white rounded-lg hover:bg-[#3A4D3A]"
+  class="mt-4 px-6 py-2 bg-[#4A5D4A] text-white rounded-lg hover:bg-[#3A4D3A] "
 >
   Editar Perfil
 </button>
@@ -69,17 +69,20 @@ import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import { getProductsService } from '@/services/productService';
 import type { IProduct } from '@/interfaces/IProduct';
-
+import { useRoute } from 'vue-router';
 import AddProductModal from '@/components/AddProductModal.vue';
 import ExchangeHistory from '@/components/ExchangeHistory.vue';
 import NegotiationSector from '@/components/NegotiationSector.vue';
 import Valorations from '@/components/Valorations.vue';
 import EditProfileModal from '@/components/EditProfileModal.vue';
-
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 const showNegotiate = ref(false);
 const isEditModalOpen = ref(false); // Controla la visibilidad del modal de edición
+const route = useRoute();
+const profileIdFromUrl = ref(Number(route.params.id)); // Esto obtiene el ID de la URL
+
+
 
 console.log('ID del usuario desde el token:', user.value?.id);
 
@@ -90,31 +93,24 @@ const userProfile = ref<UserProfile>({
   nombrePerfil: '',
   descripcion: '',
 });
-
-// Computed para verificar si el perfil pertenece al usuario logueado
-const isCurrentUser = computed(() => userProfile.value?.usuarioId === user.value?.id);
+const isCurrentUser = computed(() => {
+  const result = Number(userProfile.value?.usuarioId) === Number(user.value?.id);
+  console.log('isCurrentUser:', result);
+  return result;
+});
 
 const fetchUserData = async () => {
-  if (!user.value?.id) {
-    console.error('No se encontró el ID del usuario en el token.');
-    return;
-  }
-
   try {
-    const response = await axios.get('https://localhost:7140/api/Perfil');
+    const response = await axios.get(`https://localhost:7140/api/Perfil/${profileIdFromUrl.value}`);
     console.log('Datos obtenidos de la API de perfil:', response.data);
 
     if (response.status === 200) {
-      const userId = Number(user.value?.id);
-      const profile = response.data.find((profile: any) => Number(profile.usuarioId) === userId);
-
-      console.log('ID del usuario filtrado:', userId);
-      console.log('Perfil del usuario encontrado:', profile);
+      const profile = response.data;
 
       if (profile) {
         userProfile.value = {
           idPerfil: profile.idPerfil,
-          usuarioId: Number(profile.usuarioId), // Asegúrate de convertir a número
+          usuarioId: Number(profile.usuarioId),
           imagenPerfil: profile.imagenPerfil,
           nombrePerfil: profile.nombrePerfil,
           descripcion: profile.descripcion,
@@ -129,7 +125,6 @@ const fetchUserData = async () => {
     userProfile.value = null;
   }
 };
-
 const data = ref<IProduct[]>([]);
 const fetchData = async () => {
   try {
@@ -213,8 +208,10 @@ interface UserProfile {
   nombrePerfil: string;
   descripcion: string;
 }
-watch(isCurrentUser, (newValue) => {
-  console.log('¿Debe mostrarse el botón de editar perfil?', newValue);
+watch([userProfile, user], ([newProfile, newUser]) => {
+  console.log('Actualización detectada:');
+  console.log('Nuevo perfil:', newProfile);
+  console.log('Nuevo usuario:', newUser);
 });
 
 </script>

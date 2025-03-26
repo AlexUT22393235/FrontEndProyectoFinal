@@ -65,14 +65,12 @@
           </div>
           <div class="user-details">
             <p class="text-1xl text-gray-700">
-              Publicado por
-              <span
-  @click="goToUserProfile(user.value.idUsuario)"
-  class="text-blue-500 cursor-pointer hover:underline"
->
-  {{ user?.nombre || "Usuario desconocido" }}
-</span>
-
+                          <span
+                @click="goToUserProfile(product?.usuarioId)"
+                class="text-blue-500 cursor-pointer hover:underline"
+              >
+                {{ user?.nombre || "Usuario desconocido" }}
+              </span>
 
             </p>
             <p class="text-xs text-gray-500">
@@ -152,9 +150,7 @@ const fetchUserDetails = async (usuarioId: number) => {
 const goBack = () => {
   router.go(-1);
 };
-const goToUserProfile = (userId: number) => {
-  console.log("Intentando navegar al perfil, userId recibido:", userId);
-
+const goToUserProfile = (userId: number | undefined) => {
   if (!userId) {
     console.error("Error: userId no está disponible o es inválido", userId);
     return;
