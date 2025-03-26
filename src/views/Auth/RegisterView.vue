@@ -5,9 +5,9 @@ import { createUserService } from "@/services/usersService";
 import { useToast } from "vue-toastification";
 
 const router = useRouter();
-const toast = useToast(); // Inicializa Toastification
+const toast = useToast();
 
-// Variables reactivas
+
 const nombre = ref("");
 const apellido = ref("");
 const correoElectronico = ref("");
@@ -15,9 +15,9 @@ const telefono = ref("");
 const contrasenia = ref("");
 const loading = ref(false);
 
-// Función para registrar usuario
+
 const registrarUsuario = async () => {
-  // Validar que todos los campos estén completos
+
   if (!nombre.value || !apellido.value || !correoElectronico.value || !telefono.value || !contrasenia.value) {
     toast.error("Todos los campos son obligatorios.");
     return;
@@ -30,7 +30,7 @@ const registrarUsuario = async () => {
     return;
   }
 
-  // Validar longitud de la contraseña
+
   if (contrasenia.value.length < 6) {
     toast.error("La contraseña debe tener al menos 6 caracteres.");
     return;
@@ -50,7 +50,7 @@ const registrarUsuario = async () => {
 
   try {
     await createUserService(newUser);
-    toast.success("Registro exitoso. Redirigiendo a login...");
+    toast.success("Registro exitoso. Redirigiendo a strade!...");
     setTimeout(() => {
       router.push("/login");
     }, 2000);
@@ -132,7 +132,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Loader (indicador de carga) */
+
 .loader {
   border: 2px solid #FAF7EC;
   border-top: 2px solid transparent;
