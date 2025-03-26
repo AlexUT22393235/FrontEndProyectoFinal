@@ -9,7 +9,7 @@ const data = ref();
 const fetchData = async () => {
     try {
       const response = await getProductsService()
-      data.value = response.sort(
+      data.value = response.filter((product: IProduct) => product.fechaCreacion).sort(
       (a:IProduct, b:IProduct) =>
         new Date(b.fechaCreacion).getTime() -
         new Date(a.fechaCreacion).getTime()
