@@ -67,11 +67,13 @@
             <p class="text-1xl text-gray-700">
               Publicado por
               <span
-                @click="goToUserProfile(user?.id)"
-                class="text-blue-500 cursor-pointer hover:underline"
-              >
-                {{ user?.nombre || 'Usuario desconocido' }}
-              </span>
+  @click="goToUserProfile(user.value.idUsuario)"
+  class="text-blue-500 cursor-pointer hover:underline"
+>
+  {{ user?.nombre || "Usuario desconocido" }}
+</span>
+
+
             </p>
             <p class="text-xs text-gray-500">
   {{ formattedDate }}
@@ -129,7 +131,7 @@ const user = ref<{
 
 const fetchUserDetails = async (usuarioId: number) => {
   try {
-    console.log('Fetching user details for usuarioId:', usuarioId); // Log para verificar el usuario
+    console.log('Fetching user details for usuarioId:', usuarioId); // Verifica el usuario
     const userResponse = await axios.get(`https://localhost:7140/api/Usuario/${usuarioId}`);
     if (userResponse.data) {
       user.value = userResponse.data; // Asigna los datos del usuario
@@ -141,7 +143,7 @@ const fetchUserDetails = async (usuarioId: number) => {
       user.value.userProfile = profileResponse.data; // Asigna los datos del perfil al usuario
     }
 
-    console.log('User data received:', user.value); // Log para verificar los datos recibidos
+    console.log('User data received:', user.value); // Verifica los datos recibidos
   } catch (error) {
     console.error('Error al obtener los datos del usuario o perfil:', error);
   }
@@ -150,22 +152,34 @@ const fetchUserDetails = async (usuarioId: number) => {
 const goBack = () => {
   router.go(-1);
 };
+const goToUserProfile = (userId: number) => {
+  console.log("Intentando navegar al perfil, userId recibido:", userId);
 
-const goToUserProfile = (userId: number | undefined) => {
-  if (userId) {
-    router.push(`/perfil/${userId}`);
-    console.log('Navigating to user profile for userId:', userId);  // Log navigation
+  if (!userId) {
+    console.error("Error: userId no está disponible o es inválido", userId);
+    return;
   }
+
+  router.push(`/perfil/${userId}`);
 };
 
+
+
+console.log("Usuario en el momento del click:", user);
+console.log("ID del usuario en el producto:", product?.usuarioId);
+
 onMounted(() => {
+  console.log("Producto recibido:", product);
+  console.log("ID del usuario en el producto:", product?.usuarioId);
+
   if (product?.usuarioId) {
-    console.log('Product has usuarioId:', product.usuarioId);  // Log to check if usuarioId exists
     fetchUserDetails(product.usuarioId);
   } else {
-    console.log('No usuarioId found in product');  // Log if no usuarioId is available
+    console.log("No se encontró usuarioId en el producto");
   }
 });
+
+
 const formattedDate = computed(() => {
   console.log('Fecha del producto:', product?.fechaCreacion); // Verifica lo que obtiene aquí
   if (product?.fechaCreacion) {
