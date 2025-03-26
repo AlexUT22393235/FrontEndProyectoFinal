@@ -94,20 +94,20 @@ const router = createRouter({
 
     //Hacen falta rutas de nosotros, productos y categoria, perfil, productos y categorias puede ser una misma vista?
     //Negotiating tiene que ser integrada en el perfil
-    
+
 
 
 
   ],
 
-  
+
 })
 
 // router.beforeEach((to, from) => {
 //   const authStore = useAuthStore();
 
 //   if (to.meta.requiresAuth && !authStore.isLoggedIn()) {
-  
+
 //     return { name: 'login' };
 //   }
 //   return true;

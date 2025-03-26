@@ -22,7 +22,7 @@ app.use(router);
 app.use(Toast, {
   position: POSITION.TOP_RIGHT,
   timeout: 5000,
-  closeButton: true,
+  closeButton: "button",
   draggable: true,
 });
 

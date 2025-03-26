@@ -24,7 +24,7 @@
 
   </div>
   <div v-else>
-      <p class="text-white">No se encontró un perfil para este usuario.</p>
+      <p class="text-black">No se encontró un perfil para este usuario.</p>
   </div>
 <EditProfileModal
   v-if="isEditModalOpen && userProfile"
@@ -114,7 +114,7 @@ const fetchUserData = async () => {
       if (profile) {
         userProfile.value = {
           idPerfil: profile.idPerfil,
-          usuarioId: profile.usuarioId,
+          usuarioId: Number(profile.usuarioId), // Asegúrate de convertir a número
           imagenPerfil: profile.imagenPerfil,
           nombrePerfil: profile.nombrePerfil,
           descripcion: profile.descripcion,

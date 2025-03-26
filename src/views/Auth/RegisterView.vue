@@ -2,8 +2,10 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { createUserService } from "@/services/usersService";
+import { useToast } from "vue-toastification";
 
 const router = useRouter();
+const toast = useToast(); // Inicializa Toastification
 
 // Variables reactivas
 const nombre = ref("");
@@ -11,29 +13,26 @@ const apellido = ref("");
 const correoElectronico = ref("");
 const telefono = ref("");
 const contrasenia = ref("");
-const error = ref("");
 const loading = ref(false);
 
 // Función para registrar usuario
 const registrarUsuario = async () => {
-  error.value = ""; // Limpiar error previo
-
   // Validar que todos los campos estén completos
   if (!nombre.value || !apellido.value || !correoElectronico.value || !telefono.value || !contrasenia.value) {
-    error.value = "Todos los campos son obligatorios.";
+    toast.error("Todos los campos son obligatorios.");
     return;
   }
 
   // Validar formato del correo
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(correoElectronico.value)) {
-    error.value = "El correo electrónico no es válido.";
+    toast.error("El correo electrónico no es válido.");
     return;
   }
 
   // Validar longitud de la contraseña
   if (contrasenia.value.length < 6) {
-    error.value = "La contraseña debe tener al menos 6 caracteres.";
+    toast.error("La contraseña debe tener al menos 6 caracteres.");
     return;
   }
 
@@ -43,23 +42,28 @@ const registrarUsuario = async () => {
     correoElectronico: correoElectronico.value,
     telefono: telefono.value,
     contrasenia: contrasenia.value,
-    baneado: false, // Ajusta según lo que espera la API
-    rolId: 1, // Ajusta según roles válidos en la API
+    baneado: false,
+    rolId: 1,
   };
 
-  loading.value = true; // Mostrar indicador de carga
+  loading.value = true;
 
   try {
     await createUserService(newUser);
-    router.push("/login"); // Redirigir tras éxito
-  } catch (err: unknown) {
+    toast.success("Registro exitoso. Redirigiendo a login...");
+    setTimeout(() => {
+      router.push("/login");
+    }, 2000);
+  } catch (err: any) {
     console.error("Error en registro:", err);
-    error.value = err.response?.data?.message || "Hubo un problema con el registro.";
+    const errorMessage = err.response?.data?.message || "Hubo un problema con el registro.";
+    toast.error(errorMessage);
   } finally {
-    loading.value = false; // Ocultar indicador de carga
+    loading.value = false;
   }
 };
 </script>
+
 
 <template>
   <div class="bg-[#4b6934] w-full h-screen flex flex-row">
