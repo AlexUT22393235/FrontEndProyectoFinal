@@ -43,7 +43,10 @@ const fetchData = async () => {
           </router-link>
         </button>
       </div>
-      <div
+
+
+            <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+              <div
         class="border-y border-gray-500 w-full h-[50rem] justify-center items-center flex flex-col gap-12 px-10 mt-4">
         <div class=" m-18 p-18 text-center justify-center items-center h-[20rem] w-[60rem] flex flex-row gap-44">
           <div class="flex flex-row justify-center gap-14">
@@ -239,6 +242,10 @@ const fetchData = async () => {
         </div>
 
       </div>
+      </div>
+            <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+
+      </div>
       <div class="p-8">
         <h1 class="text-3xl text-[#3d491a] font-bold p-8">Productos Agregados recientemente</h1>
       </div>
@@ -340,5 +347,17 @@ const fetchData = async () => {
 .swiper-button-prev {
   font-size: 1.5rem;
   color: #3d491a;
+}
+
+/* Ejemplo de personalización */
+[data-aos="fade-up"] {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>

@@ -18,8 +18,8 @@
       </p>
     </div>
 
-
-    <div class="max-w-5xl mt-30">
+<div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+  <div class="max-w-5xl mt-30">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div class="flex flex-col items-center">
           <h2 class="text-2xl font-bold text-[#2C3E50] mb-4">Nuestra Misión</h2>
@@ -74,6 +74,8 @@
         </div>
       </div>
     </div>
+</div>
+
 
 
     <div class="max-w-3xl text-center mt-12">
@@ -93,5 +95,17 @@
 svg {
   width: 6rem; /* Tamaño uniforme */
   height: 6rem;
+}
+
+/* Ejemplo de personalización */
+[data-aos="fade-up"] {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
