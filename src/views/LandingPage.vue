@@ -260,25 +260,30 @@ const fetchData = async () => {
       :space-between="20"
       navigation
       pagination
-      :autoplay="{ delay: 990, disableOnInteraction: false }"
-      class="mySwiper"
+      :autoplay="{ delay: 1400, disableOnInteraction: false }"
+
     >
       <SwiperSlide
         v-for="(item, index) in data"
         :key="index"
+      >      <ProductCard
+        :id="item.idProducto"
+        :imgSrc="item.imagenes[0].urlImagen"
+        :categories="[]"
+        class="custom-product-card"
       >
-        <ProductCard
-          :id="item.idProducto"
-          :imgSrc="item.imagenes[0].urlImagen"
-          :categories="item.categorias"
-        >
-          <template v-slot:title>
+        <template v-slot:title >
+          <p>
             {{ item?.nombre }}
-          </template>
-          <template v-slot:description>
+          </p>
+        </template>
+        <template v-slot:description>
+          <p>
             {{ item?.descripcion }}
-          </template>
-        </ProductCard>
+          </p>
+
+        </template>
+      </ProductCard>
       </SwiperSlide>
     </Swiper>
 
@@ -320,39 +325,7 @@ const fetchData = async () => {
 .apple-rotate-animation {
   animation: rotateAnimation 3s ease-in-out infinite;
 }
-.mySwiper {
-  width: 100%;
-  height: auto;
-}
-.swiper-pagination-bullet {
-  background-color: #3d491a; /* Color personalizado */
-  opacity: 0.7;
-}
 
-.swiper-pagination-bullet-active {
-  background-color: #8b9e51; /* Color para el punto activo */
-  opacity: 1;
-}
-
-/* Cambiar el color de los botones de navegación */
-.swiper-button-next,
-.swiper-button-prev {
-  color: #3d491a; /* Color personalizado */
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  color: #8b9e51; /* Color al pasar el mouse */
-}
-
-/* Ajustar el tamaño de los botones de navegación */
-.swiper-button-next,
-.swiper-button-prev {
-  font-size: 1.5rem;
-  color: #3d491a;
-}
-
-/* Ejemplo de personalización */
 [data-aos="fade-up"] {
   opacity: 0;
   transform: translateY(50px);
@@ -362,5 +335,33 @@ const fetchData = async () => {
 [data-aos="fade-up"].aos-animate {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Estilo para el componente ProductCard */
+.custom-product-card {
+ text-align: center;
+ text-justify: auto;
+ align-items: center;
+ display: flex;
+ flex-direction: column;
+ width: 80%;
+
+
+}
+.custom-product-card p.text {
+  font-size: 1.2rem;
+  color: #3d491a;
+  margin-top: 9px;
+  display: flex;
+  flex-direction: row;
+}
+.custom-product-card p {
+  font-size: 1.2rem;
+  color: #3d491a;
+  margin: 9px;
+}
+
+.swiper-button-prev:after, .swiper-button-next:after{
+color: #3d491a !important;
 }
 </style>
