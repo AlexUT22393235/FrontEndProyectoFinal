@@ -9,6 +9,7 @@
 />
 
   <div class="product-details flex flex-col gap-5 p-5 ">
+    
     <div class="w-[12rem] flex items-center gap-4 pl-20">
       <svg
         @click="goBack"
@@ -50,12 +51,12 @@
         </p>
 
         <div class="mt-6 flex gap-4 ">
-          <button
+          <!-- <button
             @click="$emit('enviar-propuesta')"
             class="propuesta-button bg-[#5B735D] text-white py-3 px-5 rounded-md mt-6 hover:bg-[#128c7e] transition-colors duration-300"
           >
             Enviar Propuesta
-          </button>
+          </button> -->
           <button
             @click="openContactModal"
 
@@ -83,9 +84,12 @@
               </span>
 
             </p>
+            
+            <!-- Se quito esto: ({{ product?.fechaCreacion }}), Para Mostrar solo la fecha dd/mm/yy-->
+             
             <p class="text-xs text-gray-500">
   {{ formattedDate }}
-  <span v-if="product?.fechaCreacion">({{ product?.fechaCreacion }})</span>
+  <span v-if="product?.fechaCreacion"></span>
 </p>
 
 

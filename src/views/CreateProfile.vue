@@ -100,7 +100,7 @@ const previewImage = () => {
         </div>
 
 
-        <div class="mb-4">
+        <!-- <div class="mb-4">
           <label for="imagenUrl" class="block text-sm font-medium text-gray-700">URL de imagen</label>
           <input
             type="url"
@@ -110,7 +110,7 @@ const previewImage = () => {
             class="w-full p-2 border border-[#50683E] rounded-md"
             placeholder="Ingresa una URL de imagen"
           />
-        </div>
+        </div> -->
 
         <!-- Campo de nombre -->
         <div class="mb-4">

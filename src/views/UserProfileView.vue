@@ -96,6 +96,8 @@ import { storeToRefs } from 'pinia';
 import { getProductsService } from '@/services/productService';
 import type { IProduct } from '@/interfaces/IProduct';
 import { useRoute } from 'vue-router';
+import { watchEffect } from 'vue';
+import { useExchangeStore } from '@/stores/exchangeStore';
 import AddProductModal from '@/components/AddProductModal.vue';
 import ExchangeHistory from '@/components/ExchangeHistory.vue';
 import NegotiationSector from '@/components/NegotiationSector.vue';
@@ -242,22 +244,38 @@ const handleSubmit = (product: any) => {
   console.log('Producto agregado:', product);
 };
 
-const exchanges = ref([
-  {
-    productTitle: 'Sofá',
-    date: '2025-02-05',
-    exchangedProducts: ['Sofá', 'Sofá Cama'],
-    description: 'Un sofá cómodo y en buen estado, perfecto para tu sala.',
-    image: 'https://www.sofaclub.es/blog/imagenes/claves-para-comprar-un-sofa-1-1024x640.jpg',
-  },
-  {
-    productTitle: 'Control de Xbox',
-    date: '2024-10-07',
-    exchangedProducts: ['Control Xbox', 'Disco FIFA 24'],
-    description: 'Control de Xbox en excelentes condiciones, con garantía.',
-    image: 'https://gorilagames.com/img/Public/1019-producto-joystick-control-xbox-series-carbon-black-1-145.jpg',
-  },
-]);
+// Seccion de hitorial de intercambio, 22393139 FGT
+// Datos HISTORIAL DE INTERCAMBIO DE PRODUCTOS 22393139 FGT
+
+const exchangeStore = useExchangeStore();
+
+// Cargar datos reales cuando el usuario esté disponible
+watchEffect(() => {
+  if (user.value?.id) {
+    exchangeStore.fetchExchangeHistory(Number(user.value.id));
+  }
+});
+
+// Mapear los datos del store al formato esperado por ExchangeHistory
+const exchanges = computed(() => {
+  return exchangeStore.exchanges.map(exchange => {
+    // Verifica si existe fechaRegistro y formatea
+    const fecha = exchange.fechaRegistro 
+      ? new Date(exchange.fechaRegistro).toLocaleDateString('es-MX', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : 'Fecha no disponible';
+
+    return {
+      nombre: exchange.nombre,
+      fechaRegistro: fecha,
+      descripcion: exchange.descripcion,
+      imagenes: exchange.imagenes[0]?.urlImagen || 'https://via.placeholder.com/150'
+    };
+  });
+});
 
 interface UserProfile {
   idPerfil: number;
