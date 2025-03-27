@@ -74,6 +74,8 @@
         </div>
         <ExchangeHistory v-if="showNegotiate===false" :exchanges="exchanges" />
 
+
+
         <NegotiationSector :data="data" @remove-product="removeProduct" v-else/>
       </div>
 
@@ -88,6 +90,74 @@
   <AddProductModal v-if="isModalOpen" :isOpen="isModalOpen" @close="closeModal" @submit="handleSubmit" />
 
 </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
@@ -98,13 +168,13 @@ import type { IProduct } from '@/interfaces/IProduct';
 import { useRoute } from 'vue-router';
 import { watchEffect } from 'vue';
 import { useExchangeStore } from '@/stores/exchangeStore';
-import AddProductModal from '@/components/AddProductModal.vue';
+import AddProductModal from '@/components/Modals/AddProductModal.vue';
 import ExchangeHistory from '@/components/ExchangeHistory.vue';
 import NegotiationSector from '@/components/NegotiationSector.vue';
 import Valorations from '@/components/Valorations.vue';
-import DeleteProfileModal from '@/components/DeleteProfileModal.vue';
-import ReportModal from '@/components/ReportModal.vue';
-import EditProfileModal from '@/components/EditProfileModal.vue';
+import DeleteProfileModal from '@/components/Modals/DeleteProfileModal.vue';
+import ReportModal from '@/components/Modals/ReportModal.vue';
+import EditProfileModal from '@/components/Modals/EditProfileModal.vue';
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 const showNegotiate = ref(false);
@@ -260,7 +330,7 @@ watchEffect(() => {
 const exchanges = computed(() => {
   return exchangeStore.exchanges.map(exchange => {
     // Verifica si existe fechaRegistro y formatea
-    const fecha = exchange.fechaRegistro 
+    const fecha = exchange.fechaRegistro
       ? new Date(exchange.fechaRegistro).toLocaleDateString('es-MX', {
           year: 'numeric',
           month: 'long',

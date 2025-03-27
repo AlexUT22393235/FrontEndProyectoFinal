@@ -75,7 +75,7 @@
 <script setup lang="ts">
 import { getCategoriesService, deleteCategoryService } from '@/services/categorieService';
 import Navbar from '@/components/Layout/DashboardNavbar.vue'
-import AddCategoryModal from '@/components/AddCategoryModal.vue';
+import AddCategoryModal from '@/components/Modals/AddCategoryModal.vue';
 import { ref } from 'vue';
 import axios from 'axios'
 

@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { getUsersService, deleteUserService } from '@/services/usersService';
 import Navbar from '@/components/Layout/DashboardNavbar.vue'
-import AddUserModal from '@/components/AddUserModal.vue';
+import AddUserModal from '@/components/Modals/AddUserModal.vue';
 import { ref } from 'vue';
 import axios from 'axios'
 

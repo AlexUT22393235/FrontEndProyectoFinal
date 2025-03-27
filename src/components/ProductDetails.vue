@@ -9,7 +9,7 @@
 />
 
   <div class="product-details flex flex-col gap-5 p-5 ">
-    
+
     <div class="w-[12rem] flex items-center gap-4 pl-20">
       <svg
         @click="goBack"
@@ -84,9 +84,9 @@
               </span>
 
             </p>
-            
+
             <!-- Se quito esto: ({{ product?.fechaCreacion }}), Para Mostrar solo la fecha dd/mm/yy-->
-             
+
             <p class="text-xs text-gray-500">
   {{ formattedDate }}
   <span v-if="product?.fechaCreacion"></span>
@@ -117,7 +117,7 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import Carousel from './Carousel.vue';
 import type { IProductDetail } from '../interfaces/IProductDetail';
-import DisclaimerModal from './disclaimerModal.vue';
+import DisclaimerModal from './Modals/disclaimerModal.vue';
 import type { postTrade } from '@/dtos/postTradeDto.ts'
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
