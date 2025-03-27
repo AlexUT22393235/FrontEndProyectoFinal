@@ -246,9 +246,12 @@ const fetchData = async () => {
             <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
 
       </div>
-      <div class="p-8">
+      <div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="mt-8">
+        <div class="p-8">
         <h1 class="text-3xl text-[#3d491a] font-bold p-8">Productos Agregados recientemente</h1>
       </div>
+    </div>
+
       <div class="flex flex-row justify-center w-full gap-4 px-6">
 
         <Swiper

@@ -144,8 +144,10 @@ const filtered = computed(() => {
 <template>
 <div class=" bg-[#6d805c]">
   <div v-if="route.name !== 'product'" class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
+    <div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="mt-8">
     <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} Resultados de Busqueda</p>
     <p class="text-[1.5rem] text-white">para <span class="text-[#d5d0b6] " >"{{ searchName }}"</span></p>
+  </div>
     <form class="w-full flex items-center justify-center gap-[1vw] p-[2vh] " @submit.prevent="submitSearch " >
       <input v-model="formValue" placeholder="Pantuflas amarillas" class="placeholder:italic bg-[#D9D9D9] rounded-lg w-[20vw] h-[5vh] px-[1vw]">
       <button type="submit" class="cursor-pointer">
@@ -155,8 +157,10 @@ const filtered = computed(() => {
   </div>
 
   <div v-else class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
+    <div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="mt-8">
     <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} increibles objetos en Strade</p>
     <p class="text-[1.5rem] text-white">Intercambia, reutiliza & conecta.</p>
+  </div>
   </div>
 </div>
 

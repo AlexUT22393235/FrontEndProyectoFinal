@@ -1,9 +1,11 @@
 <template>
   <div class="w-full min-h-screen bg-[#FAF7EC] flex flex-col items-center justify-center p-8">
 <div class="w-[80rem] h-[80vh] search-container flex flex-col justify-center items-center ">
-  <img src="https://i.pinimg.com/736x/78/4e/57/784e57dc1c030f0c0abb59fdedb703d2.jpg" class="w-full h-full object-fill"/>
+  <img src="https://i.pinimg.com/736x/78/4e/57/784e57dc1c030f0c0abb59fdedb703d2.jpg" class="w-full h-full object-fill filter blur-[3px] transition-all duration-300 hover:blur-none"/>
 </div>
-    <div class="max-w-3xl text-center p-15 bg-[#FAF7EC] absolute top-60 left-170 ">
+
+<div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="absolute top-60 left-170" >
+  <div class="max-w-3xl text-center p-15 bg-[#FAF7EC]  ">
       <h1 class="text-4xl font-bold text-[#50683E] mb-4">Sobre Nosotros</h1>
 
       <p class="text-lg text-[#555] leading-relaxed">
@@ -17,6 +19,8 @@
         te interesan. ¡Únete a Strade y empieza a intercambiar de manera fácil, justa y sin dinero de por medio!
       </p>
     </div>
+    </div>
+
 
 <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
   <div class="max-w-5xl mt-30">
