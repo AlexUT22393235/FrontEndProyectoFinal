@@ -1,5 +1,13 @@
 <template>
-  <DisclaimerModal v-if="contactModal === true" :phone="user?.telefono" :userName="user?.nombre" :productName="product?.nombre" @close="contactModal = false" />
+  <DisclaimerModal
+  v-if="contactModal === true "
+  :phone="user?.telefono"
+  :userName="user?.nombre"
+  :productName="product?.nombre"
+  :trade="trade"
+  @close="contactModal = false"
+/>
+
   <div class="product-details flex flex-col gap-5 p-5 ">
     <div class="w-[12rem] flex items-center gap-4 pl-20">
       <svg
@@ -49,7 +57,7 @@
             Enviar Propuesta
           </button>
           <button
-            @click="contactModal = true"
+            @click="openContactModal"
 
             class="whatsapp-button w-full bg-[#5B735D] text-white py-3 px-5 rounded-md mt-6 hover:bg-[#128c7e] transition-colors duration-300"
           >
@@ -100,15 +108,65 @@
 
 <script setup lang="ts">
 import {format} from 'date-fns';
-import { ref, onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, computed, h } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import Carousel from './Carousel.vue';
 import type { IProductDetail } from '../interfaces/IProductDetail';
 import DisclaimerModal from './disclaimerModal.vue';
+import type { postTrade } from '@/dtos/postTradeDto.ts'
+import { useAuthStore } from '@/stores/authStore';
+import { storeToRefs } from 'pinia';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
+const authStore = useAuthStore();
+const { user: currentUser } = storeToRefs(authStore);
+
+const route = useRoute()
+
+const trade = ref<postTrade>({
+  "usuarioSolicitanteId": 0,
+  "usuarioOfertanteId": 0,
+  "productoId": 0
+})
 
 const router = useRouter();
 const contactModal = ref(false)
+
+const openContactModal = () => {
+  if(currentUser.value?.id){
+    contactModal.value = true;
+  }else {
+    toast.info(
+      h('div', { style: 'text-align: center;' }, [
+        h('p', '¿Deseas contactar con vendedores? Primero inicia sesión.'),
+        h(
+          'button',
+          {
+            onClick: () => router.push('/login'),
+            style: `
+              margin-top: 8px;
+              background-color: #4CAF50;
+              color: white;
+              padding: 6px 12px;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+            `,
+          },
+          'Iniciar sesión'
+        ),
+      ]),
+      {
+        timeout: 3000,
+        closeOnClick: true,
+        draggable: true,
+      }
+    );
+    console.log('Deseas contactarte? primero inicia sesion')
+  }
+}
 
 const props = defineProps<{
   product: IProductDetail | null;
@@ -173,6 +231,9 @@ onMounted(() => {
   console.log("ID del usuario en el producto:", product?.usuarioId);
 
   if (product?.usuarioId) {
+    trade.value.usuarioOfertanteId = product.usuarioId
+    trade.value.productoId = Number(route.params.id)
+    trade.value.usuarioSolicitanteId = Number(currentUser.value?.id)
     fetchUserDetails(product.usuarioId);
   } else {
     console.log("No se encontró usuarioId en el producto");
