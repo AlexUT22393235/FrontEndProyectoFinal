@@ -58,6 +58,7 @@
   @submit="handleReportSubmit"
 />
 
+
   <div class="bg-[#f5f7ea] flex flex-col w-full items-center justify-center p-8">
     <button @click="openModal" class="mt-8 px-6 py-3 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
       Agregar Producto
@@ -77,6 +78,8 @@
 
 
         <NegotiationSector :data="data" @remove-product="removeProduct" v-else/>
+
+        <UserProductsSection :data="data"  />
       </div>
 
       <!-- Historial de Valoraciones -->
@@ -171,6 +174,7 @@ import { useExchangeStore } from '@/stores/exchangeStore';
 import AddProductModal from '@/components/Modals/AddProductModal.vue';
 import ExchangeHistory from '@/components/Sections/ExchangeHistorySection.vue';
 import NegotiationSector from '@/components/Sections/NegotiationSection.vue';
+import UserProductsSection from '@/components/Sections/UserProductsSection.vue';
 import Valorations from '@/components/Sections/UserValorationsSection.vue';
 import DeleteProfileModal from '@/components/Modals/DeleteProfileModal.vue';
 import ReportModal from '@/components/Modals/ReportModal.vue';
@@ -186,7 +190,7 @@ const profileIdFromUrl = ref(Number(route.params.id)); // Esto obtiene el ID de 
 
 
 
-console.log('ID del usuario desde el token:', user.value?.id);
+// console.log('ID del usuario desde el token:', user.value?.id);
 
 const userProfile = ref<UserProfile>({
   idPerfil: 0,
@@ -197,14 +201,14 @@ const userProfile = ref<UserProfile>({
 });
 const isCurrentUser = computed(() => {
   const result = Number(userProfile.value?.usuarioId) === Number(user.value?.id);
-  console.log('isCurrentUser:', result);
+  // console.log('isCurrentUser:', result);
   return result;
 });
 
 const fetchUserData = async () => {
   try {
     const response = await axios.get(`https://localhost:7140/api/Perfil/${profileIdFromUrl.value}`);
-    console.log('Datos obtenidos de la API de perfil:', response.data);
+    // console.log('Datos obtenidos de la API de perfil:', response.data);
 
     if (response.status === 200) {
       const profile = response.data;
@@ -218,12 +222,12 @@ const fetchUserData = async () => {
           descripcion: profile.descripcion,
         };
       } else {
-        console.log('No se encontró un perfil para este usuario.');
+        // console.log('No se encontró un perfil para este usuario.');
         userProfile.value = null;
       }
     }
   } catch (error) {
-    console.error('Error obteniendo datos del perfil:', error);
+    // console.error('Error obteniendo datos del perfil:', error);
     userProfile.value = null;
   }
 };
@@ -260,17 +264,17 @@ const closeDeleteModal = () => (isDeleteModalOpen.value = false);
 const closeReportModal = () => (isReportModalOpen.value = false);
 
 
-import { watch } from 'vue';
+// import { watch } from 'vue';
 
-watch([userProfile, user], ([newProfile, newUser]) => {
-  const userId = Number(newUser?.id);
-  const profileUserId = Number(newProfile?.usuarioId);
+// watch([userProfile, user], ([newProfile, newUser]) => {
+//   const userId = Number(newUser?.id);
+//   const profileUserId = Number(newProfile?.usuarioId);
 
-  console.log('Comparando usuario logueado con el perfil...');
-  console.log('ID del usuario logueado:', userId);
-  console.log('ID del usuario en el perfil:', profileUserId);
-  console.log('¿Es el mismo usuario?', userId === profileUserId);
-});
+//   console.log('Comparando usuario logueado con el perfil...');
+//   console.log('ID del usuario logueado:', userId);
+//   console.log('ID del usuario en el perfil:', profileUserId);
+//   console.log('¿Es el mismo usuario?', userId === profileUserId);
+// });
 
 
 const handleEditSubmit = async (updatedProfile: UserProfile) => {
@@ -354,10 +358,10 @@ interface UserProfile {
   nombrePerfil: string;
   descripcion: string;
 }
-watch([userProfile, user], ([newProfile, newUser]) => {
-  console.log('Actualización detectada:');
-  console.log('Nuevo perfil:', newProfile);
-  console.log('Nuevo usuario:', newUser);
-});
+// watch([userProfile, user], ([newProfile, newUser]) => {
+//   console.log('Actualización detectada:');
+//   console.log('Nuevo perfil:', newProfile);
+//   console.log('Nuevo usuario:', newUser);
+// });
 
 </script>

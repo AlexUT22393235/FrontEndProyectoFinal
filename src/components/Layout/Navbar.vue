@@ -21,7 +21,7 @@ const handleLogout = () => {
 
 const fetchUserDetails = async (usuarioId: number) => {
   try {
-    console.log('Fetching user details for usuarioId:', usuarioId);
+    // console.log('Fetching user details for usuarioId:', usuarioId);
 
     const userResponse = await axios.get(`https://localhost:7140/api/Usuario/${usuarioId}`);
     if (userResponse.data) {
@@ -33,9 +33,9 @@ const fetchUserDetails = async (usuarioId: number) => {
       user.value.userProfile = profileResponse.data;
     }
 
-    console.log('User data received:', user.value);
+    // console.log('User data received:', user.value);
   } catch (error) {
-    console.error('Error al obtener los datos del usuario o perfil:', error);
+    // console.error('Error al obtener los datos del usuario o perfil:', error);
   }
 };
 

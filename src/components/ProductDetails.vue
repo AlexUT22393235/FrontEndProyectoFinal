@@ -268,6 +268,41 @@ const formattedDate = computed(() => {
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style scoped>
 
 @media (min-width: 768px) {

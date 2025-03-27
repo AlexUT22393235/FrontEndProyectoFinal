@@ -17,11 +17,11 @@
           <p class="text-sm text-gray-600">Fecha:
             <span class="font-medium text-[#2C3E50]">{{ exchange.fechaRegistro }}</span>
           </p>
-          
+
           <p class="text-sm text-gray-600 mt-2 font-medium">Detalle del producto intercambiado</p>
           <p class="text-sm text-gray-600 mt-3 text-justify">{{ exchange.descripcion }}</p>
 
-        
+
         </div>
       </li>
     </ul>

@@ -21,6 +21,9 @@ export const getUserByIdService = async (id: number) => {
   return response;
 };
 
+export const fetchUserProducts = async (id: number) => {
+  return await genericRequest(`${base_url}/producto/usuario/${id}`, 'GET');
+};
 export const deleteProductService = async (id:number) => {
   return await genericRequest(base_url + `/producto/${id}`, 'DELETE')
 }
