@@ -30,6 +30,14 @@
           <i class="fab fa-instagram text-xl"></i> Instagram
         </a>
       </div>
+
+      <div>
+        <h1>Tienes algun problema? Reportalo</h1>
+                <input
+          class="bg-white rounded-md w-[20rem] h-[2rem] mb-2"
+          placeholder="...">
+        <button>Enviar</button>
+      </div>
     </div>
        </div>
 
