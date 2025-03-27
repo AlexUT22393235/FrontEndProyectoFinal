@@ -62,7 +62,6 @@ onMounted(() => {
 
     <nav class="nav-links">
       <RouterLink to="/landing">Inicio</RouterLink>
-      <RouterLink to="/negotiating">Negociando</RouterLink>
       <RouterLink to="/products">Productos</RouterLink>
       <RouterLink to="/categories">Categorias</RouterLink>
       <RouterLink to="/about">Nosotros</RouterLink>
@@ -78,7 +77,7 @@ onMounted(() => {
                       <img
                         :src="user?.userProfile?.imagenPerfil"
                         alt="Foto de perfil"
-                        class="w-full h-full object-cover rounded-full" 
+                        class="w-full h-full object-cover rounded-full"
                       />
                     </div>
                   </RouterLink>

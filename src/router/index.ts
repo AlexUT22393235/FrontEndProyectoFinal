@@ -47,13 +47,6 @@ const router = createRouter({
       component: () => import ('../views/AboutUs.vue')
     },
 
-    {
-      path: '/negotiating',          //  22393264
-      name:'negotiating',
-      component: () => import ('../views/InNegotiation.vue')
-    },
-   // En tu archivo de rutas (router/index.ts)
-
   { // Ruta por medio del id para detalles de producto 22393139
     path: '/products/:id', // Ruta dinámica con parámetro id
     name: 'product-detail',

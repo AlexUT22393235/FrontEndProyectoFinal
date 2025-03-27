@@ -1,4 +1,5 @@
 <template>
+  <DisclaimerModal v-if="contactModal === true" :phone="user?.telefono" :userName="user?.nombre" :productName="product?.nombre" @close="contactModal = false" />
   <div class="product-details flex flex-col gap-5 p-5 ">
     <div class="w-[12rem] flex items-center gap-4 pl-20">
       <svg
@@ -48,7 +49,8 @@
             Enviar Propuesta
           </button>
           <button
-            @click="$emit('contact-whatsapp')"
+            @click="contactModal = true"
+
             class="whatsapp-button w-full bg-[#5B735D] text-white py-3 px-5 rounded-md mt-6 hover:bg-[#128c7e] transition-colors duration-300"
           >
             Contactar por WhatsApp
@@ -57,7 +59,7 @@
 
         <div class="user-info flex items-center gap-4 mt-8">
           <div class="user-profile-image w-12 h-12 rounded-full overflow-hidden">
-                       <img
+            <img
               :src="user?.userProfile?.imagenPerfil || '@/assets/Images/defaultProfile.png'"
               alt="Foto de perfil"
               class="w-full h-full object-cover"
@@ -91,6 +93,8 @@
       <Carousel :imagenes="product?.imagenes.map((img) => img.urlImagen)" />
     </div>
   </div>
+
+
 </template>
 
 
@@ -101,9 +105,10 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Carousel from './Carousel.vue';
 import type { IProductDetail } from '../interfaces/IProductDetail';
+import DisclaimerModal from './disclaimerModal.vue';
 
 const router = useRouter();
-
+const contactModal = ref(false)
 
 const props = defineProps<{
   product: IProductDetail | null;
@@ -135,7 +140,6 @@ const fetchUserDetails = async (usuarioId: number) => {
       user.value = userResponse.data; // Asigna los datos del usuario
     }
 
-    // Realiza una solicitud adicional para obtener el perfil del usuario
     const profileResponse = await axios.get(`https://localhost:7140/api/Perfil/${usuarioId}`);
     if (user.value) {
       user.value.userProfile = profileResponse.data; // Asigna los datos del perfil al usuario
