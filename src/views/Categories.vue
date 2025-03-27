@@ -1,7 +1,9 @@
 <template>
   <div class="w-full min-h-screen bg-[#FAF7EC] flex flex-col items-center p-8">
     <h1 class="text-5xl font-bold text-[#2C3E50] mb-8">Categorías</h1>
-
+<h2 class="text-2xl font-semibold text-[#50683E] text-center mb-8">
+  Explora nuestras categorías y encuentra el trueque perfecto para ti.
+</h2>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 w-full max-w-7xl">
   <RouterLink
     v-for="(category, index) in categories"

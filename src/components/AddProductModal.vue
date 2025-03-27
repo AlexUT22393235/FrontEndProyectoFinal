@@ -1,11 +1,10 @@
 <script setup lang="ts">
-
 import { ref, onMounted } from 'vue';
-
 import { getCategoriesService } from '@/services/categorieService';
 import { postProductService } from '@/services/productService';
+import { useAuthStore } from '@/stores/authStore'; // Importa el store de autenticación
 
-// Props y emits.  Fernando Gomez Toledo  22393139
+// Props y emits
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -13,25 +12,23 @@ const props = defineProps({
   },
 });
 
-
-
 const emit = defineEmits(['close', 'product-added']);
 
+// Accede al ID del usuario logueado desde el authStore
+const authStore = useAuthStore();
+const usuarioId = authStore.user?.id; // Obtén el ID del usuario logueado
 
-
-
-// Datos del producto, Fernando Gomez Toledo  22393139
+// Datos del producto
 const newProduct = ref({
   name: '',
   description: '',
-  procesoNegociacion: false, // Cambiado de procesoNegotiacion a procesoNegociacion.Fernando Gomez Toledo 22393139
+  procesoNegociacion: false,
   intercambio: true,
-  usuarioId: 1,
-  categoriasIds: [] as number[], // Cambiado de categorias a categoriasIds. Fernando Gomez Toledo 22393139
+  usuarioId: usuarioId || null, // Usa el ID del usuario logueado
+  categoriasIds: [] as number[],
   images: [] as File[],
+  fechaCreacion: '', // Campo para la fecha de creación
 });
-
-
 
 // Estados del componente
 const categories = ref<{ idCategoria: number; nombre: string }[]>([]);
@@ -43,20 +40,18 @@ const errors = ref({
   categorias: '',
 });
 const previewImages = ref<string[]>([]);
-const isLoading = ref(false); // Nuevo estado para manejar carga. Fernando Gomez Toledo 22393139
+const isLoading = ref(false);
 
-
-
-// Función para manejar la subida de imágenes.Fernando Gomez Toledo 22393139
+// Función para manejar la subida de imágenes
 const handleImageUpload = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input.files) {
     const files = Array.from(input.files);
-    
+
     if (previewImages.value.length + files.length > 7) {
       errors.value.images = 'No puedes subir más de 7 imágenes.';
     } else {
-      files.forEach(file => {
+      files.forEach((file) => {
         if (file.type.startsWith('image/')) {
           previewImages.value.push(URL.createObjectURL(file));
           newProduct.value.images.push(file);
@@ -67,18 +62,18 @@ const handleImageUpload = (event: Event) => {
   }
 };
 
-// Función para eliminar una imagen. Fernando Gomez Toledo 22393139
+// Función para eliminar una imagen
 const removeImage = (index: number) => {
   URL.revokeObjectURL(previewImages.value[index]);
   previewImages.value.splice(index, 1);
   newProduct.value.images.splice(index, 1);
 };
 
-// Manejo de categorías. Fernando GOmez Toledo 22393139
+// Manejo de categorías
 const selectCategory = (category: any) => {
   if (!selectedCategories.value.some((c) => c.idCategoria === category.idCategoria)) {
     selectedCategories.value.push(category);
-    newProduct.value.categoriasIds.push(category.idCategoria); // Actualizado a categoriasIds. Fernando Gomez Toledo 22393139
+    newProduct.value.categoriasIds.push(category.idCategoria);
   }
 };
 
@@ -89,7 +84,7 @@ const removeCategory = (categoryId: number) => {
   newProduct.value.categoriasIds = newProduct.value.categoriasIds.filter((id) => id !== categoryId);
 };
 
-// Validación del formulario. Fernando Gomez Toledo 22393139
+// Validación del formulario
 const validateForm = () => {
   let isValid = true;
   errors.value = { nombre: '', descripcion: '', images: '', categorias: '' };
@@ -117,28 +112,29 @@ const validateForm = () => {
   return isValid;
 };
 
-
-
-
-// Envío del formulario. 22393139
+// Envío del formulario
 const submitProduct = async () => {
   if (!validateForm()) return;
 
   isLoading.value = true;
+
+  // Asignar la fecha actual al campo `fechaCreacion`
+  newProduct.value.fechaCreacion = new Date().toISOString();
 
   const formData = new FormData();
   formData.append('Nombre', newProduct.value.name);
   formData.append('Descripcion', newProduct.value.description);
   formData.append('ProcesoNegociacion', String(newProduct.value.procesoNegociacion));
   formData.append('Intercambio', String(newProduct.value.intercambio));
-  formData.append('UsuarioId', String(newProduct.value.usuarioId));
+  formData.append('UsuarioId', String(newProduct.value.usuarioId)); // Usa el ID del usuario logueado
+  formData.append('FechaCreacion', newProduct.value.fechaCreacion); // Agregar la fecha de creación
 
   newProduct.value.categoriasIds.forEach((id) => {
-    formData.append('CategoriasIds', String(id)); // Importante para múltiples categorías. Fernando Gomez Toledo 22393139
+    formData.append('CategoriasIds', String(id));
   });
 
   newProduct.value.images.forEach((file) => {
-    formData.append('Imagenes', file); // Correctamente añadido como array de imágenes. Fernando Gomez Toledo 22393139
+    formData.append('Imagenes', file);
   });
 
   try {
@@ -153,17 +149,17 @@ const submitProduct = async () => {
   }
 };
 
-
-// Limpiar formulario. Fernando Gomez Toledo  22393139
+// Limpiar formulario
 const resetForm = () => {
   newProduct.value = {
     name: '',
     description: '',
     procesoNegociacion: false,
     intercambio: true,
-    usuarioId: 1,
+    usuarioId: usuarioId || null, // Restablece el ID del usuario logueado
     categoriasIds: [],
-    images: []
+    images: [],
+    fechaCreacion: '', // Restablece la fecha de creación
   };
   previewImages.value = [];
   selectedCategories.value = [];
@@ -314,7 +310,7 @@ onMounted(async () => {
             @click="emit('close')"
             class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             :disabled="isLoading"
-          > 
+          >
             Cancelar
           </button>
           <button

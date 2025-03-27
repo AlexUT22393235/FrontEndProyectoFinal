@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
-    user: any | null; 
+    user: any | null;
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -38,27 +38,31 @@ export const useAuthStore = defineStore('auth', {
         isLoggedIn(): boolean {
             return !!this.accessToken;
         },
-        async login(correoElectronio: string, contrasenia: string) {
-            try {
-                const response = await authService.login(correoElectronio, contrasenia);
-                if (response.status === 200) {
-                    const { accessToken, refreshToken } = response.data;
-                    this.setTokens(accessToken, refreshToken);
+       // Método login en authStore.ts
+// Cambia el código de tu authStore.ts
+async login(correoElectronio: string, contrasenia: string) {
+  try {
+      const response = await authService.login(correoElectronio, contrasenia);
+      if (response.status === 200) {
+          const { accessToken, refreshToken } = response.data;
+          this.setTokens(accessToken, refreshToken);
 
-                    const decodedToken: any = jwtDecode(accessToken);
-                    const userId = decodedToken.nameid;
+          const decodedToken: any = jwtDecode(accessToken);
+          const userId = decodedToken.nameid;
 
-                    this.setUser({ id: userId });  
-                    console.log("Info user:", this.user);
-                    console.log('Token Decodificado:', decodedToken); 
-                    return true;
-                }
-                return false;
-            } catch (error: any) {
-                console.error('Error during login', error);
-                throw error;
-            }
-        },
+          this.setUser({ id: userId });
+
+          console.log("Info user:", this.user);
+          console.log('Token Decodificado:', decodedToken);
+          return { success: true };
+      }
+      return { success: false, message: 'Error en la respuesta del servidor' };
+  } catch (error: any) {
+      console.error('Error during login', error);
+      return { success: false, message: 'Ocurrió un error al intentar iniciar sesión' };
+  }
+}
+,
         async attemptRefresh() {
             if (!this.refreshToken) {
                 this.clearAuth();

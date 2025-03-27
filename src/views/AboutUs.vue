@@ -3,7 +3,7 @@
 <div class="w-[80rem] h-[80vh] search-container flex flex-col justify-center items-center ">
   <img src="https://i.pinimg.com/736x/78/4e/57/784e57dc1c030f0c0abb59fdedb703d2.jpg" class="w-full h-full object-fill"/>
 </div>
-    <div class="max-w-3xl text-center p-15 bg-[#FAF7EC] absolute top-60 left-150 ">
+    <div class="max-w-3xl text-center p-15 bg-[#FAF7EC] absolute top-60 left-170 ">
       <h1 class="text-4xl font-bold text-[#50683E] mb-4">Sobre Nosotros</h1>
 
       <p class="text-lg text-[#555] leading-relaxed">

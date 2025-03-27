@@ -12,7 +12,7 @@ import type { IProduct } from '@/interfaces/IProduct';
 
   const date = ref("recent");
   const data = ref();
-  const tradeType = ref("trade");
+  const tradeType = ref("");
 
   const selectedCategories = ref<ICategory[]>([]);
   const categories = ref<ICategory[]>([]);
@@ -25,7 +25,7 @@ import type { IProduct } from '@/interfaces/IProduct';
   const fetchData = async () => {
     try {
       const response = await getProductsService()
-      data.value = response
+      data.value = response.filter((product: IProduct) => product.fechaCreacion)
     } catch (error) {
       if(axios.isAxiosError(error)){
         console.log(error.message)
@@ -118,7 +118,7 @@ const filtered = computed(() => {
     if (tradeType.value === 'trade') {
     filteredData = filteredData.filter((data:IProduct) =>
       data.intercambio === true   )
-    } else{
+    } else if(tradeType.value === 'donation'){
       filteredData = filteredData.filter((data:IProduct) =>
       data.intercambio !== true   )
     }
@@ -143,7 +143,7 @@ const filtered = computed(() => {
 </script>
 <template>
 <div class=" bg-[#6d805c]">
-  <div v-if="route.name != 'products'" class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
+  <div v-if="route.name !== 'product'" class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
     <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} Resultados de Busqueda</p>
     <p class="text-[1.5rem] text-white">para <span class="text-[#d5d0b6] " >"{{ searchName }}"</span></p>
     <form class="w-full flex items-center justify-center gap-[1vw] p-[2vh] " @submit.prevent="submitSearch " >
@@ -160,8 +160,9 @@ const filtered = computed(() => {
   </div>
 </div>
 
-<div class="w-full h-[60vh] mb-[10vh]">
-  <img src="https://www.arka.com/cdn/shop/articles/arka-trash-packaging_bwrgfq.jpg?v=1671534726" class="w-full h-full object-cover"/>
+<div class="w-full h-[60vh] mb-[10vh] bg-[#c4caaf] ">
+  <img src="@/assets/Images/productos.png" alt="Logo Strade" class="w-[90rem] h-full object-cover">
+  <!-- <img src="https://www.arka.com/cdn/shop/articles/arka-trash-packaging_bwrgfq.jpg?v=1671534726" class="w-full h-full object-cover"/> -->
 </div>
 
   <div class="w-[100vw] h-fit px-[4vh] my-[4vh] flex justify-end gap-x-[1vw]"
@@ -173,6 +174,7 @@ const filtered = computed(() => {
     </select>
 
     <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="tradeType">
+      <option value="">Sin preferencia</option>
       <option value="trade">Intercambio</option>
       <option value="donation">Donación</option>
     </select>
@@ -180,12 +182,13 @@ const filtered = computed(() => {
 
   <div class="w-[100vw] h-fit px-[4vh] my-[4vh] flex justify-end gap-x-[1vw]"
     v-else>
-    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="date">
+    <select class="bg-[#88a47c]  w-[8vw] py-1 rounded-lg px-2 " v-model="date">
       <option value="recent">Reciente</option>
       <option value="old">Antiguo</option>
     </select>
 
-    <select class="bg-black text-white w-[8vw] py-1 rounded-lg px-2 " v-model="tradeType">
+    <select class="bg-[#88a47c]  w-[8vw] py-1 rounded-lg px-2 " v-model="tradeType">
+      <option value="">Sin preferencia</option>
       <option value="trade">Intercambio</option>
       <option value="donation">Donación</option>
     </select>
@@ -214,7 +217,9 @@ const filtered = computed(() => {
     <ProductCard
       v-for="(item, index) in filtered"
       :key="index"
+      :id="item.idProducto"
       :imgSrc="item.imagenes[0].urlImagen"
+      :categories="item.categorias"
       >
       <template v-slot:title>
         {{ item?.nombre }}
