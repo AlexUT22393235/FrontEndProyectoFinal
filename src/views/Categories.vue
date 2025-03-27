@@ -1,8 +1,8 @@
 <template>
   <div class="w-full min-h-screen bg-[#FAF7EC] flex flex-col items-center p-8 ">
-    <div class="  w-[100rem] h-[30rem] pb-12  items-center justify-center flex pt-80 mb-15">
+    <div class="  w-[100rem] h-[30rem] pb-12  items-center justify-center flex pt-80 mb-15 ">
 
-<img src="@/assets/Images/categorias.png" alt="Logo" class="w-[100rem] h-[70rem] pb-60 " />
+<img src="@/assets/Images/categorias.png" alt="Logo" class="w-[100rem] pb-60 " />
       </div>
 
 <!--
