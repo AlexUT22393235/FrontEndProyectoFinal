@@ -25,7 +25,7 @@
 
 
   <div
-    class="absolute w-[14rem] h-[18rem] bg-[#94b17e] text-[#07330799] text-center flex justify-center items-center text-lg font-bold rounded-2xl hover:bg-[#d6f3bb] hover:opacity-100 "
+    class="absolute w-[14rem] h-[18rem] bg-[#FAF7EC] text-[#07330799] text-center flex justify-center items-center text-lg font-bold rounded-2xl hover:bg-[#a1cf9b] hover:opacity-100 "
   >
     {{ category.nombre }}
   </div>
