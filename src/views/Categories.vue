@@ -10,7 +10,9 @@
 <h2 class="text-2xl font-semibold text-[#50683E] text-center mb-8">
   Explora nuestras categorías y encuentra el trueque perfecto para ti.
 </h2> -->
+<div data-aos="fade" data-aos-offset="0" data-aos-duration="2000" >
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 w-full max-w-[95rem] ">
+
       <RouterLink
   v-for="(category, index) in categories"
   :key="index"
@@ -32,6 +34,7 @@
 </RouterLink>
 
 
+</div>
 </div>
 
   </div>
