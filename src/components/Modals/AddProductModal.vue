@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
 import { postProductService } from '@/services/productService';
 import { useAuthStore } from '@/stores/authStore'; // Importa el store de autenticación
+import { useToast } from 'vue-toastification';
+const toast = useToast();
 
 // Props y emits
 const props = defineProps({
@@ -142,12 +144,17 @@ const submitProduct = async () => {
     resetForm();
     emit('product-added', response);
     emit('close');
+
+  toast.success('¡Producto creado con éxito!');
   } catch (error) {
     console.error('Error al agregar el producto:', error);
+    // Opcional: mostrar mensaje de error
+    toast.error('Error al crear el producto');
   } finally {
     isLoading.value = false;
   }
 };
+
 
 // Limpiar formulario
 const resetForm = () => {
