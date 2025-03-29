@@ -1,11 +1,5 @@
 <template>
-  <div class="flex h-screen bg-[#FAF7EC]">
-    <div class="flex-1 flex flex-col">
-      <Navbar />
-
-      <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 gap-6 ">
-        <div class=" col-span-2">
-          <div class='w-full h-[88vh] p-[2vw] overflow-scroll'>
+            <div class='w-full h-[88vh] p-[2vw] overflow-scroll'>
                     <div class="flex w-full justify-between">
                       <p class='font-semibold text-2xl'>Logs</p>
                     </div>
@@ -39,17 +33,9 @@
                         </tbody>
                     </table>
                 </div>
-        </div>
-      </main>
-
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">
-
-import Navbar from '@/components/Layout/DashboardNavbar.vue'
-
 import { ref } from 'vue';
 import axios from 'axios'
 import { getLogsService } from '@/services/logService';
@@ -83,5 +69,4 @@ const fetchData = async () => {
   }
 
   fetchData();
-
 </script>
