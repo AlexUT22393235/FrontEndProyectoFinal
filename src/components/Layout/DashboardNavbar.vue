@@ -5,6 +5,7 @@
       <RouterLink to="/admin/users">Usuarios</RouterLink>
       <RouterLink to="/admin/categories">Categorias</RouterLink>
       <RouterLink to="/admin/products">Productos</RouterLink>
+      <RouterLink to="/admin/logs">Logs</RouterLink>
     </div>
   </header>
 </template>
