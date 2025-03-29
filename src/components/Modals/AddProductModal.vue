@@ -238,10 +238,29 @@ onMounted(async () => {
           </select>
         </div>
 
-        <!-- Categorías seleccionadas. 22393139 FGT -->
+
+        <!-- Lista de categorías. 22393139 FGT -->
         <div class="mb-4">
-          <label class="block text-gray-700 mb-1">Categorías seleccionadas*</label>
-          <div class="flex flex-wrap gap-2 min-h-10 p-2 border rounded-lg" :class="{ 'border-red-500': errors.categorias }">
+          <label class="block text-gray-700 mb-1">Seleccionar categorías*</label>
+          <div class="border rounded-lg p-1 max-h-40 overflow-y-auto">
+            <button
+              v-for="category in categories"
+              :key="category.idCategoria"
+              @click.prevent="selectCategory(category)"
+              :disabled="selectedCategories.some((c) => c.idCategoria === category.idCategoria)"
+              class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="{ 'bg-gray-100': selectedCategories.some((c) => c.idCategoria === category.idCategoria) }"
+            >
+              {{ category.nombre }}
+            </button>
+          </div>
+        </div>
+
+
+ <!-- Categorías seleccionadas. 22393139 FGT -->
+ <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Categorias seleccionadas</label>
+          <div class="flex flex-wrap gap-2 min-h-10 p-2 " :class="{ 'border-red-500': errors.categorias }">
             <div
               v-for="category in selectedCategories"
               :key="category.idCategoria"
@@ -260,22 +279,6 @@ onMounted(async () => {
           <p v-if="errors.categorias" class="text-red-500 text-sm mt-1">{{ errors.categorias }}</p>
         </div>
 
-        <!-- Lista de categorías. 22393139 FGT -->
-        <div class="mb-4">
-          <label class="block text-gray-700 mb-1">Seleccionar categorías*</label>
-          <div class="border rounded-lg p-2 max-h-40 overflow-y-auto">
-            <button
-              v-for="category in categories"
-              :key="category.idCategoria"
-              @click.prevent="selectCategory(category)"
-              :disabled="selectedCategories.some((c) => c.idCategoria === category.idCategoria)"
-              class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              :class="{ 'bg-gray-100': selectedCategories.some((c) => c.idCategoria === category.idCategoria) }"
-            >
-              {{ category.nombre }}
-            </button>
-          </div>
-        </div>
 
         <!-- Subida de imágenes. 22393139 FGT -->
         <div class="mb-6">
