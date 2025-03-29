@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
-import axios from 'axios';
+import { deleteProfileService } from '@/services/profileService';
 
 const props = defineProps({
   userProfile: {
@@ -28,9 +28,9 @@ const toast = useToast();
 
 const confirmDelete = async () => {
   try {
-    await axios.delete(`https://localhost:7140/api/Perfil/${props.userProfile.idPerfil}`);
+    await deleteProfileService(props.userProfile.idPerfil)
     toast.success('Cuenta eliminada correctamente.');
-    emit('confirm'); // Emite confirm para manejarlo en el padre
+    emit('confirm');
   } catch (error) {
     toast.error('Error al eliminar la cuenta.');
     console.error(error);

@@ -33,11 +33,9 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { IProduct } from '@/interfaces/IProduct';
-import { useProductStore } from '@/stores/productStore';
+import type { IProduct } from '@/interfaces/IProduct';
 
 const products = ref<IProduct[]>([]);
-const productStore = useProductStore();
 const userId = ref<number | null>(null); // Usuario logueado
 
 // Obtén el perfil del usuario logueado
@@ -75,12 +73,7 @@ const fetchProducts = async () => {
   }
 };
 
-// Llama a ambas funciones al montar el componente
 onMounted(async () => {
-  await fetchUserProducts(); // Obtén el usuario logueado y los productos
+  await fetchUserProducts();
 });
 </script>
-
-<style scoped>
-/* Puedes agregar estilos aquí si es necesario */
-</style>

@@ -41,5 +41,9 @@ export const getProfilesService = async () => {
 }
 
 export const getProfileService = async (id:number) => {
-  return await genericRequestStatusNeeded(base_url + '/perfil/usuario' + id, 'GET')
+  return await genericRequestStatusNeeded(base_url + '/perfil/usuario/' + id, 'GET')
+}
+
+export const deleteProfileService = async (id:number) => {
+  return await genericRequestStatusNeeded(base_url + '/perfil/' + id, 'DELETE')
 }

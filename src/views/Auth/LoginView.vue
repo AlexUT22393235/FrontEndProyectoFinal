@@ -28,7 +28,7 @@ const handleLogin = async () => {
 
         try {
             const response = await getProfileService(user.value.id)
-            if (response.length > 0) {
+            if (response.data) {
                 return router.push('/landing');
             }
             router.push('/createProfile');

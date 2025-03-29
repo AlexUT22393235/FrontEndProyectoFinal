@@ -45,8 +45,7 @@
   const emit = defineEmits(['remove-product']);
   const hideProduct = async (id:number) => {
     try {
-      const response = await hideProductService({ idProducto: id, fechaCreacion: null })
-      console.log(response)
+      await hideProductService({ idProducto: id, noVisible: true })
       emit('remove-product', id);
     } catch (error) {
       if(axios.isAxiosError(error)){
@@ -58,7 +57,7 @@
   }
 
   const formatDate = (date: Date) => {
-  const dateStr = new Date(date).toISOString().slice(0, 10); // Get the first 10 characters (YYYY-MM-DD)
+  const dateStr = new Date(date).toISOString().slice(0, 10);
   return dateStr;
 };
 
