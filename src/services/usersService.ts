@@ -2,6 +2,7 @@
 import type { CreateUserDto } from '@/dtos/CreateUserDto'
 import { genericRequest } from '../utils/genericRequest'
 import type { UpdateUserDto } from '@/dtos/UpdateUserDto'
+import type { banUserDto } from '@/dtos/banUserDto'
 
 
 const base_url = 'https://localhost:7140/api'
@@ -23,6 +24,9 @@ export const createUserService = async (item:CreateUserDto) => {
 }
 
 export const updateUserService = async (item:UpdateUserDto) => {
-  console.log(item)
   return await genericRequest(base_url + `/usuario/${item.idUsuario}`, 'PUT', item)
+}
+
+export const banUserService = async (item:banUserDto) => {
+  return await genericRequest(base_url + '/usuario/ban-usuario', 'PATCH', item)
 }

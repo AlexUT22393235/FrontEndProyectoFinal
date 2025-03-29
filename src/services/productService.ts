@@ -1,6 +1,7 @@
 import type { IProduct } from '@/interfaces/IProduct';
 import { genericRequest } from '../utils/genericRequest'
 import type { postTrade } from '@/dtos/postTradeDto';
+import type { ReportProductDto } from '@/dtos/ReportProductDto';
 
 const base_url = 'https://localhost:7140/api' // --- Aqui estuvo el skill issue
 
@@ -39,6 +40,9 @@ export const postTradeService = async (item:postTrade) => {
   return await genericRequest(base_url + '/intercambio/', 'POST', item)
 }
 
+export const reportProductService = async (item:ReportProductDto) => {
+  return await genericRequest(base_url + '/producto/patch-producto-report/', 'PATCH', item)
+}
 
 export const hideProductService = async (item: any) => {
   return await genericRequest('https://localhost:7140/api/Producto/fecha-creacion-null', 'PUT', item)
