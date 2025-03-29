@@ -96,71 +96,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
@@ -207,7 +142,7 @@ const isCurrentUser = computed(() => {
 
 const fetchUserData = async () => {
   try {
-    const response = await axios.get(`https://localhost:7140/api/Perfil/${profileIdFromUrl.value}`);
+    const response = await axios.get(`https://localhost:7140/api/Perfil/ /${}`);
     // console.log('Datos obtenidos de la API de perfil:', response.data);
 
     if (response.status === 200) {
@@ -222,12 +157,10 @@ const fetchUserData = async () => {
           descripcion: profile.descripcion,
         };
       } else {
-        // console.log('No se encontró un perfil para este usuario.');
         userProfile.value = null;
       }
     }
-  } catch (error) {
-    // console.error('Error obteniendo datos del perfil:', error);
+  } catch {
     userProfile.value = null;
   }
 };

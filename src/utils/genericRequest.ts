@@ -26,6 +26,32 @@ export const genericRequest = async (
   }
 };
 
+export const genericRequestStatusNeeded = async (
+  url: string,
+  method: string,
+  body?: any,
+  headers: any = { 'Content-Type': 'application/json' } // 22393139
+) => {
+  try {
+    const response = await axios({
+      url: url,
+      method: method,
+      headers: headers, //  Ahora puedo recibo header 22393139
+      data: body,
+    });
+    return {data: response.data, status: response.status };
+  } catch (error: any) {
+    console.log('error', `Error in genericRequest: ${error.message}`, {
+      url,
+      method,
+      body,
+      headers,
+      error,
+    });
+    throw error;
+  }
+};
+
 
 export const genericRequestAutheticated = async (
   headers: any,
