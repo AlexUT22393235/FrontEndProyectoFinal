@@ -129,6 +129,7 @@ import type { postTrade } from '@/dtos/postTradeDto.ts'
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import { useToast } from 'vue-toastification';
+import { getUserService } from '@/services/usersService';
 
 const toast = useToast();
 const authStore = useAuthStore();
@@ -177,7 +178,6 @@ const openContactModal = () => {
         draggable: true,
       }
     );
-    console.log('Deseas contactarte? primero inicia sesion')
   }
 }
 
@@ -191,6 +191,7 @@ const user = ref<{
   id: number;
   nombre: string;
   fotoPerfil?: string;
+  telefono: string,
   userProfile?: {
     imagenPerfil: string;
   };
@@ -198,6 +199,7 @@ const user = ref<{
   id: 0,
   nombre: '',
   fotoPerfil: '',
+  telefono: '',
   userProfile: {
     imagenPerfil: '',
   },
@@ -206,17 +208,13 @@ const user = ref<{
 const fetchUserDetails = async (usuarioId: number) => {  //Rehacer funcion, no sigue estandar
   try {
     console.log('Fetching user details for usuarioId:', usuarioId); // Verifica el usuario
-    const userResponse = await axios.get(`https://localhost:7140/api/Usuario/${usuarioId}`);
-    if (userResponse.data) {
-      user.value = userResponse.data; // Asigna los datos del usuario
-    }
+    const response = await getUserService(usuarioId)
+    user.value = response
 
     const profileResponse = await axios.get(`https://localhost:7140/api/Perfil/${usuarioId}`);
     if (user.value) {
       user.value.userProfile = profileResponse.data; // Asigna los datos del perfil al usuario
     }
-
-    console.log('User data received:', user.value); // Verifica los datos recibidos
   } catch (error) {
     console.error('Error al obtener los datos del usuario o perfil:', error);
   }
@@ -225,24 +223,16 @@ const fetchUserDetails = async (usuarioId: number) => {  //Rehacer funcion, no s
 const goBack = () => {
   router.go(-1);
 };
+
 const goToUserProfile = (userId: number | undefined) => {
   if (!userId) {
     console.error("Error: userId no está disponible o es inválido", userId);
     return;
   }
-
   router.push(`/perfil/${userId}`);
 };
 
-
-
-console.log("Usuario en el momento del click:", user);
-console.log("ID del usuario en el producto:", product?.usuarioId);
-
 onMounted(() => {
-  console.log("Producto recibido:", product);
-  console.log("ID del usuario en el producto:", product?.usuarioId);
-
   if (product?.usuarioId) {
     trade.value.usuarioOfertanteId = product.usuarioId
     trade.value.productoId = Number(route.params.id)
@@ -259,17 +249,13 @@ const formattedDate = computed(() => {
   if (product?.fechaCreacion) {
     try {
       const formatted = format(new Date(product.fechaCreacion), 'dd/MM/yyyy');
-      console.log('Fecha formateada:', formatted);
       return formatted;
     } catch (error) {
       console.error('Error al formatear la fecha:', error);
       return 'Fecha inválida';
     }
   }
-
-  console.log('Fecha desconocida');
   return 'Fecha desconocida';
-
 });
 
 

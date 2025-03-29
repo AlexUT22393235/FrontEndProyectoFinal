@@ -111,6 +111,11 @@ const router = createRouter({
           name : 'adminusers',
           component : () => import ('../views/Admin/CrudUsers.vue')
         },
+        {
+          path : 'logs',
+          name : 'adminlogs',
+          component : () => import ('../views/Admin/CrudLogs.vue')
+        },
       ]
     },
 

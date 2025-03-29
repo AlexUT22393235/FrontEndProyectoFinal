@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
 import { ref, watch } from 'vue';
-import { useToast } from 'vue-toastification'; // Importar el hook useToast
+import { useToast } from 'vue-toastification';
 import UserProfile from '@/views/UserProfileView.vue';
 
 const props = defineProps({
@@ -60,7 +60,6 @@ const props = defineProps({
 const emit = defineEmits(['close', 'submit']);
 const editedProfile = ref({ ...props.userProfile });
 
-
 const toast = useToast();
 
 watch(
@@ -72,14 +71,10 @@ watch(
 
 const submitForm = async () => {
   try {
-
     emit('submit', editedProfile.value);
-
 
     toast.success('¡Cambios guardados correctamente, recarga para ver los cambios!');
   } catch (error) {
-
-    
     toast.error('Hubo un error al guardar los cambios.');
     console.error(error);
   }
