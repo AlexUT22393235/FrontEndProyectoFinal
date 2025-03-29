@@ -41,7 +41,10 @@ export const postTradeService = async (item:postTrade) => {
 
 
 export const hideProductService = async (item: any) => {
-  return await genericRequest('https://localhost:7140/api/Producto/fecha-creacion-null', 'PUT', item)
+  return await genericRequest(`${base_url}/Producto/fecha-creacion-null`, 'PUT', item)
 };
 
+export const productsPerUserService = async (id: number)=>{
+  return await genericRequest(`${base_url}/api/Producto/usuario/${id}`, 'GET')
+};
 
