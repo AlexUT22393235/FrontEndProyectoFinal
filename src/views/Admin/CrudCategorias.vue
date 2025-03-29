@@ -83,6 +83,8 @@ const isModalOpen = ref(false);
 const isEdit = ref(false);
 const editId = ref(0);
 
+console.log('perro')
+
 const data = ref();
 const fetchData = async () => {
     try {

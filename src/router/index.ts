@@ -88,8 +88,32 @@ const router = createRouter({
     {
       path : '/admin',
       name : 'dashboard-admin',
-      component : () => import ('../views/Admin/Dashboard.vue')
+      children: [
+        {
+          path : '',
+          name : 'dashboard',
+          component : () => import ('../views/Admin/Dashboard.vue')
+        },
+        {
+          path : 'categories',
+          name : 'admincategories',
+          component : () => import ('../views/Admin/CrudCategorias.vue')
+        },
+
+        {
+          path : 'products',
+          name : 'adminproducts',
+          component : () => import ('../views/Admin/CrudProducts.vue')
+        },
+
+        {
+          path : 'users',
+          name : 'adminusers',
+          component : () => import ('../views/Admin/CrudUsers.vue')
+        },
+      ]
     },
+
     {
       path: '/:pathMatch(.*)*',
       name: '404',
