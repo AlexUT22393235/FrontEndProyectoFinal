@@ -1,4 +1,3 @@
-import type { IProduct } from '@/interfaces/IProduct';
 import { genericRequest } from '../utils/genericRequest'
 import type { postTrade } from '@/dtos/postTradeDto';
 import type { ReportProductDto } from '@/dtos/ReportProductDto';
@@ -45,7 +44,7 @@ export const reportProductService = async (item:ReportProductDto) => {
 }
 
 export const hideProductService = async (item: any) => {
-  return await genericRequest('https://localhost:7140/api/Producto/fecha-creacion-null', 'PUT', item)
+  return await genericRequest(base_url + 'Producto/fecha-creacion-null', 'PUT', item)
 };
 
 
