@@ -142,11 +142,11 @@ const isCurrentUser = computed(() => {
 
 const fetchUserData = async () => {
   try {
-    const response = await axios.get(`https://localhost:7140/api/Perfil/${profileIdFromUrl.value}`);
-    // console.log('Datos obtenidos de la API de perfil:', response.data);
+    const response = await axios.get(`https://localhost:7140/api/Perfil/usuario/${profileIdFromUrl.value}`);
+    console.log('Datos obtenidos de la API de perfil:', response.data[0]);
 
     if (response.status === 200) {
-      const profile = response.data;
+      const profile = response.data[0];
 
       if (profile) {
         userProfile.value = {
