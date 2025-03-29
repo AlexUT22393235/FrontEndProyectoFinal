@@ -76,10 +76,9 @@
         <ExchangeHistory v-if="showNegotiate===false" :exchanges="exchanges" />
 
 
-
         <NegotiationSector :data="data" @remove-product="removeProduct" v-else/>
 
-        <UserProductsSection :data="data"  />
+        <!-- <UserProductsSection /> -->
       </div>
 
       <!-- Historial de Valoraciones -->
@@ -93,72 +92,6 @@
   <AddProductModal v-if="isModalOpen" :isOpen="isModalOpen" @close="closeModal" @submit="handleSubmit" />
 
 </template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <script setup lang="ts">
@@ -179,6 +112,7 @@ import Valorations from '@/components/Sections/UserValorationsSection.vue';
 import DeleteProfileModal from '@/components/Modals/DeleteProfileModal.vue';
 import ReportModal from '@/components/Modals/ReportModal.vue';
 import EditProfileModal from '@/components/Modals/EditProfileModal.vue';
+import ProductsByUserSection from '@/components/Sections/ProductsByUserSection.vue';
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 const showNegotiate = ref(false);

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { IProductDetail } from '../interfaces/IProductDetail';
-import { getProductByIdService, getUserByIdService } from '../services/productService';
+import { getProductByIdService, getUserByIdService, productsPerUserService } from '../services/productService';
 
 export const useProductStore = defineStore('product', {
   state: () => ({
@@ -56,5 +56,25 @@ export const useProductStore = defineStore('product', {
         this.products = [];
       }
     },
+
+    async fetchProductsByUser(userId: number) {
+      try{
+        const response = await productsPerUserService(userId);
+        if(response){
+          this.products=response.map((product:any)=>({
+            idImagen: product.imagenes?.[0]?.idImagen || 0,
+            nombre: product.nombre,
+            descripcion: product.descripcion,
+            fechaCreacion: product.fechaCreacion,
+            urlImagen: product.imagenes?.[0]?.urlImagen || '/images/default.jpg',
+            imagenes: product.imagenes || [],
+            usuarioId: product.usuarioId,
+          }))
+        }
+      }catch(error){
+        console.error('Error al obtener los productos del usuario:', error);
+        this.products = [];
+      }
+    }
   },
 });
