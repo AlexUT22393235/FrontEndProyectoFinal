@@ -26,7 +26,8 @@
     </ul>
 
     <!-- Mensaje si no hay productos -->
-    <p v-else class="text-center text-gray-600">No hay productos disponibles para este usuario.</p>
+    <!-- <p v-else class="text-center text-gray-600">No hay productos disponibles para este usuario.</p> -->
+
   </div>
 </template>
 

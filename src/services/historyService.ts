@@ -3,17 +3,35 @@ import type { IExchange, IExchangeOffer, IProductDetail } from '@/interfaces/IEx
 
 const base_url = 'https://localhost:7140/api';
 
-// Obtener intercambios por ID de usuario 22393139 FGT 26/03/2025
 export const getExchangesByUserIdService = async (userId: number): Promise<IExchange[]> => {
-  return await genericRequest(`${base_url}/Intercambio/${userId}`, 'GET');
-};
-
-// Obtener oferta por ID de ofertante 22393139 FGT 26/03/2025
-export const getOfferByUserIdService = async (userId: number): Promise<IExchangeOffer[]> => {
-  return await genericRequest(`${base_url}/Intercambio/ofertante/${userId}`, 'GET');
-};
-
-// Obtener detalle del producto por ID 22393139 FGT 26/03/2025
-export const getProductDetailByIdService = async (productId: number): Promise<IProductDetail> => {
-  return await genericRequest(`${base_url}/Producto/detail/${productId}`, 'GET');
-};
+    try {
+      const response = await genericRequest(`${base_url}/Intercambio/solicitante/${userId}`, 'GET');
+      return Array.isArray(response) ? response : [];
+    } catch (error) {
+      console.error('Error en getExchangesByUserIdService:', error);
+      return [];
+    }
+  };
+  
+  export const getOfferByUserIdService = async (userId: number): Promise<IExchangeOffer[]> => {
+    try {
+      const response = await genericRequest(`${base_url}/Intercambio/ofertante/${userId}`, 'GET');
+      return Array.isArray(response) ? response : [];
+    } catch (error) {
+      console.error('Error en getOfferByUserIdService:', error);
+      return [];
+    }
+  };
+  
+  export const getProductDetailByIdService = async (productId: number): Promise<IProductDetail> => {
+    try {
+      return await genericRequest(`${base_url}/Producto/detail/${productId}`, 'GET');
+    } catch (error) {
+      console.error('Error en getProductDetailByIdService:', error);
+      return {
+        nombre: '',
+        descripcion: '',
+        imagenes: []
+      };
+    }
+  };

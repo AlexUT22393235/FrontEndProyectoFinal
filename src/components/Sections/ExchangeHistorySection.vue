@@ -43,7 +43,7 @@ const props = defineProps({
   },
 });
 
-
+// Función para formatear la fecha (opcional moverla aquí)
 const formatDate = (dateString: string) => {
   if (!dateString) return 'Fecha no disponible';
   const date = new Date(dateString);
