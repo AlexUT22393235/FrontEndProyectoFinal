@@ -26,20 +26,26 @@
 </template>
 
 <script setup lang="ts">
+
+import { reportUserService } from '@/services/usersService';
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useToast } from 'vue-toastification';
 
 const emit = defineEmits(['close', 'submit']);
 const reportReason = ref('');
 const reportDetails = ref('');
 const toast = useToast();
+const route = useRoute()
 
-const submitReport = () => {
+
+const submitReport = async () => {
   if (!reportReason.value) {
     toast.error('Por favor selecciona un motivo.');
     return;
   }
 
+  await reportUserService({idUsuario:Number(route.params.id), reportado: true})
   emit('submit', { reason: reportReason.value, details: reportDetails.value });
   toast.success('Reporte enviado correctamente.');
   emit('close');

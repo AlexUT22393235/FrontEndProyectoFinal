@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 
@@ -35,9 +36,20 @@ const fetchUserDetails = async (usuarioId: number) => {
 
     // console.log('User data received:', user.value);
   } catch (error) {
-    // console.error('Error al obtener los datos del usuario o perfil:', error);
+    console.error('Error al obtener los datos del usuario o perfil:', error);
   }
 };
+const formValue = ref();
+const router = useRouter()
+
+const submitSearch = async() => {
+    try {
+      const newParam = encodeURI(formValue.value);
+      router.push('/search/' + newParam)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 onMounted(() => {
   const userId = authStore.user?.id; // Obtener directamente el ID del usuario autenticado
@@ -59,6 +71,15 @@ onMounted(() => {
         STRADE
       </h1>
     </div>
+
+        <form class="w-full flex items-center justify-center gap-[1vw] p-[2vh] " @submit.prevent="submitSearch " >
+      <input v-model="formValue" placeholder="Pantuflas amarillas" class="placeholder:italic bg-[#D9D9D9] rounded-lg w-[20vw] h-[5vh] px-[1vw]">
+      <button type="submit" class="cursor-pointer w-[2vw]">
+
+        <svg class="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#638354" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+
+      </button>
+    </form>
 
     <nav class="nav-links">
       <RouterLink to="/landing">Inicio</RouterLink>

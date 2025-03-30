@@ -15,7 +15,7 @@
         </ul>
       </nav>
 
-    </aside> 
+    </aside>
 
 
     <div class="flex-1 flex flex-col">
@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import Navbar from '@/components/Layout/DashboardNavbar.vue'
+import Navbar from '@/components/Layout/AdminNavbar.vue'
 import * as echarts from "echarts";
 
 // Menú lateral

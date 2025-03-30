@@ -88,6 +88,7 @@ const router = createRouter({
     {
       path : '/admin',
       name : 'dashboard-admin',
+      component: () => import ('../components/Layout/Admin.vue'),
       children: [
         {
           path : '',
@@ -97,24 +98,47 @@ const router = createRouter({
         {
           path : 'categories',
           name : 'admincategories',
-          component : () => import ('../views/Admin/CrudCategorias.vue')
+          component : () => import ('../views/Admin/CategoriesCrud.vue')
         },
 
         {
           path : 'products',
           name : 'adminproducts',
-          component : () => import ('../views/Admin/CrudProducts.vue')
+          component : () => import ('../views/Admin/ProductsCrud.vue')
         },
 
         {
           path : 'users',
           name : 'adminusers',
-          component : () => import ('../views/Admin/CrudUsers.vue')
+          component : () => import ('../views/Admin/UsersCrud.vue')
         },
         {
           path : 'logs',
           name : 'adminlogs',
-          component : () => import ('../views/Admin/CrudLogs.vue')
+          component : () => import ('../views/Admin/LogsCrud.vue')
+        },
+      ]
+    },
+    {
+      path : '/moderator',
+      name : 'moderator',
+      component: () => import ('../components/Layout/Moderator.vue'),
+      children: [
+        {
+          path : '',
+          name : 'moderatorDashboard',
+          component : () => import ('../views/Admin/Dashboard.vue')
+        },
+        {
+          path : 'products',
+          name : 'moderatorProducts',
+          component : () => import ('../views/Moderator/ProductsCrud.vue')
+        },
+
+        {
+          path : 'users',
+          name : 'moderatorUsers',
+          component : () => import ('../views/Moderator/UsersCrud.vue')
         },
       ]
     },

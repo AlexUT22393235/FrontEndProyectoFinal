@@ -7,6 +7,8 @@ export interface IProduct {
   fechaCreacion: Date;
   procesoNegociacion: boolean;
   intercambio: boolean;
+  noVisible: boolean,
+  reportado: boolean,
   usuarioId: number;
   imagenes: {
     idImagen: number;

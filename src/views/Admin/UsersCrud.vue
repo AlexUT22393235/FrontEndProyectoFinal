@@ -1,29 +1,6 @@
-<template>
-  <div class="flex h-screen bg-[#FAF7EC]">
-    <!-- Sidebar -->
-    <!-- <aside class="w-64 bg-[#50683E] text-white flex flex-col">
-      <div class="p-6 text-2xl font-bold">Admin Panel</div>
-      <nav class="flex-1">
-        <ul class="space-y-2">
-          <li v-for="(item, index) in menuItems" :key="index">
-            <button
-              class="w-full text-left px-6 py-3 hover:bg-[#3A4F2A] transition duration-200"
-              @click="setActive(index)">
-              {{ item.name }}
-            </button>
-          </li>
-        </ul>
-      </nav>
-
-    </aside> -->
-
-
-    <div class="flex-1 flex flex-col">
-      <Navbar/>
-      <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 gap-6 ">
-
-        <div class=" col-span-2">
-          <div className='w-full h-[88vh] p-[2vw] overflow-scroll'>
+  <template>
+    <ConfirmationDash v-if="isConfirmationModalOpen === true" :accion="confirmationStuff.accion" tipo="usuario" :nombre="confirmationStuff.nombre" @close="closeConfirmation" @act="confirmationStuff.action"/>
+              <div className='w-full h-[88vh] p-[2vw] overflow-scroll'>
                     <div class="flex w-full justify-between">
                       <p className='font-semibold text-2xl'>Usuarios</p>
                       <button class="bg-green-600 w-[7vw] text-white rounded-md py-1 cursor-pointer" @click="openModal">Agregar</button>
@@ -61,23 +38,12 @@
                         </tbody>
                     </table>
                 </div>
-        </div>
 
-      </main>
-    </div>
-
-    <ConfirmationDash v-if="isConfirmationModalOpen === true" :accion="confirmationStuff.accion" tipo="usuario" :nombre="confirmationStuff.nombre" @close="closeConfirmation" @act="confirmationStuff.action"/>
-
-    <AddUserModal :isOpen="isModalOpen" :isEdit="isEdit" :editId="editId" @close="closeModal"  />
-  </div>
-
-
-
-</template>
+                <AddUserModal :isOpen="isModalOpen" :isEdit="isEdit" :editId="editId" @close="closeModal"  />
+  </template>
 
 <script setup lang="ts">
 import { getUsersService, deleteUserService, banUserService } from '@/services/usersService';
-import Navbar from '@/components/Layout/DashboardNavbar.vue'
 import AddUserModal from '@/components/Modals/AddUserModal.vue';
 import ConfirmationDash from '@/components/Modals/ConfirmationDash.vue';
 import { ref } from 'vue';

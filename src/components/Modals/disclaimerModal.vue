@@ -7,8 +7,8 @@ import axios from 'axios'
 
   const handleTrade = async () => {
     try {
-      const response = await postTradeService(props.trade)
-      console.log(response)
+      await postTradeService(props.trade)
+      emit("close")
     } catch (error) {
       if(axios.isAxiosError(error)){
         console.log(error.message)
