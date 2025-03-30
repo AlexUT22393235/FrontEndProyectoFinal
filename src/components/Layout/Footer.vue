@@ -46,8 +46,9 @@
     </div>
 
     <!-- Sección de Derechos de Autor -->
-    <div class="text-center mt-8 pt-4 border-t border-[#6b6565]">
+    <div class="text-center mt-8">
       <p class="text-sm">Strade © 2025. Todos los derechos reservados.</p>
     </div>
+  
   </footer>
 </template>
