@@ -1,7 +1,7 @@
-import { genericRequest } from "@/utils/genericRequest";
+import { genericRequest, genericRequestStatusNeeded } from "@/utils/genericRequest";
 import { useAuthStore } from "@/stores/authStore";
 
-const BASE_URL = "https://localhost:7140/api";
+const base_url = "https://localhost:7140/api";
 
 export const getUserProfileService = async () => {
   try {
@@ -15,7 +15,7 @@ export const getUserProfileService = async () => {
       return null;
     }
 
-    const response = await genericRequest(`${BASE_URL}/Perfil`, "GET");
+    const response = await genericRequest(`${base_url}/Perfil`, "GET");
     console.log("Respuesta de la API:", response);
 
     const profiles = response?.data ?? [];
@@ -35,3 +35,15 @@ export const getUserProfileService = async () => {
     return null;
   }
 };
+
+export const getProfilesService = async () => {
+  return await genericRequest(base_url + '/perfil/', 'GET')
+}
+
+export const getProfileService = async (id:number) => {
+  return await genericRequestStatusNeeded(base_url + '/perfil/usuario/' + id, 'GET')
+}
+
+export const deleteProfileService = async (id:number) => {
+  return await genericRequestStatusNeeded(base_url + '/perfil/' + id, 'DELETE')
+}

@@ -1,8 +1,8 @@
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
-      <h2 class="text-2xl font-bold mb-4">Reportar Cuenta</h2>
-      <form @submit.prevent="submitReport">
+      <h2 class="text-2xl font-bold mb-4">Reportar producto</h2>
+      <form @submit.prevent="reportProduct">
         <div class="mb-4">
           <label class="block text-sm font-medium">Motivo del reporte</label>
           <select v-model="reportReason" class="input-field">
@@ -26,24 +26,29 @@
 </template>
 
 <script setup lang="ts">
+import type { ReportProductDto } from '@/dtos/ReportProductDto';
+import { reportProductService } from '@/services/productService';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
+import { useRoute } from 'vue-router';
 
 const emit = defineEmits(['close', 'submit']);
 const reportReason = ref('');
 const reportDetails = ref('');
 const toast = useToast();
+const route = useRoute()
 
-const submitReport = () => {
-  if (!reportReason.value) {
-    toast.error('Por favor selecciona un motivo.');
-    return;
+const reportProduct = async () => {  //Falta validar un poco
+  try {
+    const product:ReportProductDto = { idProducto:Number(route.params.id), reportado:true };
+    await reportProductService(product);
+    console.log('si jala')
+    emit('close')
+    toast.success('Reporte enviado correctamente.');
+  } catch (error) {
+    console.log(error)
   }
-
-  emit('submit', { reason: reportReason.value, details: reportDetails.value });
-  toast.success('Reporte enviado correctamente.');
-  emit('close');
-};
+}
 </script>
 
 <style scoped>

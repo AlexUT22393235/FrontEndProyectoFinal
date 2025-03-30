@@ -43,7 +43,10 @@ const fetchData = async () => {
           </router-link>
         </button>
       </div>
-      <div
+
+
+            <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+              <div
         class="border-y border-gray-500 w-full h-[50rem] justify-center items-center flex flex-col gap-12 px-10 mt-4">
         <div class=" m-18 p-18 text-center justify-center items-center h-[20rem] w-[60rem] flex flex-row gap-44">
           <div class="flex flex-row justify-center gap-14">
@@ -239,9 +242,16 @@ const fetchData = async () => {
         </div>
 
       </div>
-      <div class="p-8">
+      </div>
+            <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+
+      </div>
+      <div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="mt-8">
+        <div class="p-8">
         <h1 class="text-3xl text-[#3d491a] font-bold p-8">Productos Agregados recientemente</h1>
       </div>
+    </div>
+
       <div class="flex flex-row justify-center w-full gap-4 px-6">
 
         <Swiper
@@ -250,25 +260,30 @@ const fetchData = async () => {
       :space-between="20"
       navigation
       pagination
-      :autoplay="{ delay: 990, disableOnInteraction: false }"
-      class="mySwiper"
+      :autoplay="{ delay: 1400, disableOnInteraction: false }"
+
     >
       <SwiperSlide
         v-for="(item, index) in data"
         :key="index"
+      >      <ProductCard
+        :id="item.idProducto"
+        :imgSrc="item.imagenes[0].urlImagen"
+        :categories="[]"
+        class="custom-product-card"
       >
-        <ProductCard
-          :id="item.idProducto"
-          :imgSrc="item.imagenes[0].urlImagen"
-          :categories="item.categorias"
-        >
-          <template v-slot:title>
+        <template v-slot:title >
+          <p>
             {{ item?.nombre }}
-          </template>
-          <template v-slot:description>
+          </p>
+        </template>
+        <template v-slot:description>
+          <p>
             {{ item?.descripcion }}
-          </template>
-        </ProductCard>
+          </p>
+
+        </template>
+      </ProductCard>
       </SwiperSlide>
     </Swiper>
 
@@ -310,35 +325,43 @@ const fetchData = async () => {
 .apple-rotate-animation {
   animation: rotateAnimation 3s ease-in-out infinite;
 }
-.mySwiper {
-  width: 100%;
-  height: auto;
-}
-.swiper-pagination-bullet {
-  background-color: #3d491a; /* Color personalizado */
-  opacity: 0.7;
+
+[data-aos="fade-up"] {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.swiper-pagination-bullet-active {
-  background-color: #8b9e51; /* Color para el punto activo */
+[data-aos="fade-up"].aos-animate {
   opacity: 1;
+  transform: translateY(0);
 }
 
-/* Cambiar el color de los botones de navegación */
-.swiper-button-next,
-.swiper-button-prev {
-  color: #3d491a; /* Color personalizado */
-}
+/* Estilo para el componente ProductCard */
+.custom-product-card {
+ text-align: center;
+ text-justify: auto;
+ align-items: center;
+ display: flex;
+ flex-direction: column;
+ width: 80%;
 
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  color: #8b9e51; /* Color al pasar el mouse */
-}
 
-/* Ajustar el tamaño de los botones de navegación */
-.swiper-button-next,
-.swiper-button-prev {
-  font-size: 1.5rem;
+}
+.custom-product-card p.text {
+  font-size: 1.2rem;
   color: #3d491a;
+  margin-top: 9px;
+  display: flex;
+  flex-direction: row;
+}
+.custom-product-card p {
+  font-size: 1.2rem;
+  color: #3d491a;
+  margin: 9px;
+}
+
+.swiper-button-prev:after, .swiper-button-next:after{
+color: #3d491a !important;
 }
 </style>

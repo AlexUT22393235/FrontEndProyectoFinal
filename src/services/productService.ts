@@ -1,6 +1,7 @@
-import type { IProduct } from '@/interfaces/IProduct';
+import type { HideProductDto } from '@/dtos/HideProductDto';
 import { genericRequest } from '../utils/genericRequest'
 import type { postTrade } from '@/dtos/postTradeDto';
+import type { ReportProductDto } from '@/dtos/ReportProductDto';
 
 const base_url = 'https://localhost:7140/api' // --- Aqui estuvo el skill issue
 
@@ -21,6 +22,9 @@ export const getUserByIdService = async (id: number) => {
   return response;
 };
 
+export const fetchUserProducts = async (id: number) => {
+  return await genericRequest(`${base_url}/producto/usuario/${id}`, 'GET');
+};
 export const deleteProductService = async (id:number) => {
   return await genericRequest(base_url + `/producto/${id}`, 'DELETE')
 }
@@ -36,9 +40,15 @@ export const postTradeService = async (item:postTrade) => {
   return await genericRequest(base_url + '/intercambio/', 'POST', item)
 }
 
+export const reportProductService = async (item:ReportProductDto) => {
+  return await genericRequest(base_url + '/producto/patch-producto-report/', 'PATCH', item)
+}
 
-export const hideProductService = async (item: any) => {
-  return await genericRequest('https://localhost:7140/api/Producto/fecha-creacion-null', 'PUT', item)
+export const hideProductService = async (item: HideProductDto) => {
+  return await genericRequest(base_url + 'Producto/fecha-creacion-null', 'PUT', item)
 };
 
+export const productsPerUserService = async (id: number)=>{
+  return await genericRequest(`${base_url}/Producto/usuario/${id}`, 'GET')
+};
 

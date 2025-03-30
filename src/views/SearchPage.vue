@@ -2,7 +2,7 @@
 
 import ProductCard from '@/components/ProductCard.vue';
 import { getProductsService } from '@/services/productService';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios'
 import { onMounted, ref, computed, watch } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
@@ -19,8 +19,9 @@ import type { IProduct } from '@/interfaces/IProduct';
   const formValue = ref();
 
   const route = useRoute();
+  const router = useRouter()
 
-  const searchName = decodeURI(route.params.busqueda as string)
+  const searchName = ref(decodeURI(route.params.busqueda as string))
 
   const fetchData = async () => {
     try {
@@ -51,7 +52,7 @@ import type { IProduct } from '@/interfaces/IProduct';
   const submitSearch = async() => {
     try {
       const newParam = encodeURI(formValue.value);
-      window.location.href = '/search/' + newParam;
+      router.push('/search/' + newParam)
     } catch (error) {
       console.error(error);
     }
@@ -80,22 +81,26 @@ fetchData()
     fetchCategories();
   })
 
-    watch(() => route.params.busqueda, () => {
-    fetchData()
-  })
+  watch(
+  () => route.params.busqueda,
+  (newVal) => {
+    searchName.value = decodeURI(newVal as string); // Update searchName
+    fetchData();
+  }
+);
 
   const searchData = computed(() => {
     console.log(route.name)
   switch(route.name) {
     case 'category':
       return data.value ? data.value.filter((item:IProduct) =>
-          item.categorias.some((cat:ICategory) => cat.nombre.toLowerCase() == searchName.toLowerCase())
+          item.categorias.some((cat:ICategory) => cat.nombre.toLowerCase() == searchName.value.toLowerCase())
         ) : [];
     case 'products':
       console.log(data.value)
       return data.value;
     case 'search':
-      return data.value ? data.value.filter((item:IProduct) => item.nombre.toLowerCase().includes(searchName.toLowerCase())) : [];
+      return data.value ? data.value.filter((item:IProduct) => item.nombre.toLowerCase().includes(searchName.value.toLowerCase())) : [];
     default:
       return data.value;
   }
@@ -143,9 +148,15 @@ const filtered = computed(() => {
 </script>
 <template>
 <div class=" bg-[#6d805c]">
-  <div v-if="route.name !== 'product'" class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
-    <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} Resultados de Busqueda</p>
-    <p class="text-[1.5rem] text-white">para <span class="text-[#d5d0b6] " >"{{ searchName }}"</span></p>
+  <div  class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
+    <div v-if="route.name !== 'product'" data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="mt-8">
+      <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} Resultados de Busqueda</p>
+      <p class="text-[1.5rem] text-white">para <span class="text-[#d5d0b6] " >"{{ searchName }}"</span></p>
+    </div>
+      <div v-else data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="mt-8">
+      <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} increibles objetos en Strade</p>
+      <p class="text-[1.5rem] text-white">Intercambia, reutiliza & conecta.</p>
+    </div>
     <form class="w-full flex items-center justify-center gap-[1vw] p-[2vh] " @submit.prevent="submitSearch " >
       <input v-model="formValue" placeholder="Pantuflas amarillas" class="placeholder:italic bg-[#D9D9D9] rounded-lg w-[20vw] h-[5vh] px-[1vw]">
       <button type="submit" class="cursor-pointer">
@@ -154,10 +165,7 @@ const filtered = computed(() => {
     </form>
   </div>
 
-  <div v-else class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
-    <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} increibles objetos en Strade</p>
-    <p class="text-[1.5rem] text-white">Intercambia, reutiliza & conecta.</p>
-  </div>
+
 </div>
 
 <div class="w-full h-[60vh] mb-[10vh] bg-[#c4caaf] ">

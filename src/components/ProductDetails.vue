@@ -8,8 +8,10 @@
   @close="contactModal = false"
 />
 
+  <ReportModal v-if="reportModal === true" @close="reportModal = false"/>
+
   <div class="product-details flex flex-col gap-5 p-5 ">
-    
+
     <div class="w-[12rem] flex items-center gap-4 pl-20">
       <svg
         @click="goBack"
@@ -60,9 +62,12 @@
           <button
             @click="openContactModal"
 
-            class="whatsapp-button w-full bg-[#5B735D] text-white py-3 px-5 rounded-md mt-6 hover:bg-[#128c7e] transition-colors duration-300"
+            class="whatsapp-button w-full bg-[#5B735D] text-white px-5 rounded-md mt-6 hover:bg-[#128c7e] transition-colors duration-300"
           >
             Contactar por WhatsApp
+          </button>
+          <button class="bg-[#5B735D] w-[3vw] h-[2.5vw] px-3 rounded-md mt-6 hover:bg-[#128c7e] transition-colors duration-300" @click="reportModal = true">
+            <svg class="w-full h-full object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.75 1C6.16421 1 6.5 1.33579 6.5 1.75V3.6L8.22067 3.25587C9.8712 2.92576 11.5821 3.08284 13.1449 3.70797L13.3486 3.78943C14.9097 4.41389 16.628 4.53051 18.2592 4.1227C19.0165 3.93339 19.75 4.50613 19.75 5.28669V12.6537C19.75 13.298 19.3115 13.8596 18.6864 14.0159L18.472 14.0695C16.7024 14.5119 14.8385 14.3854 13.1449 13.708C11.5821 13.0828 9.8712 12.9258 8.22067 13.2559L6.5 13.6V21.75C6.5 22.1642 6.16421 22.5 5.75 22.5C5.33579 22.5 5 22.1642 5 21.75V1.75C5 1.33579 5.33579 1 5.75 1Z" fill="#fbffaa"></path> </g></svg>
           </button>
         </div>
 
@@ -84,9 +89,9 @@
               </span>
 
             </p>
-            
+
             <!-- Se quito esto: ({{ product?.fechaCreacion }}), Para Mostrar solo la fecha dd/mm/yy-->
-             
+
             <p class="text-xs text-gray-500">
   {{ formattedDate }}
   <span v-if="product?.fechaCreacion"></span>
@@ -117,11 +122,13 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import Carousel from './Carousel.vue';
 import type { IProductDetail } from '../interfaces/IProductDetail';
-import DisclaimerModal from './disclaimerModal.vue';
+import DisclaimerModal from './Modals/disclaimerModal.vue';
+import ReportModal from './Modals/ReportProductModal.vue';
 import type { postTrade } from '@/dtos/postTradeDto.ts'
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import { useToast } from 'vue-toastification';
+import { getUserService } from '@/services/usersService';
 
 const toast = useToast();
 const authStore = useAuthStore();
@@ -137,6 +144,8 @@ const trade = ref<postTrade>({
 
 const router = useRouter();
 const contactModal = ref(false)
+
+const reportModal = ref(false)
 
 const openContactModal = () => {
   if(currentUser.value?.id){
@@ -168,7 +177,6 @@ const openContactModal = () => {
         draggable: true,
       }
     );
-    console.log('Deseas contactarte? primero inicia sesion')
   }
 }
 
@@ -182,6 +190,7 @@ const user = ref<{
   id: number;
   nombre: string;
   fotoPerfil?: string;
+  telefono: string,
   userProfile?: {
     imagenPerfil: string;
   };
@@ -189,25 +198,22 @@ const user = ref<{
   id: 0,
   nombre: '',
   fotoPerfil: '',
+  telefono: '',
   userProfile: {
     imagenPerfil: '',
   },
 });
 
-const fetchUserDetails = async (usuarioId: number) => {
+const fetchUserDetails = async (usuarioId: number) => {  //Rehacer funcion, no sigue estandar
   try {
     console.log('Fetching user details for usuarioId:', usuarioId); // Verifica el usuario
-    const userResponse = await axios.get(`https://localhost:7140/api/Usuario/${usuarioId}`);
-    if (userResponse.data) {
-      user.value = userResponse.data; // Asigna los datos del usuario
-    }
+    const response = await getUserService(usuarioId)
+    user.value = response
 
     const profileResponse = await axios.get(`https://localhost:7140/api/Perfil/${usuarioId}`);
     if (user.value) {
       user.value.userProfile = profileResponse.data; // Asigna los datos del perfil al usuario
     }
-
-    console.log('User data received:', user.value); // Verifica los datos recibidos
   } catch (error) {
     console.error('Error al obtener los datos del usuario o perfil:', error);
   }
@@ -216,24 +222,16 @@ const fetchUserDetails = async (usuarioId: number) => {
 const goBack = () => {
   router.go(-1);
 };
+
 const goToUserProfile = (userId: number | undefined) => {
   if (!userId) {
     console.error("Error: userId no está disponible o es inválido", userId);
     return;
   }
-
   router.push(`/perfil/${userId}`);
 };
 
-
-
-console.log("Usuario en el momento del click:", user);
-console.log("ID del usuario en el producto:", product?.usuarioId);
-
 onMounted(() => {
-  console.log("Producto recibido:", product);
-  console.log("ID del usuario en el producto:", product?.usuarioId);
-
   if (product?.usuarioId) {
     trade.value.usuarioOfertanteId = product.usuarioId
     trade.value.productoId = Number(route.params.id)
@@ -250,22 +248,53 @@ const formattedDate = computed(() => {
   if (product?.fechaCreacion) {
     try {
       const formatted = format(new Date(product.fechaCreacion), 'dd/MM/yyyy');
-      console.log('Fecha formateada:', formatted);
       return formatted;
     } catch (error) {
       console.error('Error al formatear la fecha:', error);
       return 'Fecha inválida';
     }
   }
-
-  console.log('Fecha desconocida');
   return 'Fecha desconocida';
-
 });
 
 
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <style scoped>

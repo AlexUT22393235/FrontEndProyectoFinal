@@ -79,7 +79,7 @@ const updateObject = ref<UpdateUserDto>({
 const fetchObject = async() => {
   const response = await getUserService(props.editId);
 
-  updateObject.value.idUsuario = props.editId;
+  updateObject.value.idUsuario = props.editId
 
   resetForm({
       values: {
