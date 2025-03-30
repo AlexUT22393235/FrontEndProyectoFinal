@@ -266,7 +266,7 @@ const handleSubmit = (product: any) => {
 const exchangeStore = useExchangeStore();
 
 // Cargar datos reales cuando el usuario esté disponible
-watchEffect(() => {
+onMounted(() => {
   if (user.value?.id) {
     exchangeStore.fetchExchangeHistory(Number(user.value.id));
   }
@@ -274,23 +274,18 @@ watchEffect(() => {
 
 // Mapear los datos del store al formato esperado por ExchangeHistory
 const exchanges = computed(() => {
-  return exchangeStore.exchanges.map(exchange => {
-    // Verifica si existe fechaRegistro y formatea
-    const fecha = exchange.fechaRegistro
+  return exchangeStore.exchanges.map(exchange => ({
+    nombre: exchange.nombre,
+    descripcion: exchange.descripcion,
+    fechaRegistro: exchange.fechaRegistro
       ? new Date(exchange.fechaRegistro).toLocaleDateString('es-MX', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
         })
-      : 'Fecha no disponible';
-
-    return {
-      nombre: exchange.nombre,
-      fechaRegistro: fecha,
-      descripcion: exchange.descripcion,
-      imagenes: exchange.imagenes[0]?.urlImagen || 'https://via.placeholder.com/150'
-    };
-  });
+      : 'Fecha no disponible',
+    imagenes: exchange.imagenes[0]?.urlImagen || 'https://via.placeholder.com/150'
+  }));
 });
 
 interface UserProfile {
