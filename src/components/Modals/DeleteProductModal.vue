@@ -38,7 +38,6 @@
       emit('close');
     } catch (error) {
       console.error('Error al eliminar el producto:', error);
-      // Manejar el error aquí (mostrar un mensaje, etc.)
     }
   };
   </script>
