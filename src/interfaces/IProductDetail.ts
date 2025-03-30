@@ -1,5 +1,6 @@
 // interfaces/IProductDetail.ts
 export interface IProductDetail {
+    idProducto:number;
     idImagen: number;
     nombre: string;
     descripcion: string;

@@ -142,7 +142,11 @@ const router = createRouter({
         },
       ]
     },
-
+    {
+      path:'/misProductos',
+      name:'myProducts',
+      component:()=> import('../views/MyProductsView.vue')
+    },
     {
       path: '/:pathMatch(.*)*',
       name: '404',

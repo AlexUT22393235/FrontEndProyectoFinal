@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import type { IProductDetail } from '../interfaces/IProductDetail';
-import { getProductByIdService, getUserByIdService, productsPerUserService } from '../services/productService';
+import type { IProduct } from '@/interfaces/IProduct';
+import { getProductByIdService, getUserByIdService, productsPerUserService, deleteProductService } from '../services/productService';
 
 export const useProductStore = defineStore('product', {
   state: () => ({
     product: null as IProductDetail | null,
     products: [] as IProductDetail[], // Aquí almacenas los productos de un usuario
+    productsPerUser: [] as IProduct[]
   }),
   actions: {
     async fetchProductDetails(productId: number) {
@@ -60,24 +62,25 @@ export const useProductStore = defineStore('product', {
     async fetchProductsByUser(userId: number) {
       try {
         const response = await productsPerUserService(userId);
-
-        console.log('Valor de response (productsPerUserService):', response); // Mueve el console.log aquí
-
         if (response) {
-          this.products = response.map((product: any) => ({
-            idImagen: product.imagenes?.[0]?.idImagen || 0,
-            nombre: product.nombre,
-            descripcion: product.descripcion,
-            fechaCreacion: product.fechaCreacion,
-            urlImagen: product.imagenes?.[0]?.urlImagen || '/images/default.jpg',
-            imagenes: product.imagenes || [],
-            usuarioId: product.usuarioId,
-          }));
+          this.productsPerUser = response as IProduct[];
+        } else {
+          console.error('No se encontraron productos para este usuario.');
+          this.productsPerUser = [];
         }
       } catch (error) {
-        console.error('Error al obtener los productos del usuario (productsPerUserService):', error);
-        console.log('Error detallado (productsPerUserService):', error); // Agrega este console.log
-        this.products = [];
+        console.error('Error al obtener los productos del usuario:', error);
+        this.productsPerUser = [];
+      }
+    },
+
+    async deleteProduct(productId: number) {
+      try {
+        await deleteProductService(productId);
+        this.productsPerUser = this.productsPerUser.filter(product => product.idProducto !== productId);
+      } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+        throw error;
       }
     },
   },

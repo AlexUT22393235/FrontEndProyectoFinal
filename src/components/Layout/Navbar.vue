@@ -84,7 +84,7 @@ onMounted(() => {
     <nav class="nav-links">
       <RouterLink to="/landing">Inicio</RouterLink>
       <RouterLink to="/products">Productos</RouterLink>
-      
+      <RouterLink to="/misProductos">Mis Productos</RouterLink>
       <RouterLink to="/categories">Categorias</RouterLink>
       <RouterLink to="/about">Nosotros</RouterLink>
     </nav>
