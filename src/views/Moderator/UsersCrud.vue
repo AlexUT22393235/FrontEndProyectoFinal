@@ -50,8 +50,6 @@ import type { banUserDto } from '@/dtos/banUserDto';
 import type { reportUserDto } from '@/dtos/reportUserDto';
 import type { IUser } from '@/interfaces/IUser'
 
-
-const isModalOpen = ref(false);
 const isConfirmationModalOpen = ref(false)
 const confirmationStuff = ref({
   accion: '',
