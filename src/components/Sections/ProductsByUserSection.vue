@@ -1,5 +1,5 @@
 <template>
-    <div class="data-history bg-[#D4E0CD] py-8 px-6 rounded-xl shadow-lg">
+    <div class="data-history bg-[#D4E0CD] py-8 px-6 rounded-xl shadow-lg" v-if="isCurrenUser">
       <ul>
         <li v-for="(item, index) in productsStore.products" :key="index"
             class="mb-6 p-6 bg-white rounded-lg shadow-md flex items-start space-x-6 transition-transform transform hover:scale-105">
@@ -33,15 +33,29 @@
   <script setup lang="ts">
   import { useProductStore } from '@/stores/productStore'
   import { useAuthStore } from '@/stores/authStore';
-  import { onMounted } from 'vue';
-  
+  import { storeToRefs } from 'pinia';
+  import { computed, onMounted } from 'vue';
+  import { ref } from 'vue';
+  import { useRoute } from 'vue-router';
+  const route = useRoute();
+  const profileIdFromUrl = ref(Number(route.params.id));  
   const productsStore = useProductStore();
   const authStore = useAuthStore();
+  const { user } = storeToRefs(authStore);
   
   const formatDate = (date: Date) => {
     const dateStr = new Date(date).toISOString().slice(0, 10);
     return dateStr;
   };
+
+  console.log("Id de perfil: ", profileIdFromUrl);
+  console.log("Id de usuario logeado: ",user.value?.id)
+
+  const isCurrenUser = computed(()=>{
+    const result = Number(profileIdFromUrl.value)===Number(user.value?.id)
+    return result
+  })
+  
   
   onMounted(async () => {
     if (authStore.user && authStore.user.id) {

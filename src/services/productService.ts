@@ -49,6 +49,6 @@ export const hideProductService = async (item: HideProductDto) => {
 };
 
 export const productsPerUserService = async (id: number)=>{
-  return await genericRequest(`${base_url}/api/Producto/usuario/${id}`, 'GET')
+  return await genericRequest(`${base_url}/Producto/usuario/${id}`, 'GET')
 };
 

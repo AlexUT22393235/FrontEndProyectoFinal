@@ -63,6 +63,9 @@
     <button @click="openModal" class="mt-8 px-6 py-3 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
       Agregar Producto
     </button>
+    <button>
+      Mis productos
+    </button>
 
     <div class="w-full max-w-7xl p-8 flex flex-col md:flex-row gap-8">
      <!-- Historial de Intercambios -->
@@ -79,6 +82,7 @@
         <NegotiationSector :data="data" @remove-product="removeProduct" v-else/>
 
         <!-- <UserProductsSection /> -->
+        <ProductsByUserSection/>
       </div>
 
       <!-- Historial de Valoraciones -->

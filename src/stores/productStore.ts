@@ -58,10 +58,13 @@ export const useProductStore = defineStore('product', {
     },
 
     async fetchProductsByUser(userId: number) {
-      try{
+      try {
         const response = await productsPerUserService(userId);
-        if(response){
-          this.products=response.map((product:any)=>({
+
+        console.log('Valor de response (productsPerUserService):', response); // Mueve el console.log aquí
+
+        if (response) {
+          this.products = response.map((product: any) => ({
             idImagen: product.imagenes?.[0]?.idImagen || 0,
             nombre: product.nombre,
             descripcion: product.descripcion,
@@ -69,12 +72,13 @@ export const useProductStore = defineStore('product', {
             urlImagen: product.imagenes?.[0]?.urlImagen || '/images/default.jpg',
             imagenes: product.imagenes || [],
             usuarioId: product.usuarioId,
-          }))
+          }));
         }
-      }catch(error){
-        console.error('Error al obtener los productos del usuario:', error);
+      } catch (error) {
+        console.error('Error al obtener los productos del usuario (productsPerUserService):', error);
+        console.log('Error detallado (productsPerUserService):', error); // Agrega este console.log
         this.products = [];
       }
-    }
+    },
   },
 });
