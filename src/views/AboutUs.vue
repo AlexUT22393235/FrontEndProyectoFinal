@@ -5,7 +5,7 @@
 </div>
 
 <div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="absolute top-60 left-150" >
-  <div class="max-w-3xl text-center p-15 pb-0 bg-[#FAF7EC]  ">
+  <div class="max-w-3xl text-center p-15 pb-0 bg-[#FAF7EC] rounded-sm ">
       <h1 class="text-4xl font-bold text-[#50683E] mb-4">Sobre Nosotros</h1>
 
       <p class="text-lg text-[#555] leading-relaxed">
