@@ -65,14 +65,14 @@ const fetchUserDetails = async (usuarioId: number) => {
 const formValue = ref();
 const router = useRouter()
 
-const submitSearch = async() => {
-    try {
-      const newParam = encodeURI(formValue.value);
-      router.push('/search/' + newParam)
-    } catch (error) {
-      console.error(error);
-    }
+const submitSearch = async () => {
+  try {
+    const newParam = encodeURI(formValue.value);
+    router.push('/search/' + newParam)
+  } catch (error) {
+    console.error(error);
   }
+}
 
 onMounted(() => {
   const userId = authStore.user?.id; // Obtener directamente el ID del usuario autenticado
@@ -89,38 +89,40 @@ onMounted(() => {
 <template>
   <nav class="bg-[#FDF8F1] border-b border-gray-300 px-4 py-3">
     <!-- Contenedor principal -->
-    <div class="flex items-center justify-between">
+    <div class="flex  justify-between ">
       <!-- Logo y nombre -->
-      <div class="flex items-center">
+      <div class="w-fit flex items-center">
         <img src="@/assets/Images/logostrade.png" alt="Logo Strade" class="w-10 h-10">
         <h1 class="text-xl font-bold text-green-900 pl-3">STRADE</h1>
       </div>
-
-      <!-- Elementos desktop (ocultos en móvil) -->
-      <div class="hidden md:flex items-center flex-1 mx-100">
-        <!-- Barra de búsqueda -->
-        <form class="flex items-center justify-center gap-2 w-full max-w-md" @submit.prevent="submitSearch">
-          <input
-            v-model="formValue"
-            placeholder="Pantuflas amarillas"
-            class="placeholder:italic bg-gray-200 rounded-lg w-full h-8 px-27"
-          >
-          <button type="submit" class="cursor-pointer w-9 h-5">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#638354" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-          </button>
-        </form>
-
-        <!-- Menú de navegación -->
-        <nav class="flex items-center gap-9 ml-9">
-          <RouterLink to="/landing" class="text-green-800 hover:text-teal-600">Inicio</RouterLink>
-          <RouterLink to="/products" class="text-green-800 hover:text-teal-600">Productos</RouterLink>
-      <RouterLink to="/misProductos">Mis Productos</RouterLink>
-          <RouterLink to="/categories" class="text-green-800 hover:text-teal-600">Categorias</RouterLink>
-          <RouterLink to="/about" class="text-green-800 hover:text-teal-600">Nosotros</RouterLink>
-        </nav>
+      <div class="w-1/2 flex flex-row gap-[2rem]">
+        <div class="w-full px-10">
+          <!-- Menú de navegación -->
+          <nav class="flex items-center flex-row justify-between h-full">
+            <RouterLink to="/landing"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Inicio</label></RouterLink>
+            <RouterLink to="/products"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Productos</label></RouterLink>
+            <RouterLink to="/misProductos"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Mis Productos</label></RouterLink>
+            <RouterLink to="/categories"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Categorias</label></RouterLink>
+            <RouterLink to="/about"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Nosotros</label></RouterLink>
+          </nav>
+        </div>
+        <div class="hidden md:flex items-center w-fit">
+          <!-- Barra de búsqueda -->
+          <form class="flex items-center justify-center gap-2 w-full max-w-md" @submit.prevent="submitSearch">
+            <input v-model="formValue" placeholder="Pantuflas amarillas"
+              class="placeholder:italic bg-gray-200 rounded-lg w-[15rem] h-8">
+            <button type="submit" class="cursor-pointer w-9 h-fit">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                  stroke="#638354" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+          </form>
+        </div>
       </div>
+      <!-- Elementos desktop (ocultos en móvil) -->
+
 
       <!-- Botones de usuario (ocultos en móvil) -->
       <div class="hidden md:flex items-center gap-3">
@@ -130,107 +132,67 @@ onMounted(() => {
 
         <RouterLink :to="authStore.user?.id ? `/perfil/${authStore.user?.id}` : '/login'">
           <div class="bg-yellow-500 w-8 h-8 rounded-full overflow-hidden">
-            <img
-              :src="user?.userProfile?.imagenPerfil"
-              alt="Foto de perfil"
-              class="w-full h-full object-cover"
-            />
+            <img :src="user?.userProfile?.imagenPerfil" alt="Foto de perfil" class="w-full h-full object-cover" />
           </div>
         </RouterLink>
       </div>
 
       <!-- Botón hamburguesa (solo móvil) -->
-      <button
-        @click="isOpen = !isOpen"
-        class="md:hidden p-2 rounded-md text-green-800 focus:outline-none"
-      >
-        <svg
-          class="w-6 h-6"
-          :class="{'hidden': isOpen, 'block': !isOpen}"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      <button @click="isOpen = !isOpen" class="md:hidden p-2 rounded-md text-green-800 focus:outline-none">
+        <svg class="w-6 h-6" :class="{ 'hidden': isOpen, 'block': !isOpen }" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-        <svg
-          class="w-6 h-6"
-          :class="{'hidden': !isOpen, 'block': isOpen}"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        <svg class="w-6 h-6" :class="{ 'hidden': !isOpen, 'block': isOpen }" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
 
     <!-- Menú móvil (condicional) -->
-    <div class="md:hidden" :class="{'block': isOpen, 'hidden': !isOpen}">
+    <div class="md:hidden" :class="{ 'block': isOpen, 'hidden': !isOpen }">
       <div class="pt-4 pb-2 space-y-3">
         <!-- Barra de búsqueda móvil -->
         <form class="flex items-center gap-2 mb-4" @submit.prevent="submitSearch">
-          <input
-            v-model="formValue"
-            placeholder="Pantuflas amarillas"
-            class="placeholder:italic bg-gray-200 rounded-lg w-full h-10 px-3"
-          >
+          <input v-model="formValue" placeholder="Pantuflas amarillas"
+            class="placeholder:italic bg-gray-200 rounded-lg w-full h-10 px-3">
           <button type="submit" class="cursor-pointer w-6 h-6">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#638354" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path
+                d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                stroke="#638354" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
           </button>
         </form>
 
         <!-- Enlaces móviles -->
-        <RouterLink
-          to="/landing"
-          class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
-          @click="isOpen = false"
-        >
+        <RouterLink to="/landing" class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
+          @click="isOpen = false">
           Inicio
         </RouterLink>
-        <RouterLink
-          to="/products"
-          class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
-          @click="isOpen = false"
-        >
+        <RouterLink to="/products" class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
+          @click="isOpen = false">
           Productos
         </RouterLink>
-        <RouterLink
-          to="/categories"
-          class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
-          @click="isOpen = false"
-        >
+        <RouterLink to="/categories" class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
+          @click="isOpen = false">
           Categorias
         </RouterLink>
-        <RouterLink
-          to="/about"
-          class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
-          @click="isOpen = false"
-        >
+        <RouterLink to="/about" class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
+          @click="isOpen = false">
           Nosotros
         </RouterLink>
 
         <!-- Botones de usuario móviles -->
         <div class="pt-4 mt-4 border-t border-gray-200 flex items-center gap-3">
-          <button
-            @click="handleLogout"
-            class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600"
-          >
+          <button @click="handleLogout" class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600">
             Cerrar Sesión
           </button>
 
-          <RouterLink
-            :to="authStore.user?.id ? `/perfil/${authStore.user?.id}` : '/login'"
-            @click="isOpen = false"
-          >
+          <RouterLink :to="authStore.user?.id ? `/perfil/${authStore.user?.id}` : '/login'" @click="isOpen = false">
             <div class="bg-yellow-500 w-10 h-10 rounded-full overflow-hidden">
-              <img
-                :src="user?.userProfile?.imagenPerfil"
-                alt="Foto de perfil"
-                class="w-full h-full object-cover"
-              />
+              <img :src="user?.userProfile?.imagenPerfil" alt="Foto de perfil" class="w-full h-full object-cover" />
             </div>
           </RouterLink>
         </div>
@@ -243,10 +205,10 @@ onMounted(() => {
         <img :src="logoutImage" class="w-100 h-auto mx-auto mb-4">
 
         <div class="flex justify-around">
-          <button @click="proceedLogout"  @mouseenter="changeImage('src/assets/Images/logout.png')"
-         class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600">Sí</button>
-          <button @click="cancelLogout"  @mouseenter="changeImage('src/assets/Images/happy.png')"
-         class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">No</button>
+          <button @click="proceedLogout" @mouseenter="changeImage('src/assets/Images/logout.png')"
+            class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600">Sí</button>
+          <button @click="cancelLogout" @mouseenter="changeImage('src/assets/Images/happy.png')"
+            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">No</button>
         </div>
       </div>
     </div>
