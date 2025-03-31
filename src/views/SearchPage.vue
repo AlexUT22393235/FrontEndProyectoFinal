@@ -177,10 +177,10 @@ const filtered = computed(() => {
 
 </div>
 
-<div else class="w-full h-[60vh] mb-[10vh] bg-[#c4caaf] ">
-  <img src="@/assets/Images/productos.png" alt="Logo Strade" class="w-[90rem] h-full object-cover">
+<!-- <div class="w-full h-[60vh] mb-[10vh] bg-[#c4caaf] "> -->
+  <!-- <img src="@/assets/Images/productos.png" alt="Logo Strade" class="w-[90rem] h-full object-cover"> -->
   <!-- <img src="https://www.arka.com/cdn/shop/articles/arka-trash-packaging_bwrgfq.jpg?v=1671534726" class="w-full h-full object-cover"/> -->
-</div>
+<!-- </div> -->
 
   </div>
 
