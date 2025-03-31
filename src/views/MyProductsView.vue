@@ -1,19 +1,19 @@
 <template>
     <div class="w-full min-h-screen bg-[#FAF7EC] relative px-12"
->     <div class=" w-full max-w-[100vw] md:max-w-[100rem] h-auto md:h-[20vh] lg:h-[30rem] flex items-center justify-center mb-4 sm:mb-6 md:mb-8 lg:mb-12 px-2">
+>     <div class="pl-80  w-full max-w-[100vw] md:max-w-[90rem] h-auto md:h-[20vh] lg:h-[30rem] flex items-center justify-center mb-4 sm:mb-6 md:mb-8 lg:mb-12 px-2">
 
       <img src="@/assets/Images/misproductos.png" alt="Logo" class=" w-full max-w-[80rem] object-contain" />
             </div>
 
 
 
-      <div class="px-40  w-full text-center p-4 rounded-md text-white flex justify-between flex-wrap ">
+      <div class="px-40  w-full text-center pb-6 rounded-md text-white flex justify-between flex-wrap ">
         <button class="bg-[#5d7e4e] w-[10vw] py-[1vh] rounded-lg cursor-pointer" @click="isModalOpen = true">Agregar Producto</button>
         <button v-if="hasNegotiation === true" class="bg-green-800 w-[10vw] py-[1vh] rounded-lg cursor-pointer" @click="onNegotiation = !onNegotiation">{{ onNegotiation === false ? 'Ver en negociacion' : 'Ver todos' }}</button>
       </div>
 
       <!-- <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 px-4 py-6"> -->
-        <div v-if="data.length > 0" class="pl-10 ml-30 w-[90%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-6">
+        <div v-if="data.length > 0" class="pl-10 ml-30 w-[90%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
       <MyProductCard
         v-for="(item, index) in data"
         :key="index"
