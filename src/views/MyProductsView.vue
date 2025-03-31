@@ -21,6 +21,7 @@
         :imgSrc="item.imagenes?.[0]?.urlImagen || '/images/default.jpg'"
         :categories="item.categorias"
         @delete-request="handleDeleteRequest"
+        @edit-request="handleEditRequest"
       >
         <template v-slot:title>
           {{ item?.nombre }}
@@ -38,6 +39,7 @@
       <!-- </div> -->
 
       <AddProductModal v-if="isModalOpen" :is-open="isModalOpen" @close="isModalOpen = false" />
+      <EditProductModal v-if="isEditModalOpen" :product-id="productIdToEdit" @close="isEditModalOpen = false" @product-edited="handleProductEdited" />
       <DeleteProductModal v-if="isDeleteModalOpen" :product-id="productIdToDelete" @close="isDeleteModalOpen = false" @product-deleted="handleProductDeleted" />
     </div>
   </template>
@@ -49,6 +51,7 @@
   import { ref, onMounted, watch, computed } from 'vue';
   import { storeToRefs } from 'pinia';
   import AddProductModal from '@/components/Modals/AddProductModal.vue';
+  import EditProductModal from '@/components/Modals/EditProductModal.vue';
   import DeleteProductModal from '@/components/Modals/DeleteProductModal.vue';
 import type { IProduct } from '@/interfaces/IProduct';
 
@@ -62,6 +65,9 @@ import type { IProduct } from '@/interfaces/IProduct';
   const data = ref<IProduct[]>([])
   const ogData = ref<IProduct[]>([])
   const productIdToDelete = ref(0);
+  const productIdToEdit = ref(0);
+  const isEditModalOpen = ref(false);
+
 
   const fetchData = async () => {
     try {
@@ -76,6 +82,10 @@ import type { IProduct } from '@/interfaces/IProduct';
   const handleDeleteRequest = (productId: number) => {
     productIdToDelete.value = productId;
     isDeleteModalOpen.value = true;
+  };
+  const handleEditRequest = (productId: number) => {
+    productIdToEdit.value = productId;
+    isEditModalOpen.value = true;
   };
 
   const handleProductDeleted = async() => {
