@@ -1,4 +1,44 @@
 <template>
+    <!-- Skeleton de carga -->
+    <div v-if="loading" class="animate-pulse p-5">
+    <div class="flex flex-col gap-5">
+      <!-- Botón y regresar -->
+
+      <!-- Contenedor de columnas -->
+      <div class="columns-container flex flex-col gap-5 pt-50 px-40 pb-40">
+        <!-- Columna izquierda: Imagen del producto -->
+        <div class="bg-[#5B735D] w-[50rem] h-[30rem] rounded-lg items-center justify-center align-middle flex pb-20">
+          <img src="@/assets/images/logostrade_skeleton.png" alt="Logo"
+          class="w-[20rem] h-auto object-cover rounded-full shadow-lg flex-shrink-0" />
+        </div>
+        <!-- Columna derecha: Información del producto -->
+        <div class="flex flex-col gap-4">
+
+          <div class="bg-[#5B735D] h-6 w-full rounded"></div>
+          <div class="bg-[#5B735D] h-6 w-full rounded"></div>
+          <div class="bg-gray-300 h-24 w-full rounded"></div>
+          <!-- Botones de acción -->
+          <div class="flex gap-4 mt-4">
+            <div class="bg-gray-300 h-10 w-full rounded"></div>
+            <div class="bg-gray-300 h-10 w-10 rounded"></div>
+          </div>
+          <!-- Información del usuario -->
+          <div class="flex items-center gap-4 mt-8">
+            <div class="bg-gray-300 w-52 h-12 rounded-full"></div>
+            <div class="flex flex-col gap-2">
+              <div class="bg-[#5B735D] h-4 w-24 rounded"></div>
+              <div class="bg-gray-300 h-3 w-16 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div v-else>
+
+
   <DisclaimerModal
   v-if="contactModal === true "
   :phone="user?.telefono"
@@ -9,8 +49,7 @@
 />
 
   <ReportModal v-if="reportModal === true" @close="reportModal = false"/>
-
-  <div class="product-details flex flex-col gap-5 p-5 ">
+  <div  class="product-details flex flex-col gap-5 p-5 ">
 
     <div class="w-[12rem] flex items-center gap-4 pl-20">
       <svg
@@ -110,7 +149,7 @@
       <Carousel :imagenes="product?.imagenes.map((img) => img.urlImagen)" />
     </div>
   </div>
-
+</div>
 
 </template>
 
@@ -130,6 +169,7 @@ import { storeToRefs } from 'pinia';
 import { useToast } from 'vue-toastification';
 import { getUserService } from '@/services/usersService';
 
+const loading = ref(true);
 const toast = useToast();
 const authStore = useAuthStore();
 const { user: currentUser } = storeToRefs(authStore);
@@ -233,13 +273,17 @@ const goToUserProfile = (userId: number | undefined) => {
 
 onMounted(() => {
   if (product?.usuarioId) {
-    trade.value.usuarioOfertanteId = product.usuarioId
-    trade.value.productoId = Number(route.params.id)
-    trade.value.usuarioSolicitanteId = Number(currentUser.value?.id)
+    trade.value.usuarioOfertanteId = product.usuarioId;
+    trade.value.productoId = Number(route.params.id);
+    trade.value.usuarioSolicitanteId = Number(currentUser.value?.id);
     fetchUserDetails(product.usuarioId);
   } else {
     console.log("No se encontró usuarioId en el producto");
   }
+  // Simular demora en la carga para visualizar los skeletons
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
 });
 
 
