@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#D4E0CD] py-8 px-6 rounded-xl shadow-lg">
+  <div class="bg-amber-400 w-full py-8 px-6 rounded-xl shadow-lg">
     <!-- Verificamos si hay productos antes de mostrar la lista -->
     <ul v-if="products.length > 0">
       <li v-for="(product, index) in products" :key="index"
@@ -26,7 +26,7 @@
     </ul>
 
     <!-- Mensaje si no hay productos -->
-    <!-- <p v-else class="text-center text-gray-600">No hay productos disponibles para este usuario.</p> -->
+     <p v-else class="text-center text-gray-600">No hay productos disponibles para este usuario.</p> 
 
   </div>
 </template>
