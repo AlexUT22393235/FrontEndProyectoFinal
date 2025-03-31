@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios'
 import { onMounted, ref, computed, watch } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
-
+const errorMessage = ref('');
 import type { ICategory } from '@/interfaces/ICategory';
 import type { IProduct } from '@/interfaces/IProduct';
 
@@ -49,14 +49,20 @@ import type { IProduct } from '@/interfaces/IProduct';
     }
   }
 
-  const submitSearch = async() => {
+
+  const submitSearch = async () => {
+    if (!formValue.value || !formValue.value.trim()) {
+      errorMessage.value = "Debes escribir algo para buscar!";
+      return;
+    }
+    errorMessage.value = "";
     try {
-      const newParam = encodeURI(formValue.value);
-      router.push('/search/' + newParam)
+      const newParam = encodeURI(formValue.value.trim());
+      router.push('/search/' + newParam);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const changeCategories = (id: number) => {
   if (categories.value && categories.value.length > 0) {
@@ -167,11 +173,12 @@ const filtered = computed(() => {
       <p class="text-[1.5rem] text-white">Intercambia, reutiliza & conecta.</p>
     </div>
     <form class="w-full flex items-center justify-center gap-[1vw] p-[2vh] " @submit.prevent="submitSearch " >
-      <input v-model="formValue" placeholder="Pantuflas amarillas" class="placeholder:italic bg-[#D9D9D9] rounded-lg w-[20vw] h-[5vh] px-[1vw]">
+      <input v-model="formValue" placeholder="Pantuflas de snoopy" class="placeholder:italic bg-[#D9D9D9] rounded-lg w-[20vw] h-[5vh] px-[1vw]">
       <button type="submit" class="cursor-pointer">
         <svg width="50px" height="54px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#FAF7EC"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3C6.13401 3 3 6.13401 3 10C3 13.866 6.13401 17 10 17Z" stroke="#FAF7EC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M20.9992 21L14.9492 14.95" stroke="#FAF7EC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
       </button>
     </form>
+    <p v-if="errorMessage" class="mt-2 text-[1.2rem] text-green-300">{{ errorMessage }}</p>
   </div>
 
 
