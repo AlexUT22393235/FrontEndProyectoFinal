@@ -15,7 +15,7 @@
           <slot name="description"></slot>
         </p>
       </div>
-      <div class="flex flex-row gap-2 px-35 ">
+      <div class="flex flex-row gap-2 px-40 ">
         <RouterLink :to="`/products/${props.id}`">
         <div class="bg-[#5d7e4e] text-white px-4 py-2 rounded-md w-14">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
