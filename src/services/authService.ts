@@ -1,7 +1,6 @@
-// src/services/authService.ts
 import axios from 'axios';
 
-const API_URL = 'https://localhost:7140/api/Auth'; // Ajusta la URL base
+const API_URL = 'https://localhost:7140/api/Auth';
 
 class AuthService {
   async login(correoElectronico: string, contrasenia: string) {

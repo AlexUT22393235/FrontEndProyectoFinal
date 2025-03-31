@@ -148,6 +148,11 @@ const router = createRouter({
       component:()=> import('../views/MyProductsView.vue')
     },
     {
+      path:'/evaluacionPendientes',
+      name: 'evaluacionesPendientes',
+      component:()=>import('../views/EvualateTrades.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: '404',
       component: () => import('../views/Sistem/404View.vue'),

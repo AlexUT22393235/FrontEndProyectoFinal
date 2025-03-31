@@ -102,6 +102,7 @@ onMounted(() => {
             <RouterLink to="/landing"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Inicio</label></RouterLink>
             <RouterLink to="/products"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Productos</label></RouterLink>
             <RouterLink to="/misProductos"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Mis Productos</label></RouterLink>
+            <RouterLink to="/evaluacionPendientes" class="text-green-800 hover:text-teal-600 cursor-pointer">Evaluar Intercambios</RouterLink>
             <RouterLink to="/categories"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Categorias</label></RouterLink>
             <RouterLink to="/about"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Nosotros</label></RouterLink>
           </nav>
