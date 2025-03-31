@@ -39,11 +39,12 @@ const fetchData = async () => {
            <!-- Imagen para pantallas medianas en adelante -->
 
         <button class="flex absolute bottom-60 right-245 border border-[#3d491a] rounded-md">
-          <router-link to="/login"
+          <router-link to="/misProductos"
             class="text-[#FAF7EC] bg-[#3d491a] p-3 hover:bg-[#5d7e4e] hover:border-[#5d7e4e] rounded-md">
             Comienza a Intercambiar
           </router-link>
         </button>
+
         <img src="@/assets/Images/landingmd.png" alt="Imagen mediana" class="xl:hidden sm:block sm:w-full sm:h-[30rem]  md:block  md:w-full md:h-[30rem] lg:hidden"
         />
       </div>

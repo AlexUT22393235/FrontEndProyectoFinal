@@ -32,7 +32,7 @@
       </div>
 
       <!-- Sección de Reporte -->
-      <div class="flex flex-col items-center sm:items-start">
+      <!-- <div class="flex flex-col items-center sm:items-start">
         <h2 class="text-lg font-semibold">¿Tienes algún problema?</h2>
         <div class="flex flex-col sm:flex-row lg:flex-col gap-2 w-full mt-2">
           <input
@@ -42,7 +42,7 @@
             Enviar
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- Sección de Derechos de Autor -->
