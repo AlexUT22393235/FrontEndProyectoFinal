@@ -86,22 +86,29 @@
 
 
 
-    <div class="max-w-3xl text-center mt-12">
-      <h2 class="text-3xl font-bold text-[#2C3E50] mb-4">Únete a Nosotros</h2>
-      <p class="text-lg text-[#555] leading-relaxed">
-        Sé parte de nuestra comunidad y ayuda a construir un futuro más sostenible. ¡Empieza a intercambiar hoy mismo!
-      </p>
-      <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
-        <img src="@/assets/images/team.png" alt="Logo de Strade" class="w-[40rem] h-auto mx-auto mt-4 mb-4" />
-
-      </div>
-
-      <router-link to="/register" class="mt-6 inline-block bg-[#3d491a] text-white py-2 px-6 rounded-lg hover:bg-[#2ecc71]">
-        Regístrate Ahora
-      </router-link>
+<div v-if="!authStore.isLoggedIn()" class="max-w-3xl text-center mt-12">
+    <h2 class="text-3xl font-bold text-[#2C3E50] mb-4">Únete a Nosotros</h2>
+    <p class="text-lg text-[#555] leading-relaxed">
+      Sé parte de nuestra comunidad y ayuda a construir un futuro más sostenible. ¡Empieza a intercambiar hoy mismo!
+    </p>
+    <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+      <img src="@/assets/images/team.png" alt="Logo de Strade" class="w-[40rem] h-auto mx-auto mt-4 mb-4" />
     </div>
+
+    <router-link to="/register" class="mt-6 inline-block bg-[#3d491a] text-white py-2 px-6 rounded-lg hover:bg-[#2ecc71]">
+      Regístrate Ahora
+    </router-link>
+  </div>
   </div>
 </template>
+
+
+<script setup>
+import { useAuthStore } from '@/stores/authStore';
+
+const authStore = useAuthStore();
+</script>
+
 
 <style scoped>
 /* Estilo para centrar y dar el mismo tamaño a los SVG */
