@@ -12,7 +12,8 @@
       </div>
 
       <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 px-4 py-6">
-        <MyProductCard
+        <div v-if="productsStore.productsPerUser.length > 0" class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 px-4 py-6">
+          <MyProductCard
           v-for="(item, index) in productsStore.productsPerUser"
           :key="index"
           :id="item.idProducto"
@@ -27,7 +28,14 @@
             {{ item?.descripcion }}
           </template>
         </MyProductCard>
+
+
+        </div>
+        <div v-else class="w-full text-center my-4 text-gray-600">
+      No tienes productos disponibles. Haz click en agregar producto para comenzar !
+    </div>
       </div>
+
       <AddProductModal v-if="isModalOpen" :is-open="isModalOpen" @close="isModalOpen = false" />
       <DeleteProductModal v-if="isDeleteModalOpen" :product-id="productIdToDelete" @close="isDeleteModalOpen = false" @product-deleted="handleProductDeleted" />
     </div>
