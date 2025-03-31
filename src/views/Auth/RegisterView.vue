@@ -66,41 +66,64 @@ const registrarUsuario = async () => {
 
 
 <template>
-  <div class="bg-[#4b6934] w-full h-screen flex flex-row">
-
-    <div class="flex justify-center items-center w-1/2 h-full bg-[#264026]">
+  <div class="bg-[#4b6934] w-full h-screen flex flex-col lg:flex-row justify-center items-center">
+    <div class="hidden lg:flex justify-center items-center w-1/2 h-full bg-[#264026]">
       <div class="w-[40rem] h-[40rem]">
         <img src="@/assets/Images/noTrash.jpeg" alt="Logo" class="w-[40rem] h-[40rem]" />
       </div>
     </div>
 
-   
-    <div class="main-container flex flex-col justify-center items-center w-1/2 h-[50rem] bg-[#50683E]">
+    <div class="main-container flex flex-col justify-center items-center w-full lg:w-1/2 lg:h-[50rem] bg-[#50683E]">
       <div class="m-4 p-4">
         <h1 class="text-3xl font-bold text-[#FAF7EC] text-center">Regístrate</h1>
       </div>
 
-      <div class="bg-[#FAF7EC] w-[30rem] h-[30rem] flex flex-col justify-center items-center p-4 rounded-lg">
-        <input v-model="nombre" type="text" class="input-field" placeholder="Nombre" />
-        <input v-model="apellido" type="text" class="input-field" placeholder="Apellido" />
-        <input v-model="telefono" type="text" class="input-field" placeholder="Teléfono" />
-        <input v-model="correoElectronico" type="email" class="input-field" placeholder="Email" />
-        <input v-model="contrasenia" type="password" class="input-field" placeholder="Contraseña" />
+      <div class="bg-[#FAF7EC] w-[90%] sm:w-[80%] lg:w-[30rem] lg:h-[30rem] flex flex-col justify-center items-center rounded-lg p-6 lg:p-4">
+        <input 
+          v-model="nombre" 
+          type="text" 
+          class="w-full lg:w-[20rem] h-[2.5rem] lg:h-[2rem] border-2 border-[#50683E] rounded-md mb-2 p-2" 
+          placeholder="Nombre" 
+        />
+        <input 
+          v-model="apellido" 
+          type="text" 
+          class="w-full lg:w-[20rem] h-[2.5rem] lg:h-[2rem] border-2 border-[#50683E] rounded-md mb-2 p-2" 
+          placeholder="Apellido" 
+        />
+        <input 
+          v-model="telefono" 
+          type="text" 
+          class="w-full lg:w-[20rem] h-[2.5rem] lg:h-[2rem] border-2 border-[#50683E] rounded-md mb-2 p-2" 
+          placeholder="Teléfono" 
+        />
+        <input 
+          v-model="correoElectronico" 
+          type="email" 
+          class="w-full lg:w-[20rem] h-[2.5rem] lg:h-[2rem] border-2 border-[#50683E] rounded-md mb-2 p-2" 
+          placeholder="Email" 
+        />
+        <input 
+          v-model="contrasenia" 
+          type="password" 
+          class="w-full lg:w-[20rem] h-[2.5rem] lg:h-[2rem] border-2 border-[#50683E] rounded-md mb-4 lg:mb-2 p-2" 
+          placeholder="Contraseña" 
+        />
 
-        <p v-if="error" class="text-red-500 mt-2">{{ error }}</p>
+        <p v-if="error" class="text-red-500 mt-2 text-sm lg:text-base">{{ error }}</p>
 
         <button
           @click="registrarUsuario"
           :disabled="loading || !nombre || !apellido || !correoElectronico || !telefono || !contrasenia"
-          class="w-[20rem] h-[2rem] bg-[#3d491a] text-[#FAF7EC] rounded-md mt-2 disabled:bg-gray-500 flex items-center justify-center"
+          class="w-full lg:w-[20rem] h-[2.5rem] lg:h-[2rem] bg-[#3d491a] text-[#FAF7EC] rounded-md disabled:bg-gray-500 flex items-center justify-center"
         >
           <span v-if="loading" class="loader"></span>
           <span v-else>Registrarse</span>
         </button>
 
-        <div class="flex flex-row gap-2 mt-2">
-          <p>¿Ya tienes una cuenta?</p>
-          <router-link to="/login" class="text-[#3d491a]">Ingresa</router-link>
+        <div class="flex flex-row gap-2 mt-4 lg:mt-2">
+          <p class="text-sm lg:text-base">¿Ya tienes una cuenta?</p>
+          <router-link to="/login" class="text-[#3d491a] text-sm lg:text-base">Ingresa</router-link>
         </div>
       </div>
     </div>
@@ -112,26 +135,13 @@ const registrarUsuario = async () => {
   background: url("@/assets/Images/nuevo.png") center center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   opacity: 0.9;
+  height: 100%;
 }
-
-.input-field {
-  width: 20rem;
-  height: 2rem;
-  border: 2px solid #50683e;
-  border-radius: 0.375rem;
-  margin-bottom: 0.5rem;
-  padding-left: 0.5rem;
-}
-
-button:disabled {
-  cursor: not-allowed;
-}
-
 
 .loader {
   border: 2px solid #FAF7EC;
@@ -145,5 +155,16 @@ button:disabled {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 1023px) {
+  .main-container {
+    min-height: 100vh;
+    padding: 1rem 0;
+  }
+  
+  div.bg-\[\#FAF7EC\] {
+    margin: 1rem 0;
+  }
 }
 </style>
