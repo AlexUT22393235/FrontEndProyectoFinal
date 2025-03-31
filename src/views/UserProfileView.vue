@@ -1,22 +1,49 @@
 <template>
-  <ReportModal v-if="reportModal === true" @close="reportModal = false" @submit="submitReport"/>
+    <!-- Skeleton de carga para el perfil -->
+    <div v-if="loading" class="flex flex-col ">
+      <div class="bg-[#5B735D] animate-pulse flex flex-col md:flex-row items-center justify-center p-8 space-y-6 md:space-y-0">
+        <div class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-60 lg:h-60 rounded-full shadow-lg object-cover flex-shrink-0">
+          <img src="@/assets/images/logostrade_skeleton.png" alt="Logo"
+               class="w-full h-full object-cover rounded-full shadow-lg flex-shrink-0" />
+        </div>
+    <div class="flex flex-col items-center md:items-start md:ml-6 lg:ml-10 space-y-4 max-w-2xl px-4 sm:px-0">
+      <div class="bg-[#3A4D3A] h-8 w-48 rounded"></div>
+      <div class="bg-[#3A4D3A] h-4 w-64 rounded"></div>
 
-  <!-- Sección superior del perfil - Responsive mejorado -->
-  <div v-if="userProfile" class="bg-[#5B735D] flex flex-col md:flex-row w-full h-auto items-center justify-center px-4 sm:px-6 lg:px-10 py-8 md:py-12 space-y-6 md:space-y-0">
+    </div>
+
+
+      </div>
+      <div class="bg-[#f5f7ea] flex flex-col w-full h-[40rem] items-center justify-center p-8">
+        <div class="w-full max-w-7xl p-4 sm:p-6 lg:p-8 flex flex-col xl:flex-row gap-6 lg:gap-8 items-center justify-center">
+          <div class="bg-[#D4E0CD] h-78 w-[50%] rounded items-center justify-center flex">
+            <img src="@/assets/images/light_logostrade_skeleton.png" alt="Logo"
+                 class="w-[10rem] h-auto opacity-30" />
+          </div>
+      <div class="bg-[#D4E0CD] h-74 w-[40%] rounded items-center justify-center flex">
+        <img src="@/assets/images/light_logostrade_skeleton.png" alt="Logo"
+        class="w-[10rem] h-auto opacity-30" />
+      </div>
+
+          </div>
+</div>
+  </div>
+  <div  v-else-if="userProfile">
+    <div class="bg-[#5B735D] flex flex-col md:flex-row w-full h-auto items-center justify-center px-4 sm:px-6 lg:px-10 py-8 md:py-12 space-y-6 md:space-y-0">
     <!-- Imagen de perfil con tamaños responsive -->
-    <img :src="userProfile.imagenPerfil" alt="Logo" 
+    <img :src="userProfile.imagenPerfil" alt="Logo"
          class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-60 lg:h-60 rounded-full shadow-lg object-cover flex-shrink-0" />
-    
+
     <!-- Información del perfil -->
     <div class="flex flex-col items-center md:items-start md:ml-6 lg:ml-10 space-y-4 max-w-2xl px-4 sm:px-0">
       <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white text-center md:text-left">
         {{ userProfile.nombrePerfil }}
       </h2>
-      
+
       <p class="text-base sm:text-lg text-white text-center md:text-left">
         {{ userProfile.descripcion }}
       </p>
-      
+
       <!-- Botones adaptables -->
       <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-2 md:mt-4">
         <button v-if="isCurrentUser" @click="openEditModal"
@@ -34,17 +61,6 @@
       </div>
     </div>
   </div>
-
-  <div v-else class="p-4">
-    <p class="text-black text-center">No se encontró un perfil para este usuario.</p>
-  </div>
-
-  <!-- Modales (sin cambios necesarios en responsive) -->
-  <EditProfileModal v-if="isEditModalOpen && userProfile" :userProfile="userProfile" @close="closeEditModal" @submit="handleEditSubmit"/>
-  <DeleteProfileModal v-if="isDeleteModalOpen && userProfile" :userProfile="userProfile" @close="closeDeleteModal" @confirm="handleDeleteProfile"/>
-  <ReportModal v-if="isReportModalOpen && userProfile" :userProfile="userProfile" @close="closeReportModal" @submit="handleReportSubmit"/>
-
-
   <div class="bg-[#f5f7ea] flex flex-col w-full items-center justify-center p-8">
     <!-- Botón ahora en sección Mis Productos. -->
     <!-- <button @click="openModal" class="mt-8 px-6 py-3 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A]">
@@ -62,7 +78,7 @@
           <h2 class="text-2xl sm:text-3xl font-bold text-center sm:text-left">
             {{ showNegotiate ? 'Artículos en Negociación' : 'Historial de Intercambios' }}
           </h2>
-          <button @click="showNegotiate = !showNegotiate" 
+          <button @click="showNegotiate = !showNegotiate"
                   class="px-4 py-1 sm:px-5 sm:py-1 bg-[#5B735D] text-white rounded-lg hover:bg-[#4A5D4A] text-sm sm:text-base transition-colors duration-200 whitespace-nowrap">
             {{ showNegotiate ? 'Ver Historial' : 'Ver Negociación' }}
           </button>
@@ -83,6 +99,25 @@
       </div>
     </div>
   </div>
+
+  </div>
+
+
+  <ReportModal v-if="reportModal === true" @close="reportModal = false" @submit="submitReport"/>
+
+  <!-- Sección superior del perfil - Responsive mejorado -->
+
+<!--
+  <div v-else class="p-4">
+    <p class="text-black text-center">No se encontró un perfil para este usuario.</p>
+  </div> -->
+
+  <!-- Modales (sin cambios necesarios en responsive) -->
+  <EditProfileModal v-if="isEditModalOpen && userProfile" :userProfile="userProfile" @close="closeEditModal" @submit="handleEditSubmit"/>
+  <DeleteProfileModal v-if="isDeleteModalOpen && userProfile" :userProfile="userProfile" @close="closeDeleteModal" @confirm="handleDeleteProfile"/>
+  <ReportModal v-if="isReportModalOpen && userProfile" :userProfile="userProfile" @close="closeReportModal" @submit="handleReportSubmit"/>
+
+
 
 
 </template>
@@ -106,6 +141,7 @@ import DeleteProfileModal from '@/components/Modals/DeleteProfileModal.vue';
 import ReportModal from '@/components/Modals/ReportModal.vue';
 import EditProfileModal from '@/components/Modals/EditProfileModal.vue';
 const authStore = useAuthStore();
+const loading = ref(true);
 const { user } = storeToRefs(authStore);
 const showNegotiate = ref(false);
 const isDeleteModalOpen = ref(false);
@@ -138,11 +174,8 @@ const submitReport = async () => {
 const fetchUserData = async () => {
   try {
     const response = await axios.get(`https://localhost:7140/api/Perfil/usuario/${profileIdFromUrl.value}`);
-    console.log('Datos obtenidos de la API de perfil:', response.data[0]);
-
     if (response.status === 200) {
       const profile = response.data[0];
-
       if (profile) {
         userProfile.value = {
           idPerfil: profile.idPerfil,
@@ -157,8 +190,18 @@ const fetchUserData = async () => {
     }
   } catch {
     userProfile.value = null;
+  } finally {
+    // Retraso adicional de 1 segundo para ver el skeleton
+    setTimeout(() => {
+      loading.value = false;
+    }, 1000);
   }
 };
+
+onMounted(fetchUserData);
+
+
+
 const data = ref<IProduct[]>([]);
 const fetchData = async () => {
   try {

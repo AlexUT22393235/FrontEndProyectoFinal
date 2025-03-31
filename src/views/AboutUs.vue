@@ -4,8 +4,8 @@
   <img src="https://i.pinimg.com/736x/78/4e/57/784e57dc1c030f0c0abb59fdedb703d2.jpg" class="w-full h-full object-fill filter blur-[3px] transition-all duration-300 hover:blur-none"/>
 </div>
 
-<div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="absolute top-60 left-170" >
-  <div class="max-w-3xl text-center p-15 bg-[#FAF7EC]  ">
+<div data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="absolute top-60 left-150" >
+  <div class="max-w-3xl text-center p-15 pb-0 bg-[#FAF7EC]  ">
       <h1 class="text-4xl font-bold text-[#50683E] mb-4">Sobre Nosotros</h1>
 
       <p class="text-lg text-[#555] leading-relaxed">
@@ -18,7 +18,11 @@
         A través de nuestra plataforma, puedes publicar artículos que ya no necesitas y encontrar aquellos que
         te interesan. ¡Únete a Strade y empieza a intercambiar de manera fácil, justa y sin dinero de por medio!
       </p>
+      <div>
+      <img src="@/assets/images/dog.png" alt="Logo de Strade" class="w-[30rem] h-auto mx-99 " />
     </div>
+    </div>
+
     </div>
 
 
@@ -87,6 +91,11 @@
       <p class="text-lg text-[#555] leading-relaxed">
         Sé parte de nuestra comunidad y ayuda a construir un futuro más sostenible. ¡Empieza a intercambiar hoy mismo!
       </p>
+      <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+        <img src="@/assets/images/team.png" alt="Logo de Strade" class="w-[40rem] h-auto mx-auto mt-4 mb-4" />
+
+      </div>
+
       <router-link to="/register" class="mt-6 inline-block bg-[#3d491a] text-white py-2 px-6 rounded-lg hover:bg-[#2ecc71]">
         Regístrate Ahora
       </router-link>
