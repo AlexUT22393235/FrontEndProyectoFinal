@@ -283,7 +283,7 @@ onMounted(() => {
   // Simular demora en la carga para visualizar los skeletons
   setTimeout(() => {
     loading.value = false;
-  }, 1000);
+  },  850);
 });
 
 

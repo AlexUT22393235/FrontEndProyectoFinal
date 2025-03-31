@@ -146,8 +146,17 @@ const filtered = computed(() => {
 });
 
 </script>
+
+
+
+
+
+
+
+
 <template>
-<div class=" bg-[#6d805c]">
+  <div >
+    <div  class=" bg-[#6d805c]">
   <div  class="w-full h-[50vh] search-container flex flex-col justify-center items-center ">
     <div v-if="route.name !== 'product'" data-aos="zoom-in" data-aos-offset="0" data-aos-duration="2000" class="mt-8">
       <p class="text-[4rem] font-bold text-[#FAF7EC]">{{ searchData.length }} Resultados de Busqueda</p>
@@ -168,11 +177,14 @@ const filtered = computed(() => {
 
 </div>
 
-<div class="w-full h-[60vh] mb-[10vh] bg-[#c4caaf] ">
+<div else class="w-full h-[60vh] mb-[10vh] bg-[#c4caaf] ">
   <img src="@/assets/Images/productos.png" alt="Logo Strade" class="w-[90rem] h-full object-cover">
   <!-- <img src="https://www.arka.com/cdn/shop/articles/arka-trash-packaging_bwrgfq.jpg?v=1671534726" class="w-full h-full object-cover"/> -->
 </div>
 
+  </div>
+
+ <div v-if="searchData.length >0">
   <div class="w-[100vw] h-fit px-[4vh] my-[4vh] flex justify-end gap-x-[1vw]"
   v-if="route.name == 'category'">
 
@@ -239,6 +251,7 @@ const filtered = computed(() => {
     </ProductCard>
 
   </div>
+ </div>
 </template>
 
 
