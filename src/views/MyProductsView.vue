@@ -13,7 +13,7 @@
       </div>
 
       <!-- <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 px-4 py-6"> -->
-        <div v-if="data.length > 0" class="pl-10 ml-30 w-[90%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+        <div v-if="data.length > 0" class="pb-5 pl-10 ml-30 w-[90%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
       <MyProductCard
         v-for="(item, index) in data"
         :key="index"
