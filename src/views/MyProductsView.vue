@@ -1,6 +1,11 @@
 <template>
     <div class="w-full min-h-screen bg-[#FAF7EC] relative px-10 pt-4 ">
-      <h3 class="text-bold text-6xl pb-4">Mis Productos</h3>
+      <div class="bg-amber-500 w-full h-50rem flex items-center justify-center text-center py-20 m-4">
+
+        <h3 class="text-bold text-6xl pb-4n text-[#FAF7EC]">Mis Productos</h3>
+.
+      </div>
+
 
       <div class="bg-[#5d7e4e] w-50 text-center px-2 p-4 rounded-md text-white">
         <button @click="isModalOpen = true">Agregar Producto</button>
