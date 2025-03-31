@@ -2,7 +2,7 @@
     <!-- Skeleton de carga para el perfil -->
     <div v-if="loading" class="flex flex-col ">
       <div class="bg-[#5B735D] animate-pulse flex flex-col md:flex-row items-center justify-center p-8 space-y-6 md:space-y-0">
-        <div class="bg-[#3A4D3A] w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-60 lg:h-60 rounded-full">
+        <div class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-60 lg:h-60 rounded-full shadow-lg object-cover flex-shrink-0">
           <img src="@/assets/images/logostrade_skeleton.png" alt="Logo"
                class="w-full h-full object-cover rounded-full shadow-lg flex-shrink-0" />
         </div>
@@ -16,11 +16,11 @@
       </div>
       <div class="bg-[#f5f7ea] flex flex-col w-full h-[40rem] items-center justify-center p-8">
         <div class="w-full max-w-7xl p-4 sm:p-6 lg:p-8 flex flex-col xl:flex-row gap-6 lg:gap-8 items-center justify-center">
-          <div class="bg-[#aacaaa] h-78 w-[50%] rounded items-center justify-center flex">
+          <div class="bg-[#D4E0CD] h-78 w-[50%] rounded items-center justify-center flex">
             <img src="@/assets/images/light_logostrade_skeleton.png" alt="Logo"
                  class="w-[10rem] h-auto opacity-30" />
           </div>
-      <div class="bg-[#aacaaa] h-74 w-[40%] rounded items-center justify-center flex">
+      <div class="bg-[#D4E0CD] h-74 w-[40%] rounded items-center justify-center flex">
         <img src="@/assets/images/light_logostrade_skeleton.png" alt="Logo"
         class="w-[10rem] h-auto opacity-30" />
       </div>
