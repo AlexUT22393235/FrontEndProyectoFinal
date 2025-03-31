@@ -95,8 +95,8 @@ onMounted(() => {
         <img src="@/assets/Images/logostrade.png" alt="Logo Strade" class="w-10 h-10">
         <h1 class="text-xl font-bold text-green-900 pl-3">STRADE</h1>
       </div>
-      <div class="w-1/2 flex flex-row gap-[2rem]">
-        <div class="w-full px-10">
+      <div class="w-[70rem] flex flex-row gap-[2rem]">
+        <div class="w-full px-10 ">
           <!-- Menú de navegación -->
           <nav class="flex items-center flex-row justify-between h-full">
             <RouterLink to="/landing"><label class="text-green-800 hover:text-teal-600 cursor-pointer">Inicio</label></RouterLink>
