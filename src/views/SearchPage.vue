@@ -26,7 +26,7 @@ import type { IProduct } from '@/interfaces/IProduct';
   const fetchData = async () => {
     try {
       const response = await getProductsService()
-      data.value = response.filter((product: IProduct) => product.fechaCreacion)
+      data.value = response.filter((product: IProduct) => product.noVisible === false)
     } catch (error) {
       if(axios.isAxiosError(error)){
         console.log(error.message)

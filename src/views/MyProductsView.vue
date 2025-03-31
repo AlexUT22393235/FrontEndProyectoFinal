@@ -7,14 +7,15 @@
       </div>
 
 
-      <div class="bg-[#5d7e4e] w-50 text-center px-2 p-4 rounded-md text-white">
-        <button @click="isModalOpen = true">Agregar Producto</button>
+      <div class=" w-full text-center p-4 rounded-md text-white flex justify-between flex-wrap px-[1vw]">
+        <button class="bg-[#5d7e4e] w-[10vw] py-[1vh] rounded-lg cursor-pointer" @click="isModalOpen = true">Agregar Producto</button>
+        <button v-if="hasNegotiation === true" class="bg-green-800 w-[10vw] py-[1vh] rounded-lg cursor-pointer" @click="onNegotiation = !onNegotiation">{{ onNegotiation === false ? 'Ver en negociacion' : 'Ver todos' }}</button>
       </div>
 
       <!-- <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 px-4 py-6"> -->
-        <div v-if="productsStore.productsPerUser.length > 0" class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 px-4 py-6">
+        <div v-if="data.length > 0" class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 px-4 py-6">
       <MyProductCard
-        v-for="(item, index) in productsStore.productsPerUser"
+        v-for="(item, index) in data"
         :key="index"
         :id="item.idProducto"
         :imgSrc="item.imagenes?.[0]?.urlImagen || '/images/default.jpg'"
@@ -45,10 +46,11 @@
   import MyProductCard from '@/components/MyProductCard.vue';
   import { useProductStore } from '@/stores/productStore';
   import { useAuthStore } from '@/stores/authStore';
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, watch, computed } from 'vue';
   import { storeToRefs } from 'pinia';
   import AddProductModal from '@/components/Modals/AddProductModal.vue';
   import DeleteProductModal from '@/components/Modals/DeleteProductModal.vue';
+import type { IProduct } from '@/interfaces/IProduct';
 
   const productsStore = useProductStore();
   const authStore = useAuthStore();
@@ -56,21 +58,49 @@
 
   const isModalOpen = ref(false);
   const isDeleteModalOpen = ref(false);
+  const onNegotiation = ref(false)
+  const data = ref<IProduct[]>([])
+  const ogData = ref<IProduct[]>([])
   const productIdToDelete = ref(0);
+
+  const fetchData = async () => {
+    try {
+      await productsStore.fetchProductsByUser(user.value.id);
+      ogData.value = productsStore.productsPerUser.filter((item) => item.noVisible === false)
+      data.value = ogData.value
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const handleDeleteRequest = (productId: number) => {
     productIdToDelete.value = productId;
     isDeleteModalOpen.value = true;
   };
 
-  const handleProductDeleted = () => {
+  const handleProductDeleted = async() => {
+    fetchData()
   };
+
+  const hasNegotiation = computed(() => {
+      return ogData.value.some((product) => product.procesoNegociacion === true);
+    });
 
   onMounted(async () => {
     if (user.value && user.value.id) {
       await productsStore.fetchProductsByUser(user.value.id);
+      data.value = productsStore.productsPerUser.filter((item) => item.noVisible === false)
+      ogData.value = data.value
     } else {
       console.error("Id no disponible en authStore");
     }
   });
+
+  watch(onNegotiation, () => {
+  if(onNegotiation.value === true){
+    return data.value = ogData.value.filter((item) => item.procesoNegociacion === true)
+  }else{
+    return data.value = ogData.value
+  }
+});
   </script>
