@@ -31,24 +31,28 @@ const fetchData = async () => {
 </script>
 <template>
   <container>
-    <div class="flex flex-col justify-center items-center h-full w-full p-12">
+    <div class="flex flex-col justify-center items-center h-full w-full">
       <div class="w-full h-[50rem] flex flex-col justify-center items-center ">
-        <img src="@/assets/Images/strade.png" alt="Logo" class="w-[95rem] h-[48rem]" />
+        <img src="@/assets/Images/strade.png" alt="Logo" class="hidden lg:block lg:w-[95rem] lg:h-[48rem] sm:hidden md:hidden" />
         <img src="@/assets/Images/apple.png" alt="Apple"
-          class="w-[50rem] h-[30rem] absolute right-14 bottom-50 apple-rotate-animation" />
+          class="hidden xl:block xl:w-[50rem] xl:h-[30rem] xl:absolute xl:right-14 xl:bottom-50 xl:p-12 apple-rotate-animation md:hidden sm:hidden" />
+           <!-- Imagen para pantallas medianas en adelante -->
+
         <button class="flex absolute bottom-60 right-245 border border-[#3d491a] rounded-md">
           <router-link to="/login"
             class="text-[#FAF7EC] bg-[#3d491a] p-3 hover:bg-[#5d7e4e] hover:border-[#5d7e4e] rounded-md">
             Comienza a Intercambiar
           </router-link>
         </button>
+        <img src="@/assets/Images/landingmd.png" alt="Imagen mediana" class="xl:hidden sm:block sm:w-full sm:h-[30rem]  md:block  md:w-full md:h-[30rem] lg:hidden"
+        />
       </div>
 
 
             <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
               <div
-        class="border-y border-gray-500 w-full h-[50rem] justify-center items-center flex flex-col gap-12 px-10 mt-4">
-        <div class=" m-18 p-18 text-center justify-center items-center h-[20rem] w-[60rem] flex flex-row gap-44">
+        class="md:hidden sm:hidden lg:flex xl:flex border-y border-gray-500 w-full h-[50rem] justify-center items-center flex flex-col gap-12 px-10 mt-4">
+        <div class="m-18 p-18 text-center justify-center items-center h-[20rem] w-[60rem] flex flex-row gap-44 ">
           <div class="flex flex-row justify-center gap-14">
             <svg width="250px" height="300px" viewBox="0 -5.3 76.481 76.481" xmlns="http://www.w3.org/2000/svg"
               fill="8b9e51" stroke="8b9e51" stroke-width="7.6480999999999995">
@@ -252,7 +256,7 @@ const fetchData = async () => {
       </div>
     </div>
 
-      <div class="flex flex-row justify-center w-full gap-4 px-6">
+      <div class="flex flex-row justify-center w-full gap-4 pl-30 py-12">
 
         <Swiper
       :modules="[Navigation, Pagination, Autoplay]"
@@ -261,6 +265,11 @@ const fetchData = async () => {
       navigation
       pagination
       :autoplay="{ delay: 1400, disableOnInteraction: false }"
+      :breakpoints="{
+    640: { slidesPerView: 1, spaceBetween: 10 },
+    768: { slidesPerView: 2, spaceBetween: 15 },
+    1024: { slidesPerView: 3, spaceBetween: 20 }
+  }"
 
     >
       <SwiperSlide
