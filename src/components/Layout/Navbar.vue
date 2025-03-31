@@ -4,9 +4,9 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
-//22393139 
+//22393139
 const isOpen = ref(false); // Controla la visibilidad del menú móvil
-
+const isLogoutModalOpen = ref(false);
 const authStore = useAuthStore();
 const user = ref<{
   id: number;
@@ -20,6 +20,27 @@ const user = ref<{
 
 const handleLogout = () => {
   authStore.logout();
+};
+const logoutImage = ref("src/assets/Images/angry.png");
+const changeImage = (newSrc: string) => {
+  logoutImage.value = newSrc;
+};
+
+const resetImage = () => {
+  logoutImage.value = "src/assets/Images/logout.png";
+};
+const confirmLogout = () => {
+  // Muestra el modal de confirmación en lugar de cerrar sesión inmediatamente
+  isLogoutModalOpen.value = true;
+};
+
+const cancelLogout = () => {
+  isLogoutModalOpen.value = false;
+};
+
+const proceedLogout = () => {
+  isLogoutModalOpen.value = false;
+  handleLogout();
 };
 
 const fetchUserDetails = async (usuarioId: number) => {
@@ -79,9 +100,9 @@ onMounted(() => {
       <div class="hidden md:flex items-center flex-1 mx-100">
         <!-- Barra de búsqueda -->
         <form class="flex items-center justify-center gap-2 w-full max-w-md" @submit.prevent="submitSearch">
-          <input 
-            v-model="formValue" 
-            placeholder="Pantuflas amarillas" 
+          <input
+            v-model="formValue"
+            placeholder="Pantuflas amarillas"
             class="placeholder:italic bg-gray-200 rounded-lg w-full h-8 px-27"
           >
           <button type="submit" class="cursor-pointer w-9 h-5">
@@ -103,10 +124,10 @@ onMounted(() => {
 
       <!-- Botones de usuario (ocultos en móvil) -->
       <div class="hidden md:flex items-center gap-3">
-        <button @click="handleLogout" class="px-3 py-1 bg-green-700 text-white rounded hover:bg-green-600">
+        <button @click="confirmLogout" class="px-3 py-1 bg-green-700 text-white rounded hover:bg-green-600">
           Cerrar Sesión
         </button>
-        
+
         <RouterLink :to="authStore.user?.id ? `/perfil/${authStore.user?.id}` : '/login'">
           <div class="bg-yellow-500 w-8 h-8 rounded-full overflow-hidden">
             <img
@@ -119,24 +140,24 @@ onMounted(() => {
       </div>
 
       <!-- Botón hamburguesa (solo móvil) -->
-      <button 
+      <button
         @click="isOpen = !isOpen"
         class="md:hidden p-2 rounded-md text-green-800 focus:outline-none"
       >
-        <svg 
-          class="w-6 h-6" 
-          :class="{'hidden': isOpen, 'block': !isOpen}" 
-          fill="none" 
-          viewBox="0 0 24 24" 
+        <svg
+          class="w-6 h-6"
+          :class="{'hidden': isOpen, 'block': !isOpen}"
+          fill="none"
+          viewBox="0 0 24 24"
           stroke="currentColor"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
-        <svg 
-          class="w-6 h-6" 
-          :class="{'hidden': !isOpen, 'block': isOpen}" 
-          fill="none" 
-          viewBox="0 0 24 24" 
+        <svg
+          class="w-6 h-6"
+          :class="{'hidden': !isOpen, 'block': isOpen}"
+          fill="none"
+          viewBox="0 0 24 24"
           stroke="currentColor"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -149,9 +170,9 @@ onMounted(() => {
       <div class="pt-4 pb-2 space-y-3">
         <!-- Barra de búsqueda móvil -->
         <form class="flex items-center gap-2 mb-4" @submit.prevent="submitSearch">
-          <input 
-            v-model="formValue" 
-            placeholder="Pantuflas amarillas" 
+          <input
+            v-model="formValue"
+            placeholder="Pantuflas amarillas"
             class="placeholder:italic bg-gray-200 rounded-lg w-full h-10 px-3"
           >
           <button type="submit" class="cursor-pointer w-6 h-6">
@@ -162,29 +183,29 @@ onMounted(() => {
         </form>
 
         <!-- Enlaces móviles -->
-        <RouterLink 
-          to="/landing" 
+        <RouterLink
+          to="/landing"
           class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
           @click="isOpen = false"
         >
           Inicio
         </RouterLink>
-        <RouterLink 
-          to="/products" 
+        <RouterLink
+          to="/products"
           class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
           @click="isOpen = false"
         >
           Productos
         </RouterLink>
-        <RouterLink 
-          to="/categories" 
+        <RouterLink
+          to="/categories"
           class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
           @click="isOpen = false"
         >
           Categorias
         </RouterLink>
-        <RouterLink 
-          to="/about" 
+        <RouterLink
+          to="/about"
           class="block px-3 py-2 text-green-800 hover:bg-gray-100 rounded"
           @click="isOpen = false"
         >
@@ -193,14 +214,14 @@ onMounted(() => {
 
         <!-- Botones de usuario móviles -->
         <div class="pt-4 mt-4 border-t border-gray-200 flex items-center gap-3">
-          <button 
+          <button
             @click="handleLogout"
             class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600"
           >
             Cerrar Sesión
           </button>
-          
-          <RouterLink 
+
+          <RouterLink
             :to="authStore.user?.id ? `/perfil/${authStore.user?.id}` : '/login'"
             @click="isOpen = false"
           >
@@ -212,6 +233,20 @@ onMounted(() => {
               />
             </div>
           </RouterLink>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="isLogoutModalOpen" class="fixed inset-0 flex items-center justify-center backdrop-blur-2xl z-50">
+      <div class="bg-white p-6 rounded shadow-md max-w-sm w-full text-center">
+        <h3 class="text-lg font-bold mb-4 text-[#5d7e4e]">¿Estás seguro que deseas cerrar sesión?</h3>
+        <img :src="logoutImage" class="w-100 h-auto mx-auto mb-4">
+
+        <div class="flex justify-around">
+          <button @click="proceedLogout"  @mouseenter="changeImage('src/assets/Images/logout.png')"
+         class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600">Sí</button>
+          <button @click="cancelLogout"  @mouseenter="changeImage('src/assets/Images/happy.png')"
+         class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">No</button>
         </div>
       </div>
     </div>
