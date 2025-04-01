@@ -1,3 +1,4 @@
+AddProduct Modal:
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
@@ -120,7 +121,7 @@ const submitProduct = async () => {
 
   isLoading.value = true;
 
-  // Asignar la fecha actual al campo `fechaCreacion`
+  // Asignar la fecha actual al campo fechaCreacion
   newProduct.value.fechaCreacion = new Date().toISOString();
 
   const formData = new FormData();
