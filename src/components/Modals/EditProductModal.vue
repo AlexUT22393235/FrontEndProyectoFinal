@@ -94,8 +94,10 @@ onMounted(async () => {
 
 const handleEdit = async () => {
   try {
+    console.log("ID de producto: ", props.productId)
     // Crear FormData para enviar los datos, incluyendo las nuevas imágenes
     const formData = new FormData();
+    
     formData.append('IdProducto', String(props.productId));
     if (product.value.nombre) {
       formData.append('Nombre', product.value.nombre);
