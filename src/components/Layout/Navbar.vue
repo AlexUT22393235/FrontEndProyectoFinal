@@ -123,20 +123,19 @@ onMounted(() => {
         </div>
       </div>
       <!-- Elementos desktop (ocultos en móvil) -->
+<!-- Botones de usuario (ocultos en móvil) -->
+<div v-if="authStore.user" class="hidden md:flex items-center gap-3">
+  <button @click="confirmLogout" class="px-3 py-1 bg-green-700 text-white rounded hover:bg-green-600">
+    Cerrar Sesión
+  </button>
 
+  <RouterLink :to="`/perfil/${authStore.user.id}`">
+    <div class="bg-yellow-500 w-8 h-8 rounded-full overflow-hidden">
+      <img :src="authStore.user.userProfile?.imagenPerfil" alt="Foto de perfil" class="w-full h-full object-cover" />
+    </div>
+  </RouterLink>
+</div>
 
-      <!-- Botones de usuario (ocultos en móvil) -->
-      <div class="hidden md:flex items-center gap-3">
-        <button @click="confirmLogout" class="px-3 py-1 bg-green-700 text-white rounded hover:bg-green-600">
-          Cerrar Sesión
-        </button>
-
-        <RouterLink :to="authStore.user?.id ? `/perfil/${authStore.user?.id}` : '/login'">
-          <div class="bg-yellow-500 w-8 h-8 rounded-full overflow-hidden">
-            <img :src="user?.userProfile?.imagenPerfil" alt="Foto de perfil" class="w-full h-full object-cover" />
-          </div>
-        </RouterLink>
-      </div>
 
       <!-- Botón hamburguesa (solo móvil) -->
       <button @click="isOpen = !isOpen" class="md:hidden p-2 rounded-md text-green-800 focus:outline-none">
