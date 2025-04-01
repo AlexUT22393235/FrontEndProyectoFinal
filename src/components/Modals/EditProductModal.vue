@@ -13,29 +13,49 @@
           <!-- Nombre -->
           <div>
             <label class="block text-gray-700 mb-1">Nombre del Producto*</label>
-            <input v-model="product.nombre" type="text" class="w-full px-4 py-2 border rounded-lg" />
+            <input 
+              v-model="product.nombre" 
+              type="text" 
+              class="w-full px-4 py-2 border rounded-lg"
+              :class="{ 'border-red-500': errors.nombre }" 
+              @input="validateField('nombre')"
+              maxlength="100"
+            />
+            <p v-if="errors.nombre" class="text-red-500 text-sm mt-1">{{ errors.nombre }}</p>
           </div>
 
           <!-- Descripción -->
           <div>
             <label class="block text-gray-700 mb-1">Descripción*</label>
-            <textarea v-model="product.descripcion" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+            <textarea 
+              v-model="product.descripcion" 
+              rows="3" 
+              class="w-full px-4 py-2 border rounded-lg"
+              :class="{ 'border-red-500': errors.descripcion }"
+              @input="validateField('descripcion')"
+              maxlength="500"
+            ></textarea>
+            <p v-if="errors.descripcion" class="text-red-500 text-sm mt-1">{{ errors.descripcion }}</p>
           </div>
 
           <!-- Tipo de transacción -->
           <div>
             <label class="block text-gray-700 mb-1">Tipo de transacción*</label>
-            <select v-model="product.intercambio" class="w-full px-4 py-2 border rounded-lg">
+            <select 
+              v-model="product.intercambio" 
+              class="w-full px-4 py-2 border rounded-lg"
+            >
               <option :value="true">Intercambio</option>
               <option :value="false">Donación</option>
             </select>
           </div>
 
-          <!-- Categorías - Sección integrada -->
+          <!-- Categorías -->
           <div>
             <label class="block text-gray-700 mb-1">Categorías*</label>
+            <p v-if="errors.categorias" class="text-red-500 text-sm mb-1">{{ errors.categorias }}</p>
             
-            <!-- Chips de categorías seleccionadas -->
+            <!-- Mappin de categorias selccionadas -->
             <div class="flex flex-wrap gap-2 mb-2 min-h-10">
               <div 
                 v-for="category in selectedCategories" 
@@ -50,7 +70,7 @@
                   ✕
                 </button>
               </div>
-              <p v-if="selectedCategories.length === 0" class="text-gray-400 text-sm">No hay categorías seleccionadas</p>
+              <p v-if="selectedCategories.length === 0 && !errors.categorias" class="text-gray-400 text-sm">No hay categorías seleccionadas</p>
             </div>
 
             <!-- Lista de categorías disponibles -->
@@ -80,6 +100,8 @@
               @change="handleImageUpload" 
               class="w-full px-4 py-2 border rounded-lg" 
             />
+            <p class="text-sm text-gray-500 mt-1">Deja vacío para mantener las imágenes actuales</p>
+            <p v-if="errors.imagenes" class="text-red-500 text-sm mt-1">{{ errors.imagenes }}</p>
             <div class="flex flex-wrap gap-2 mt-2">
               <!-- Imágenes existentes -->
               <div 
@@ -98,13 +120,13 @@
               
               <!-- Nuevas imágenes (previews) -->
               <div 
-                v-for="(preview, index) in previewImages" 
+                v-for="(preview, index) in previewImages.slice(props.productData.imagenes.length)" 
                 :key="'new-'+index" 
                 class="relative w-20 h-20 border rounded"
               >
                 <img :src="preview" class="w-full h-full object-cover" />
                 <button 
-                  @click.prevent="removeImage('new', index)" 
+                  @click.prevent="removeImage('new', index + props.productData.imagenes.length)" 
                   class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
                 >
                   &times;
@@ -124,7 +146,7 @@
             <button 
               type="submit" 
               class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500"
-              :disabled="isLoading"
+              :disabled="isLoading || hasErrors"
             >
               <span v-if="!isLoading">Guardar Cambios</span>
               <span v-else>Procesando...</span>
@@ -137,13 +159,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useProductUpdateStore } from '@/stores/productUpdateStore';
-
-import type { ProductPatchDTO } from '@/dtos/ProductPatchDTO'
+import type { ProductPatchDTO } from '@/dtos/ProductPatchDTO';
 import { getCategoriesService } from '@/services/categorieService';
-
-const isLoading = ref(false); // Inicializa isLoading como false
 
 const props = defineProps({
   isOpen: Boolean,
@@ -163,7 +182,15 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'update-success']);
 
-// Estado del producto (compatible con tu v-model en el template)
+// Estados
+const isLoading = ref(false);
+const errors = ref({
+  nombre: '',
+  descripcion: '',
+  categorias: '',
+  imagenes: ''
+});
+
 const product = ref({
   idProducto: props.productData.idProducto,
   nombre: props.productData.nombre,
@@ -172,18 +199,93 @@ const product = ref({
   categoriasIds: [...props.productData.categoriasIds],
 });
 
-// Imágenes (manteniendo tu estructura de previewImages)
-
 const allCategories = ref<{ idCategoria: number; nombre: string }[]>([]);
 const selectedCategories = ref<{ idCategoria: number; nombre: string }[]>([]);
 const previewImages = ref<string[]>(props.productData.imagenes.map(img => img.urlImagen));
 const newImageFiles = ref<File[]>([]);
 
-// Cargar categorías al montar el componente
+const hasErrors = computed(() => {
+  return Object.values(errors.value).some(error => error !== '');
+});
+
+const sanitizeInput = (input: string): string => {
+  let sanitized = input.replace(/<[^>]*>?/gm, '');
+  sanitized = sanitized
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+  sanitized = sanitized.replace(/[^\w\sáéíóúÁÉÍÓÚñÑ.,;:¿?¡!()\-@]/gi, '');
+  return sanitized;
+};
+
+const validateField = (field: 'nombre' | 'descripcion') => {
+  const value = product.value[field].trim();
+  
+  if (!value) {
+    errors.value[field] = 'Este campo es obligatorio';
+    return false;
+  }
+
+  if (field === 'nombre' && value.length > 100) {
+    errors.value[field] = 'El nombre no puede exceder los 100 caracteres';
+    return false;
+  }
+
+  if (field === 'descripcion' && value.length > 500) {
+    errors.value[field] = 'La descripción no puede exceder los 500 caracteres';
+    return false;
+  }
+
+  const dangerousPatterns = [
+    /<script.*?>.*?<\/script>/gi,
+    /SELECT.*?FROM/gi,
+    /INSERT.*?INTO/gi,
+    /UPDATE.*?SET/gi,
+    /DELETE.*?FROM/gi,
+    /DROP\sTABLE/gi,
+    /ALTER\sTABLE/gi,
+    /EXEC\(/gi,
+    /eval\(/gi,
+    /javascript:/gi
+  ];
+
+  if (dangerousPatterns.some(pattern => pattern.test(value))) {
+    errors.value[field] = 'Contenido no permitido detectado';
+    return false;
+  }
+
+  errors.value[field] = '';
+  return true;
+};
+
+const validateForm = (): boolean => {
+  let isValid = true;
+
+  if (!validateField('nombre')) isValid = false;
+  if (!validateField('descripcion')) isValid = false;
+  
+  if (product.value.categoriasIds.length === 0) {
+    errors.value.categorias = 'Debe seleccionar al menos una categoría';
+    isValid = false;
+  } else {
+    errors.value.categorias = '';
+  }
+
+  if (props.productData.imagenes.length === 0 && previewImages.value.length === 0) {
+    errors.value.imagenes = 'Debe haber al menos una imagen';
+    isValid = false;
+  } else {
+    errors.value.imagenes = '';
+  }
+
+  return isValid;
+};
+
 onMounted(async () => {
   try {
     allCategories.value = await getCategoriesService();
-    // Mapear categorías seleccionadas iniciales
     selectedCategories.value = allCategories.value.filter(cat => 
       product.value.categoriasIds.includes(cat.idCategoria)
     );
@@ -191,7 +293,7 @@ onMounted(async () => {
     console.error('Error loading categories:', error);
   }
 });
-// Store
+
 const productUpdateStore = useProductUpdateStore();
 
 const toggleCategory = (category: { idCategoria: number; nombre: string }) => {
@@ -206,83 +308,100 @@ const toggleCategory = (category: { idCategoria: number; nombre: string }) => {
       c => c.idCategoria !== category.idCategoria
     );
   }
-};;
+  
+  if (product.value.categoriasIds.length === 0) {
+    errors.value.categorias = 'Debe seleccionar al menos una categoría';
+  } else {
+    errors.value.categorias = '';
+  }
+};
 
-
-
-// Manejo de imágenes (compatible con tu template)
 const handleImageUpload = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
     for (let i = 0; i < input.files.length; i++) {
       const file = input.files[i];
+      
+      if (!file.type.startsWith('image/')) {
+        errors.value.imagenes = 'Solo se permiten archivos de imagen';
+        continue;
+      }
+      
+      if (file.size > 2 * 1024 * 1024) {
+        errors.value.imagenes = 'Las imágenes no pueden superar los 2MB';
+        continue;
+      }
+      
       newImageFiles.value.push(file);
       
-      // Crear vista previa (como lo tenías)
       const reader = new FileReader();
       reader.onload = (e) => {
         previewImages.value.push(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
-    // Resetear el input para permitir cargar la misma imagen otra vez
+    
+    if (newImageFiles.value.length > 0) {
+      errors.value.imagenes = '';
+    }
+    
     input.value = '';
   }
 };
 
-// Eliminar imagen (ajustado a tu template)
 const removeImage = (type: string, index: number) => {
   if (type === 'existing') {
-    // Eliminar la imagen del array de props.productData.imagenes
     props.productData.imagenes.splice(index, 1);
-    // Eliminar también del preview
     previewImages.value.splice(index, 1);
   } else {
-    // Es una imagen nueva (preview)
     const newIndex = index - props.productData.imagenes.length;
     previewImages.value.splice(index, 1);
     newImageFiles.value.splice(newIndex, 1);
   }
+  
+  if (props.productData.imagenes.length === 0 && previewImages.value.length === 0) {
+    errors.value.imagenes = 'Debe haber al menos una imagen';
+  } else {
+    errors.value.imagenes = '';
+  }
 };
 
-// Submit del formulario
 const handleEdit = async () => {
+  if (!validateForm()) {
+    return;
+  }
+
   try {
-    // Validación básica
-    if (!product.value.nombre.trim() || !product.value.descripcion.trim()) {
-      alert('Nombre y descripción son campos obligatorios');
-      return;
-    }
-
-    if (product.value.categoriasIds.length === 0) {
-      alert('Debe seleccionar al menos una categoría');
-      return;
-    }
-
-    // Preparar el DTO para el servicio
-    const updateData: ProductPatchDTO = {
-      IdProducto: product.value.idProducto,
-      Nombre: product.value.nombre,
-      Descripcion: product.value.descripcion,
-      Intercambio: product.value.intercambio,
-      CategoriasIds: product.value.categoriasIds,
-      Imagenes: newImageFiles.value.length > 0 ? newImageFiles.value : undefined
+    const sanitizedData = {
+      ...product.value,
+      nombre: sanitizeInput(product.value.nombre),
+      descripcion: sanitizeInput(product.value.descripcion)
     };
 
-    // Llamar al store para actualizar
+    const updateData: ProductPatchDTO = {
+      IdProducto: sanitizedData.idProducto,
+      Nombre: sanitizedData.nombre,
+      Descripcion: sanitizedData.descripcion,
+      Intercambio: sanitizedData.intercambio,
+      CategoriasIds: sanitizedData.categoriasIds,
+      Imagenes: newImageFiles.value.length > 0 ? newImageFiles.value : []
+    };
+
+    isLoading.value = true;
     await productUpdateStore.updateProductPartial(updateData.IdProducto, updateData);
     
-    // Éxito: emitir evento y cerrar modal
     emit('update-success', {
-      ...product.value,
-      imagenes: previewImages.value.map(url => ({ urlImagen: url }))
+      ...sanitizedData,
+      imagenes: [...props.productData.imagenes, ...previewImages.value.slice(props.productData.imagenes.length)]
+        .map(url => ({ urlImagen: url }))
     });
     emit('close');
     
   } catch (error) {
     console.error('Error al actualizar el producto:', error);
-    // Aquí podrías mostrar un mensaje más elegante
     alert('Ocurrió un error al actualizar el producto');
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
