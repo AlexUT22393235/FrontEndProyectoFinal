@@ -2,7 +2,7 @@ import type { HideProductDto } from '@/dtos/HideProductDto';
 import { genericRequest } from '../utils/genericRequest'
 import type { postTrade } from '@/dtos/postTradeDto';
 import type { ReportProductDto } from '@/dtos/ReportProductDto';
-import type { ProductPartialUpdateDTO } from '@/dtos/ProductPartialUpdateDTO';
+import type { ProductPatchDTO } from '@/dtos/ProductPatchDTO'
 
 const base_url = 'https://localhost:7140/api' // --- Aqui estuvo el skill issue
 
@@ -53,13 +53,8 @@ export const productsPerUserService = async (id: number)=>{
   return await genericRequest(`${base_url}/Producto/usuario/${id}`, 'GET')
 };
 
-export const productPatchService = async (
-  id: number,
-  productoActualizacion: ProductPartialUpdateDTO
-): Promise<any> => {
-  return await genericRequest(
-    base_url + `/Producto/producto-update-parcial/${id}`,
-    'PATCH',
-    productoActualizacion
-  );
+export const updateProductPartialService = async (id: number, productData: FormData) => {
+  return await genericRequest(`${base_url}/Producto/producto-update-parcial/${id}`, 'PATCH', productData, {
+    'Content-Type': 'multipart/form-data'
+  });
 };

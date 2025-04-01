@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 import type { IProductDetail } from '../interfaces/IProductDetail';
 import type { IProduct } from '@/interfaces/IProduct';
-import { getProductByIdService, getUserByIdService, productsPerUserService, deleteProductService, productPatchService } from '../services/productService';
-import type { ProductPartialUpdateDTO } from '@/dtos/ProductPartialUpdateDTO';
+import { getProductByIdService, getUserByIdService, productsPerUserService, deleteProductService } from '../services/productService';
 export const useProductStore = defineStore('product', {
   state: () => ({
     product: null as IProductDetail | null,
@@ -84,14 +83,6 @@ export const useProductStore = defineStore('product', {
       }
     },
 
-    async updatePartialProduct(id: number, productoActualizacion: ProductPartialUpdateDTO) {
-      try {
-        const response = await productPatchService(id, productoActualizacion);
-        console.log('Producto actualizado exitosamente:', response);
-      } catch (error) {
-        console.error('Error al actualizar el producto parcialmente:', error);
-        throw error; 
-      }
-    },
+   
   },
 });

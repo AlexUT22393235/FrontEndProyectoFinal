@@ -41,13 +41,13 @@
     <AddProductModal v-if="isModalOpen" :is-open="isModalOpen" @close="isModalOpen = false" />
 
     <EditProductModal
-    v-if="isEditModalOpen"
-    :is-open="isEditModalOpen"
-    :product-id="productIdToEdit"
-    :product-data="getProductData(productIdToEdit)"
-    @close="isEditModalOpen = false"
-    @product-updated="handleProductEdited"
-  />
+  v-if="isEditModalOpen"
+  :is-open="isEditModalOpen"
+  :product-id="productIdToEdit"
+  :product-data="getProductData(productIdToEdit)"
+  @close="isEditModalOpen = false"
+  @update-success="handleProductEdited"
+/>
   <DeleteProductModal v-if="isDeleteModalOpen" :product-id="productIdToDelete" @close="isDeleteModalOpen = false" @product-deleted="handleProductDeleted" />
   </div>
 </template>
@@ -62,6 +62,9 @@ import AddProductModal from '@/components/Modals/AddProductModal.vue';
 import EditProductModal from '@/components/Modals/EditProductModal.vue';
 import DeleteProductModal from '@/components/Modals/DeleteProductModal.vue';
 import type { IProduct } from '@/interfaces/IProduct';
+import { getCategoriesService } from '@/services/categorieService';
+
+const categoriesList = ref<{idCategoria: number, nombre: string}[]>([]);
 
 const productsStore = useProductStore();
 const authStore = useAuthStore();
@@ -77,7 +80,11 @@ const productIdToEdit = ref(0);
 const isEditModalOpen = ref(false);
 
 const getProductData = (productId: number) => {
-  return data.value.find(product => product.idProducto === productId);
+  const product = data.value.find(product => product.idProducto === productId);
+  return {
+    ...product,
+    categoriasIds: product?.categorias?.map(c => c.idCategoria) || []
+  };
 };
 
 
@@ -111,15 +118,32 @@ const hasNegotiation = computed(() => {
     return ogData.value.some((product) => product.procesoNegociacion === true);
   });
 
-onMounted(async () => {
+  onMounted(async () => {
   if (user.value && user.value.id) {
-    await productsStore.fetchProductsByUser(user.value.id);
-    data.value = productsStore.productsPerUser.filter((item) => item.noVisible === false)
-    ogData.value = data.value
+    try {
+      // Carga productos y categorías en paralelo
+      await Promise.all([
+        productsStore.fetchProductsByUser(user.value.id),
+        loadCategories()
+      ]);
+      
+      data.value = productsStore.productsPerUser.filter((item) => item.noVisible === false);
+      ogData.value = data.value;
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
   } else {
     console.error("Id no disponible en authStore");
   }
 });
+
+const loadCategories = async () => {
+  try {
+    categoriesList.value = await getCategoriesService();
+  } catch (error) {
+    console.error('Error loading categories:', error);
+  }
+};
 
 const productToEditData = ref<any>(null); // Asegúrate del tipo correcto
 
