@@ -45,19 +45,14 @@ const proceedLogout = () => {
 
 const fetchUserDetails = async (usuarioId: number) => {
   try {
-    // console.log('Fetching user details for usuarioId:', usuarioId);
-
     const userResponse = await axios.get(`https://localhost:7140/api/Usuario/${usuarioId}`);
     if (userResponse.data) {
-      user.value = userResponse.data;
+      authStore.user = { ...authStore.user, ...userResponse.data };
     }
-
     const profileResponse = await axios.get(`https://localhost:7140/api/Perfil/${usuarioId}`);
-    if (user.value) {
-      user.value.userProfile = profileResponse.data;
+    if (authStore.user) {
+      authStore.user.userProfile = profileResponse.data;
     }
-
-    // console.log('User data received:', user.value);
   } catch (error) {
     console.error('Error al obtener los datos del usuario o perfil:', error);
   }
@@ -74,15 +69,22 @@ const submitSearch = async () => {
   }
 }
 
+import { watch } from 'vue';
+
 onMounted(() => {
-  const userId = authStore.user?.id; // Obtener directamente el ID del usuario autenticado
-  console.log('Usuario logeado ID:', userId); // Verificar si se está obteniendo el ID del usuario correctamente
+  const userId = authStore.user?.id;
+  console.log('Usuario logeado ID:', userId);
   if (userId) {
     fetchUserDetails(userId);
-  } else {
-    console.log('No se encontró un usuarioId válido.');
   }
 });
+
+watch(
+  () => user.value?.userProfile,
+  (newVal) => {
+    console.log('userProfile changed:', newVal);
+  }
+);
 
 </script>
 
@@ -131,7 +133,8 @@ onMounted(() => {
 
   <RouterLink :to="`/perfil/${authStore.user.id}`">
     <div class="bg-yellow-500 w-8 h-8 rounded-full overflow-hidden">
-      <img :src="authStore.user.userProfile?.imagenPerfil" alt="Foto de perfil" class="w-full h-full object-cover" />
+      <img :src="authStore.user.userProfile?.imagenPerfil" alt="" class="w-full h-full object-cover" />
+      <p></p>
     </div>
   </RouterLink>
 </div>
