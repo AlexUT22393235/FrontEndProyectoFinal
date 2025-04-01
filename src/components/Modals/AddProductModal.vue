@@ -1,10 +1,10 @@
-AddProduct Modal:
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getCategoriesService } from '@/services/categorieService';
 import { postProductService } from '@/services/productService';
-import { useAuthStore } from '@/stores/authStore'; // Importa el store de autenticación
+import { useAuthStore } from '@/stores/authStore';
 import { useToast } from 'vue-toastification';
+
 const toast = useToast();
 
 // Props y emits
@@ -15,11 +15,12 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['close', 'product-added']);
+// Modificación clave: Cambiar 'product-added' por 'update-success' para consistencia
+const emit = defineEmits(['close', 'update-success']);
 
-// Accede al ID del usuario logueado desde el authStore
+// Accede al ID del usuario logueado
 const authStore = useAuthStore();
-const usuarioId = authStore.user?.id; // Obtén el ID del usuario logueado
+const usuarioId = authStore.user?.id;
 
 // Datos del producto
 const newProduct = ref({
@@ -27,10 +28,10 @@ const newProduct = ref({
   description: '',
   procesoNegociacion: false,
   intercambio: true,
-  usuarioId: usuarioId || null, // Usa el ID del usuario logueado
+  usuarioId: usuarioId || null,
   categoriasIds: [] as number[],
   images: [] as File[],
-  fechaCreacion: '', // Campo para la fecha de creación
+  fechaCreacion: '',
 });
 
 // Estados del componente
@@ -115,13 +116,12 @@ const validateForm = () => {
   return isValid;
 };
 
-// Envío del formulario
+// Envío del formulario (modificado para emitir el evento correcto)
 const submitProduct = async () => {
   if (!validateForm()) return;
 
   isLoading.value = true;
 
-  // Asignar la fecha actual al campo fechaCreacion
   newProduct.value.fechaCreacion = new Date().toISOString();
 
   const formData = new FormData();
@@ -129,8 +129,8 @@ const submitProduct = async () => {
   formData.append('Descripcion', newProduct.value.description);
   formData.append('ProcesoNegociacion', String(newProduct.value.procesoNegociacion));
   formData.append('Intercambio', String(newProduct.value.intercambio));
-  formData.append('UsuarioId', String(newProduct.value.usuarioId)); // Usa el ID del usuario logueado
-  formData.append('FechaCreacion', newProduct.value.fechaCreacion); // Agregar la fecha de creación
+  formData.append('UsuarioId', String(newProduct.value.usuarioId));
+  formData.append('FechaCreacion', newProduct.value.fechaCreacion);
 
   newProduct.value.categoriasIds.forEach((id) => {
     formData.append('CategoriasIds', String(id));
@@ -142,20 +142,20 @@ const submitProduct = async () => {
 
   try {
     const response = await postProductService(formData);
+    toast.success('¡Producto creado con éxito!');
+    
+    // Modificación clave: Emitir 'update-success' en lugar de 'product-added'
+    emit('update-success', response);
     resetForm();
-    emit('product-added', response);
     emit('close');
-
-  toast.success('¡Producto creado con éxito!');
+    
   } catch (error) {
     console.error('Error al agregar el producto:', error);
-    // Opcional: mostrar mensaje de error
     toast.error('Error al crear el producto');
   } finally {
     isLoading.value = false;
   }
 };
-
 
 // Limpiar formulario
 const resetForm = () => {
@@ -164,10 +164,10 @@ const resetForm = () => {
     description: '',
     procesoNegociacion: false,
     intercambio: true,
-    usuarioId: usuarioId || null, // Restablece el ID del usuario logueado
+    usuarioId: usuarioId || null,
     categoriasIds: [],
     images: [],
-    fechaCreacion: '', // Restablece la fecha de creación
+    fechaCreacion: '',
   };
   previewImages.value = [];
   selectedCategories.value = [];
@@ -186,13 +186,13 @@ onMounted(async () => {
 <template>
   <div
     v-if="isOpen"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    class="fixed inset-0 bg-amber-50/70 backdrop-blur-sm flex items-center justify-center z-50"
     @click.self="emit('close')"
   >
     <div class="bg-white p-8 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h2 class="text-2xl font-bold mb-6">Agregar Producto</h2>
       <form @submit.prevent="submitProduct">
-        <!-- Nombre del producto 22393139 FGT-->
+        <!-- Nombre del producto -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Nombre del Producto*</label>
           <input
@@ -204,7 +204,7 @@ onMounted(async () => {
           <p v-if="errors.nombre" class="text-red-500 text-sm mt-1">{{ errors.nombre }}</p>
         </div>
 
-        <!-- Descripción del producto. 22393139 FGT -->
+        <!-- Descripción del producto -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Descripción*</label>
           <textarea
@@ -216,7 +216,7 @@ onMounted(async () => {
           <p v-if="errors.descripcion" class="text-red-500 text-sm mt-1">{{ errors.descripcion }}</p>
         </div>
 
-        <!-- Opciones de negociación. 22393139 FGT-->
+        <!-- Opciones de negociación -->
         <div class="mb-4 flex items-center">
           <input
             type="checkbox"
@@ -227,7 +227,7 @@ onMounted(async () => {
           <label for="procesoNegociacion" class="text-gray-700">Acepta proceso de negociación</label>
         </div>
 
-        <!-- Tipo de producto . 22393139 FGT -->
+        <!-- Tipo de producto -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Tipo de transacción*</label>
           <select
@@ -239,8 +239,7 @@ onMounted(async () => {
           </select>
         </div>
 
-
-        <!-- Lista de categorías. 22393139 FGT -->
+        <!-- Lista de categorías -->
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Seleccionar categorías*</label>
           <div class="border rounded-lg p-1 max-h-40 overflow-y-auto">
@@ -257,9 +256,8 @@ onMounted(async () => {
           </div>
         </div>
 
-
- <!-- Categorías seleccionadas. 22393139 FGT -->
- <div class="mb-4">
+        <!-- Categorías seleccionadas -->
+        <div class="mb-4">
           <label class="block text-gray-700 mb-1">Categorias seleccionadas</label>
           <div class="flex flex-wrap gap-2 min-h-10 p-2 " :class="{ 'border-red-500': errors.categorias }">
             <div
@@ -280,8 +278,7 @@ onMounted(async () => {
           <p v-if="errors.categorias" class="text-red-500 text-sm mt-1">{{ errors.categorias }}</p>
         </div>
 
-
-        <!-- Subida de imágenes. 22393139 FGT -->
+        <!-- Subida de imágenes -->
         <div class="mb-6">
           <label class="block text-gray-700 mb-1">Imágenes* (Máx. 7)</label>
           <input
@@ -294,7 +291,7 @@ onMounted(async () => {
           />
           <p v-if="errors.images" class="text-red-500 text-sm mt-1">{{ errors.images }}</p>
 
-          <!-- Vista previa de imágenes. 22393139 FGT -->
+          <!-- Vista previa de imágenes -->
           <div v-if="previewImages.length > 0" class="mt-4">
             <div class="flex flex-wrap gap-2">
               <div
@@ -314,7 +311,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Botones. 22393139 FGT -->
+        <!-- Botones -->
         <div class="flex justify-end gap-4 pt-4 border-t">
           <button
             type="button"
