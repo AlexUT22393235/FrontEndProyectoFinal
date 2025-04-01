@@ -38,7 +38,13 @@
 
     <!-- </div> -->
 
-    <AddProductModal v-if="isModalOpen" :is-open="isModalOpen" @close="isModalOpen = false" />
+    <AddProductModal 
+  v-if="isModalOpen" 
+  :is-open="isModalOpen" 
+  @close="isModalOpen = false" 
+  @update-success="handleProductAdded"
+/>
+
 
     <EditProductModal
   v-if="isEditModalOpen"
@@ -79,12 +85,45 @@ const productIdToDelete = ref(0);
 const productIdToEdit = ref(0);
 const isEditModalOpen = ref(false);
 
+// Función corregida con tipo de retorno explícito
 const getProductData = (productId: number) => {
   const product = data.value.find(product => product.idProducto === productId);
+  
+  if (!product) {
+    throw new Error(`Producto con ID ${productId} no encontrado`);
+  }
+
   return {
-    ...product,
-    categoriasIds: product?.categorias?.map(c => c.idCategoria) || []
+    idProducto: product.idProducto,
+    nombre: product.nombre || '',
+    descripcion: product.descripcion || '',
+    intercambio: product.intercambio || false,
+    categoriasIds: product.categorias?.map(c => c.idCategoria) || [],
+    imagenes: product.imagenes?.map(img => ({ urlImagen: img.urlImagen })) || []
   };
+};
+
+const handleProductAdded = async () => {
+  try {
+        await fetchData();
+    isModalOpen.value = false;
+  } catch (error) {
+    console.error('Error al manejar el producto agregado:', error);
+  }
+};
+
+const fetchData = async () => {
+  try {
+    if (user.value?.id) {
+      await productsStore.fetchProductsByUser(user.value.id);
+      ogData.value = productsStore.productsPerUser.filter((item) => item.noVisible === false);
+      data.value = onNegotiation.value 
+        ? ogData.value.filter((item) => item.procesoNegociacion === true)
+        : ogData.value;
+    }
+  } catch (error) {
+    console.error('Error al cargar productos:', error);
+  }
 };
 
 
@@ -94,34 +133,23 @@ const handleEditRequest = (productId: number) => {
 };
 
 
-const fetchData = async () => {
-  try {
-    await productsStore.fetchProductsByUser(user.value.id);
-    ogData.value = productsStore.productsPerUser.filter((item) => item.noVisible === false)
-    data.value = ogData.value
-  } catch (error) {
-    console.error(error)
-  }
-}
 
 const handleDeleteRequest = (productId: number) => {
   productIdToDelete.value = productId;
   isDeleteModalOpen.value = true;
 };
 
-
 const handleProductDeleted = async() => {
   fetchData()
 };
 
 const hasNegotiation = computed(() => {
-    return ogData.value.some((product) => product.procesoNegociacion === true);
-  });
+  return ogData.value.some((product) => product.procesoNegociacion === true);
+});
 
-  onMounted(async () => {
+onMounted(async () => {
   if (user.value && user.value.id) {
     try {
-      // Carga productos y categorías en paralelo
       await Promise.all([
         productsStore.fetchProductsByUser(user.value.id),
         loadCategories()
@@ -145,35 +173,15 @@ const loadCategories = async () => {
   }
 };
 
-const productToEditData = ref<any>(null); // Asegúrate del tipo correcto
-
-const productStore = useProductStore();
-
-const openEditModal = async (productId: number) => {
-productIdToEdit.value = productId;
-try {
-  // Asumiendo que tienes una acción para obtener los detalles del producto por ID
-  await productStore.fetchProductDetails(productId);
-  productToEditData.value = productStore.product;
-  isEditModalOpen.value = true;
-} catch (error) {
-  console.error('Error al obtener los datos del producto para editar:', error);
-}
-};
-
-const handleProductEdited = (productId: number) => {
-console.log(`Producto con ID ${productId} fue editado en el componente padre.`);
-// Realiza aquí cualquier acción necesaria después de que el producto se edita
-// Por ejemplo, recargar la lista de productos, mostrar un mensaje, etc.
+const handleProductEdited = () => {
+  fetchData(); // Recargar los datos después de editar
 };
 
 watch(onNegotiation, () => {
-if(onNegotiation.value === true){
-  return data.value = ogData.value.filter((item) => item.procesoNegociacion === true)
-}else{
-  return data.value = ogData.value
-}
-
-
+  if(onNegotiation.value === true){
+    data.value = ogData.value.filter((item) => item.procesoNegociacion === true)
+  } else {
+    data.value = ogData.value
+  }
 });
 </script>
