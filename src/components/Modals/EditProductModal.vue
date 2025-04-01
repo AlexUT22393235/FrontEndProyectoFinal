@@ -164,7 +164,6 @@ import { useProductUpdateStore } from '@/stores/productUpdateStore';
 import type { ProductPatchDTO } from '@/dtos/ProductPatchDTO';
 import { getCategoriesService } from '@/services/categorieService';
 
-// Props
 const props = defineProps({
   isOpen: Boolean,
   productId: Number,
@@ -181,10 +180,9 @@ const props = defineProps({
   }
 });
 
-// Emits
 const emit = defineEmits(['close', 'update-success']);
 
-// Estados reactivos
+// Estados
 const isLoading = ref(false);
 const errors = ref({
   nombre: '',
@@ -205,14 +203,11 @@ const allCategories = ref<{ idCategoria: number; nombre: string }[]>([]);
 const selectedCategories = ref<{ idCategoria: number; nombre: string }[]>([]);
 const previewImages = ref<string[]>(props.productData.imagenes.map(img => img.urlImagen));
 const newImageFiles = ref<File[]>([]);
-const deletedExistingImages = ref<number[]>([]);
-const productUpdateStore = useProductUpdateStore();
-// Computed properties
+
 const hasErrors = computed(() => {
   return Object.values(errors.value).some(error => error !== '');
 });
 
-// Métodos
 const sanitizeInput = (input: string): string => {
   let sanitized = input.replace(/<[^>]*>?/gm, '');
   sanitized = sanitized
@@ -221,7 +216,8 @@ const sanitizeInput = (input: string): string => {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-  return sanitized.replace(/[^\w\sáéíóúÁÉÍÓÚñÑ.,;:¿?¡!()\-@]/gi, '');
+  sanitized = sanitized.replace(/[^\w\sáéíóúÁÉÍÓÚñÑ.,;:¿?¡!()\-@]/gi, '');
+  return sanitized;
 };
 
 const validateField = (field: 'nombre' | 'descripcion') => {
@@ -247,7 +243,12 @@ const validateField = (field: 'nombre' | 'descripcion') => {
     /SELECT.*?FROM/gi,
     /INSERT.*?INTO/gi,
     /UPDATE.*?SET/gi,
-    /DELETE.*?FROM/gi
+    /DELETE.*?FROM/gi,
+    /DROP\sTABLE/gi,
+    /ALTER\sTABLE/gi,
+    /EXEC\(/gi,
+    /eval\(/gi,
+    /javascript:/gi
   ];
 
   if (dangerousPatterns.some(pattern => pattern.test(value))) {
@@ -272,10 +273,7 @@ const validateForm = (): boolean => {
     errors.value.categorias = '';
   }
 
-  const remainingExisting = props.productData.imagenes.length - deletedExistingImages.value.length;
-  const newImagesCount = previewImages.value.slice(props.productData.imagenes.length).length;
-  
-  if (remainingExisting + newImagesCount === 0) {
+  if (props.productData.imagenes.length === 0 && previewImages.value.length === 0) {
     errors.value.imagenes = 'Debe haber al menos una imagen';
     isValid = false;
   } else {
@@ -284,6 +282,19 @@ const validateForm = (): boolean => {
 
   return isValid;
 };
+
+onMounted(async () => {
+  try {
+    allCategories.value = await getCategoriesService();
+    selectedCategories.value = allCategories.value.filter(cat => 
+      product.value.categoriasIds.includes(cat.idCategoria)
+    );
+  } catch (error) {
+    console.error('Error loading categories:', error);
+  }
+});
+
+const productUpdateStore = useProductUpdateStore();
 
 const toggleCategory = (category: { idCategoria: number; nombre: string }) => {
   const index = product.value.categoriasIds.indexOf(category.idCategoria);
@@ -340,19 +351,19 @@ const handleImageUpload = (event: Event) => {
 
 const removeImage = (type: string, index: number) => {
   if (type === 'existing') {
-    const deleteIndex = deletedExistingImages.value.indexOf(index);
-    if (deleteIndex === -1) {
-      deletedExistingImages.value.push(index);
-    } else {
-      deletedExistingImages.value.splice(deleteIndex, 1);
-    }
+    props.productData.imagenes.splice(index, 1);
+    previewImages.value.splice(index, 1);
   } else {
     const newIndex = index - props.productData.imagenes.length;
     previewImages.value.splice(index, 1);
     newImageFiles.value.splice(newIndex, 1);
   }
   
-  validateForm();
+  if (props.productData.imagenes.length === 0 && previewImages.value.length === 0) {
+    errors.value.imagenes = 'Debe haber al menos una imagen';
+  } else {
+    errors.value.imagenes = '';
+  }
 };
 
 const handleEdit = async () => {
@@ -373,25 +384,17 @@ const handleEdit = async () => {
       Descripcion: sanitizedData.descripcion,
       Intercambio: sanitizedData.intercambio,
       CategoriasIds: sanitizedData.categoriasIds,
-      Imagenes: newImageFiles.value.length > 0 ? newImageFiles.value : undefined
+      Imagenes: newImageFiles.value.length > 0 ? newImageFiles.value : []
     };
 
     isLoading.value = true;
     await productUpdateStore.updateProductPartial(updateData.IdProducto, updateData);
     
-    const updatedProduct = {
+    emit('update-success', {
       ...sanitizedData,
-      imagenes: [
-        ...props.productData.imagenes
-          .filter((_, index) => !deletedExistingImages.value.includes(index))
-          .map(img => ({ urlImagen: img.urlImagen })),
-        ...previewImages.value
-          .slice(props.productData.imagenes.length)
-          .map(url => ({ urlImagen: url }))
-      ]
-    };
-    
-    emit('update-success', updatedProduct);
+      imagenes: [...props.productData.imagenes, ...previewImages.value.slice(props.productData.imagenes.length)]
+        .map(url => ({ urlImagen: url }))
+    });
     emit('close');
     
   } catch (error) {
@@ -401,16 +404,4 @@ const handleEdit = async () => {
     isLoading.value = false;
   }
 };
-
-// Hooks del ciclo de vida
-onMounted(async () => {
-  try {
-    allCategories.value = await getCategoriesService();
-    selectedCategories.value = allCategories.value.filter(cat => 
-      product.value.categoriasIds.includes(cat.idCategoria)
-    );
-  } catch (error) {
-    console.error('Error loading categories:', error);
-  }
-});
 </script>
