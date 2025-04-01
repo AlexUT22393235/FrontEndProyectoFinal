@@ -179,7 +179,8 @@ const route = useRoute()
 const trade = ref<postTrade>({
   "usuarioSolicitanteId": 0,
   "usuarioOfertanteId": 0,
-  "productoId": 0
+  "productoId": 0,
+  "estadoId" : 1
 })
 
 const router = useRouter();

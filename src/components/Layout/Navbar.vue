@@ -67,8 +67,10 @@ const router = useRouter()
 
 const submitSearch = async () => {
   try {
-    const newParam = encodeURI(formValue.value);
-    router.push('/search/' + newParam)
+    if(formValue.value.trim().length > 0){
+      const newParam = encodeURI(formValue.value.trim());
+      router.push('/search/' + newParam)
+    }
   } catch (error) {
     console.error(error);
   }
@@ -110,8 +112,8 @@ onMounted(() => {
         <div class="hidden md:flex items-center w-fit">
           <!-- Barra de búsqueda -->
           <form class="flex items-center justify-center gap-2 w-full max-w-md" @submit.prevent="submitSearch">
-            <input v-model="formValue" placeholder="Pantuflas amarillas"
-              class="placeholder:italic bg-gray-200 rounded-lg w-[15rem] h-8">
+            <input v-model="formValue" placeholder="buscar"
+              class="placeholder:italic bg-gray-200 rounded-lg w-[15rem] h-8 px-[1vw]">
             <button type="submit" class="cursor-pointer w-9 h-fit">
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

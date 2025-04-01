@@ -27,19 +27,40 @@
       </table>
     </div>
   </template>
-  
+
   <script setup lang="ts">
+  import { getEvaluationsOfertanteService, getEvaluationsSolicitantService } from '@/services/evaluationService';
   import { useEvaluationStore } from '../stores/evaluationStore'; // Ajusta la ruta
-  import { onMounted, computed } from 'vue';
-  
+  import { onMounted, computed, ref } from 'vue';
+  import { useAuthStore } from '@/stores/authStore';
+import { storeToRefs } from 'pinia';
+
+  const authStore = useAuthStore();
+  const { user } = storeToRefs(authStore);
+  const dataSol = ref();
+  const dataOf = ref();
+
   const evaluationStore = useEvaluationStore();
-  
-  onMounted(() => {
-    evaluationStore.fetchEvaluations();
-  });
-  
+
+  const fetchData = async (id:number) => {
+    console.log(id)
+    try {
+      dataSol.value = await getEvaluationsSolicitantService(id)
+      console.log(dataSol.value)
+    } catch (error) {
+      console.error(error)
+    }
+
+    try {
+      dataOf.value = await getEvaluationsOfertanteService(id)
+      console.log(dataOf.value)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const evaluations = computed(() => evaluationStore.evaluations);
-  
+
   const deleteEvaluation = async (id: number) => {
     try {
       await evaluationStore.deleteEvaluation(id);
@@ -48,4 +69,9 @@
       console.error('Error al eliminar la evaluación:', error);
     }
   };
+
+  onMounted(() => {
+    fetchData(user.value.id)
+  });
+
   </script>

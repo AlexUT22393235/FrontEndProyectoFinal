@@ -7,6 +7,7 @@ import axios from 'axios'
 
   const handleTrade = async () => {
     try {
+      console.log(props.trade)
       await postTradeService(props.trade)
       emit("close")
     } catch (error) {
@@ -17,7 +18,6 @@ import axios from 'axios'
       }
     }
   }
-
 
   const emit = defineEmits(['close']);
 
