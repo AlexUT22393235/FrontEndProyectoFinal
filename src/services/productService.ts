@@ -45,7 +45,11 @@ export const postTradeService = async (item:postTrade) => {
 }
 
 export const reportProductService = async (item:ReportProductDto) => {
-  return await genericRequest(base_url + '/producto/patch-producto-report/', 'PATCH', item)
+  return await genericRequest(base_url + '/producto/patch-producto-report/' + item.idProducto, 'PATCH', item)
+}
+
+export const discardReportProductService = async (item:ReportProductDto) => {
+  return await genericRequest(base_url + '/producto/patch-producto-report/' + item.idProducto, 'PATCH', item)
 }
 
 export const getReportsProductService = async () => {

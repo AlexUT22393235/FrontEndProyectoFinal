@@ -23,10 +23,13 @@
                                 <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.nombreProducto  }}</td>
                                 <td className='px-[1vw] py-[1vh] border-t border-l border-zinc-400 '>
                                   <div class="w-full flex justify-center">
-                                    <button class="bg-black w-[45%] text-white rounded-md py-1 m-auto cursor-pointer" @click="openConfirmation('eliminar', item.nombre, () => deleteItem(item.idProducto))" >Eliminar</button>
-                                    <button class="bg-green-800 w-[45%] text-white rounded-md py-1 m-auto cursor-pointer" @click="openConfirmation('descartar el reporte', item.nombre, () => discardReport(item.idProducto))">Descartar</button>
+                                    <button class="bg-black w-[45%] text-white rounded-md py-1 m-auto cursor-pointer" @click="openConfirmation('eliminar', item.nombre, () => deleteItem(item.productoId))" >Eliminar</button>
                                   </div>
                                 </td>
+
+                            </tr>
+                            <tr v-if="!data || data.length === 0">
+                              <td colspan="7" class="text-center py-4">No hay nada aún.</td>
                             </tr>
                         </tbody>
                     </table>

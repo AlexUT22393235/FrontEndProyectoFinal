@@ -14,7 +14,6 @@
                                 <th className='font-semibold px-[1vw] py-[1vh]'>Correo</th>
                                 <th className='font-semibold px-[1vw] py-[1vh]'>Telefono</th>
                                 <th className='font-semibold px-[1vw] py-[1vh]'>Rol</th>
-                                <th className='font-semibold px-[1vw] py-[1vh]'>Motivo</th>
                                 <th className='font-semibold px-[1vw] py-[1vh] w-[20%]'>Acciones</th>
                             </tr>
                         </thead>
@@ -26,7 +25,6 @@
                                 <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.correoElectronico }}</td>
                                 <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.telefono }}</td>
                                 <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'>{{ item.nombreRol }}</td>
-                                <td className='px-[1vw] py-[1vh] border-t border-x border-zinc-400'></td>
                                 <td className='px-[1vw] py-[1vh] border-t border-l border-zinc-400 '>
                                   <div class="w-full flex justify-center">
                                     <button class="bg-black w-[45%] text-white rounded-md py-1 m-auto cursor-pointer" v-if="item.baneado === false" @click="openConfirmation('banear', item.nombre, () => banUser(item.idUsuario))" >Banear</button>
@@ -34,6 +32,9 @@
                                     <button class="bg-green-800 w-[45%] text-white rounded-md py-1 m-auto cursor-pointer" @click="openConfirmation('descartar el reporte', item.nombre, () => discardReport(item.idUsuario))">Descartar</button>
                                   </div>
                                 </td>
+                            </tr>
+                            <tr v-if="!data || data.length === 0">
+                              <td colspan="7" class="text-center py-4">No hay nada aún.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -77,6 +78,7 @@ const closeConfirmation = () => {
 const fetchData = async () => {
     try {
       const response = await getUsersService()
+      console.log(response)
       data.value = response.filter((item:IUser) => item.reportado === true);
     } catch (error) {
       if(axios.isAxiosError(error)){
