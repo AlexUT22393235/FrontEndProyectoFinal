@@ -48,7 +48,6 @@ async login(correoElectronio: string, contrasenia: string) {
           this.setTokens(accessToken, refreshToken);
 
           const decodedToken: any = jwtDecode(accessToken);
-          console.log(decodedToken)
           const userId = decodedToken.nameid;
 
           this.setUser({ id: userId });

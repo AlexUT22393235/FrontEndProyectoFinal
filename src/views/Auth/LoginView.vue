@@ -20,12 +20,12 @@ const handleLogin = async () => {
         if (!response.success) {
           return toast.error(response.message || 'Error al iniciar sesión. Inténtalo nuevamente.');
         }
-        toast.success('Inicio de sesión exitoso!');
         const usuario = await getUserService(user.value?.id)
-        if (!usuario) {
+        console.log(usuario.baneado)
+        if (!usuario || usuario.baneado === true) {
             return toast.error('Usuario no encontrado');
         }
-
+        toast,success('Inicio de sesión exitoso!')
         try {
             const response = await getProfileService(user.value.id)
             if (response.data.length > 0) {
